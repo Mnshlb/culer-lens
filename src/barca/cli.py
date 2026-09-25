@@ -22,6 +22,19 @@ def _interim(args: argparse.Namespace) -> None:
     print(pipeline.build_interim())
 
 
+def _build(args: argparse.Namespace) -> None:
+    from barca import pipeline
+    from barca.data import validate
+
+    if not args.skip_interim:
+        print("interim:", pipeline.build_interim())
+    print("processed:", pipeline.build_processed())
+    results = pipeline.validate_processed()
+    print(validate.summary(results))
+    if not validate.gate_passed(results):
+        raise SystemExit("data-quality gate failed: see reports/data_quality.md")
+
+
 def main(argv: list[str] | None = None) -> None:
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
@@ -37,6 +50,10 @@ def main(argv: list[str] | None = None) -> None:
 
     interim = sub.add_parser("interim", help="flatten raw JSON/CSV into interim Parquet")
     interim.set_defaults(func=_interim)
+
+    build = sub.add_parser("build", help="interim -> processed -> validated")
+    build.add_argument("--skip-interim", action="store_true", help="reuse existing interim tables")
+    build.set_defaults(func=_build)
 
     args = parser.parse_args(argv)
     args.func(args)

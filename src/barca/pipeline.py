@@ -14,7 +14,7 @@ from pathlib import Path
 import polars as pl
 
 from barca import config
-from barca.data import load, parse, sources
+from barca.data import clean, load, normalize, parse, sources, store, validate
 
 log = logging.getLogger(__name__)
 
@@ -91,3 +91,71 @@ def build_interim(workers: int | None = None) -> dict[str, int]:
 def scan_events(stage: Path | None = None) -> pl.LazyFrame:
     root = (stage or config.INTERIM) / "events"
     return pl.scan_parquet(root / "**" / "*.parquet", hive_partitioning=True)
+
+
+# Processed (cleaned) --------------------------------------------------------------
+
+
+def build_processed() -> dict[str, int]:
+    """Interim -> processed: normalise names/types/units and apply the cleaning rules."""
+    raw_matches = pl.read_parquet(config.INTERIM / "matches.parquet")
+    matches = normalize.matches(raw_matches)
+    raw_events = scan_events(config.INTERIM)
+    bounds = normalize.period_bounds(raw_events)
+    clipped = clean.clipped_locations(raw_events)
+    events = clean.clean_events(raw_events, matches, bounds).collect()
+
+    out_dir = config.PROCESSED / "events"
+    if out_dir.exists():
+        shutil.rmtree(out_dir)
+    for (season,), frame in events.group_by(["season"]):
+        _write(frame.sort("match_id", "index"), out_dir / f"season_key={str(season).replace('/', '-')}" / "part-0.parquet")
+
+    positions = pl.read_parquet(config.INTERIM / "positions.parquet")
+    lineups = pl.read_parquet(config.INTERIM / "lineups.parquet")
+    tactics = pl.read_parquet(config.INTERIM / "tactics.parquet")
+    minutes = normalize.player_minutes(positions, bounds)
+    appearances = clean.appearances(lineups, minutes, tactics, matches)
+    results = normalize.football_data_results(pl.read_parquet(config.INTERIM / "football_data.parquet"))
+
+    _write(matches, config.PROCESSED / "matches.parquet")
+    _write(bounds, config.PROCESSED / "period_bounds.parquet")
+    _write(appearances, config.PROCESSED / "appearances.parquet")
+    _write(positions, config.PROCESSED / "positions.parquet")
+    _write(tactics, config.PROCESSED / "tactics.parquet")
+    _write(results, config.PROCESSED / "results.parquet")
+    _write(pl.read_parquet(config.INTERIM / "freeze_frames.parquet"), config.PROCESSED / "freeze_frames.parquet")
+    three_sixty = config.INTERIM / "three_sixty.parquet"
+    if three_sixty.exists():
+        shutil.copyfile(three_sixty, config.PROCESSED / "three_sixty.parquet")
+
+    counts = {
+        "matches": matches.height,
+        "events": events.height,
+        "locations_clipped": clipped,
+        "appearances": appearances.height,
+        "results": results.height,
+    }
+    log.info("processed: %s", counts)
+    return counts
+
+
+def processed_tables() -> dict[str, pl.DataFrame | pl.LazyFrame]:
+    return {
+        "events": store.events(),
+        "matches": store.matches(),
+        "appearances": store.appearances(),
+        "tactics": store.tactics(),
+        "results": store.results(),
+    }
+
+
+def validate_processed() -> list[validate.Result]:
+    """Run every data-quality rule on the processed tables and stamp the result."""
+    results = validate.run(processed_tables())
+    validate.write_report(results, config.REPORTS / "data_quality.md")
+    validate.write_stamp(results, store.VALIDATION_STAMP)
+    failed = [r.code for r in results if not r.passed]
+    log.info("validation: %d rules, gate %s, not passed: %s", len(results),
+             "passed" if validate.gate_passed(results) else "FAILED", failed or "none")
+    return results
