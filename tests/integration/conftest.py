@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
+import os
 import sys
 from collections.abc import Iterator
 from datetime import date, datetime
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import Engine
+from sqlalchemy import Engine, text
 from sqlalchemy.orm import Session
 
 from barca import config
@@ -374,8 +375,16 @@ def _seed(session: Session) -> None:
 
 @pytest.fixture(scope="session")
 def engine(tmp_path_factory: pytest.TempPathFactory) -> Engine:
-    path = tmp_path_factory.mktemp("db") / "test.db"
-    eng = make_engine(f"sqlite:///{path}")
+    """A migrated, seeded database: a temporary SQLite file, or the Postgres
+    database in ``TEST_DATABASE_URL`` (its public schema is dropped first)."""
+    url = os.environ.get("TEST_DATABASE_URL")
+    if url:
+        eng = make_engine(url)
+        with eng.begin() as conn:
+            conn.execute(text("DROP SCHEMA IF EXISTS public CASCADE"))
+            conn.execute(text("CREATE SCHEMA public"))
+    else:
+        eng = make_engine(f"sqlite:///{tmp_path_factory.mktemp('db') / 'test.db'}")
     from barca.db import migrate
 
     migrate.upgrade(eng)

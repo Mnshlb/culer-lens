@@ -16,7 +16,7 @@ FEATURES = DATA / "features"
 MODELS = ROOT / "models"
 REPORTS = ROOT / "reports"
 FIGURES = REPORTS / "figures"
-REFERENCE = ROOT / "src" / "barca" / "data" / "reference"
+REFERENCE = Path(__file__).resolve().parent / "data" / "reference"
 
 RAW_STATSBOMB = RAW / "statsbomb"
 RAW_FOOTBALL_DATA = RAW / "football_data"

@@ -99,4 +99,7 @@ markers = [
     "integration: tests that exercise several components together",
 ]
 addopts = "-ra --strict-markers"
-filterwarnings = ["ignore::DeprecationWarning"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore:Using `httpx` with `starlette.testclient`",
+]

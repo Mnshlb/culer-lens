@@ -7,8 +7,6 @@ reloaded, so a load is idempotent.
 
 from __future__ import annotations
 
-import csv
-import io
 import json
 import logging
 from datetime import datetime
@@ -33,10 +31,27 @@ CHUNK = 5000
 # Bulk insert -------------------------------------------------------------------------------
 
 
-def _jsonable(v: Any) -> Any:
-    if isinstance(v, float) and np.isnan(v):
+def _finite(v: Any) -> Any:
+    """NaN and infinities become NULL, recursively: they are not valid JSON."""
+    if isinstance(v, float) and not np.isfinite(v):
         return None
+    if isinstance(v, dict):
+        return {k: _finite(x) for k, x in v.items()}
+    if isinstance(v, list):
+        return [_finite(x) for x in v]
     return v
+
+
+def _rows(frame: pl.DataFrame, json_cols: set[str]) -> list[list[Any]]:
+    """Frame rows as Python values, JSON columns decoded and every value finite or NULL."""
+    is_json = [c in json_cols for c in frame.columns]
+    return [
+        [
+            _finite(json.loads(v) if j and isinstance(v, str) else v)
+            for v, j in zip(row, is_json, strict=True)
+        ]
+        for row in frame.iter_rows()
+    ]
 
 
 def _insert(engine: Engine, table: Any, frame: pl.DataFrame) -> int:
@@ -45,26 +60,11 @@ def _insert(engine: Engine, table: Any, frame: pl.DataFrame) -> int:
     json_cols = {c.name for c in table.__table__.columns if c.type.__class__.__name__ == "JSON"}
     if frame.height == 0:
         return 0
+    rows = _rows(frame, json_cols)
     if engine.dialect.name == "postgresql":
-        buf = io.StringIO()
-        writer = csv.writer(
-            buf, delimiter="\t", quoting=csv.QUOTE_NONE, escapechar="\\", lineterminator="\n"
-        )
-        for row in frame.iter_rows():
-            out = []
-            for name, v in zip(frame.columns, row, strict=True):
-                if v is None or (isinstance(v, float) and np.isnan(v)):
-                    out.append("\\N")
-                elif name in json_cols:
-                    out.append(v if isinstance(v, str) else json.dumps(v))
-                elif isinstance(v, bool):
-                    out.append("t" if v else "f")
-                else:
-                    out.append(str(v).replace("\t", " ").replace("\n", " "))
-            writer.writerow(out)
-        buf.seek(0)
+        is_json = [c in json_cols for c in frame.columns]
         raw = engine.raw_connection()
-        # psycopg 3 cursor: a context manager with COPY support
+        # psycopg 3 cursor: COPY with its own escaping and type adaptation
         pg_cursor: Any = raw.cursor()
         try:
             with (
@@ -73,21 +73,21 @@ def _insert(engine: Engine, table: Any, frame: pl.DataFrame) -> int:
                     f"COPY {table.__tablename__} ({', '.join(frame.columns)}) FROM STDIN"
                 ) as cp,
             ):
-                cp.write(buf.read())
+                for row in rows:
+                    cp.write_row(
+                        [
+                            json.dumps(v, allow_nan=False) if j and v is not None else v
+                            for v, j in zip(row, is_json, strict=True)
+                        ]
+                    )
             raw.commit()
         finally:
             raw.close()
         return frame.height
-    rows = frame.to_dicts()
-    for r in rows:
-        for c in json_cols:
-            if isinstance(r.get(c), str):
-                r[c] = json.loads(r[c])
-        for k, v in r.items():
-            r[k] = _jsonable(v)
+    records = [dict(zip(frame.columns, row, strict=True)) for row in rows]
     with engine.begin() as conn:
-        for i in range(0, len(rows), CHUNK):
-            conn.execute(insert(table.__table__), rows[i : i + CHUNK])
+        for i in range(0, len(records), CHUNK):
+            conn.execute(insert(table.__table__), records[i : i + CHUNK])
     return frame.height
 
 

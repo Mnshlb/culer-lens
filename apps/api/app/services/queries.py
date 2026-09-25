@@ -102,7 +102,11 @@ def lineup_out(db: Session, match: m.Match, barca_id: int) -> s.LineupOut | None
         select(m.PlayerFixture, m.Player.display_name)
         .join(m.Player, m.Player.id == m.PlayerFixture.player_id)
         .where(m.PlayerFixture.match_id == match.id)
-        .order_by(desc(m.PlayerFixture.in_xi), desc(m.PlayerFixture.p_start))
+        .order_by(
+            desc(m.PlayerFixture.in_xi).nulls_last(),
+            desc(m.PlayerFixture.p_start).nulls_last(),
+            m.PlayerFixture.player_id,
+        )
     ).all()
     if not rows:
         return None

@@ -1,0 +1,50 @@
+# Postgres + API + web. The database is loaded from the locally built data and
+# models (`make pipeline`), then served read-only by the API:
+#
+#   make up        # starts Postgres, loads it, then builds and starts api + web
+#
+name: barca-intelligence
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: barca
+      POSTGRES_PASSWORD: barca
+      POSTGRES_DB: barca
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U barca -d barca"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://barca:barca@db:5432/barca
+      CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: apps/web
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  pgdata:
