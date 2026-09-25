@@ -21,7 +21,7 @@ REFERENCE = ROOT / "src" / "barca" / "data" / "reference"
 RAW_STATSBOMB = RAW / "statsbomb"
 RAW_FOOTBALL_DATA = RAW / "football_data"
 
-MLFLOW_URI = os.environ.get("MLFLOW_TRACKING_URI", (ROOT / "mlruns").as_uri())
+MLFLOW_URI = os.environ.get("MLFLOW_TRACKING_URI", f"sqlite:///{ROOT / 'mlflow.db'}")
 
 RANDOM_SEED = 42
 

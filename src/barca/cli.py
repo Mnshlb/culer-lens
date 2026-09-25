@@ -41,6 +41,15 @@ def _features(args: argparse.Namespace) -> None:
     print(build.build())
 
 
+def _train(args: argparse.Namespace) -> None:
+    import json
+
+    from barca.models import production
+
+    card = production.train(track=not args.no_mlflow)
+    print(json.dumps(card["metrics"], indent=1))
+
+
 def main(argv: list[str] | None = None) -> None:
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
@@ -63,6 +72,10 @@ def main(argv: list[str] | None = None) -> None:
 
     features = sub.add_parser("features", help="build the feature store from validated data")
     features.set_defaults(func=_features)
+
+    train = sub.add_parser("train", help="walk-forward training of the production outcome model")
+    train.add_argument("--no-mlflow", action="store_true", help="skip experiment tracking")
+    train.set_defaults(func=_train)
 
     args = parser.parse_args(argv)
     args.func(args)

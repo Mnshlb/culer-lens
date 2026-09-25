@@ -21,6 +21,7 @@ models/**
 !models/.gitkeep
 mlruns/
 mlartifacts/
+mlflow.db
 optuna.db
 
 # Local environment
