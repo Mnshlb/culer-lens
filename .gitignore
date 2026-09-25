@@ -22,6 +22,8 @@ models/**
 mlruns/
 mlartifacts/
 mlflow.db
+barca.db
+barca.db-*
 optuna.db
 
 # Local environment

@@ -59,6 +59,15 @@ def _explain(args: argparse.Namespace) -> None:
     print(build.build_global())
 
 
+def _db(args: argparse.Namespace) -> None:
+    from barca.db import load, migrate
+    from barca.db.session import make_engine
+
+    engine = make_engine(args.url)
+    migrate.upgrade(engine)
+    print(load.load(engine))
+
+
 def main(argv: list[str] | None = None) -> None:
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
@@ -90,6 +99,10 @@ def main(argv: list[str] | None = None) -> None:
     explain.add_argument("--max-evals", type=int, default=400)
     explain.add_argument("--global-only", action="store_true")
     explain.set_defaults(func=_explain)
+
+    db = sub.add_parser("db", help="create the app database schema and load it")
+    db.add_argument("--url", default=None, help="SQLAlchemy URL (default: $DATABASE_URL or ./barca.db)")
+    db.set_defaults(func=_db)
 
     args = parser.parse_args(argv)
     args.func(args)
