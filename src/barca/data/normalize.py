@@ -67,6 +67,23 @@ def team_reference() -> pl.DataFrame:
     return pl.read_csv(config.REFERENCE / "teams.csv")
 
 
+@lru_cache
+def barca_managers() -> pl.DataFrame:
+    return pl.read_csv(config.REFERENCE / "barca_managers.csv", try_parse_dates=True)
+
+
+def barca_era(dates: pl.Series) -> pl.Series:
+    """Head coach in charge on each date, from the tenure reference table.
+
+    StatsBomb's manager field is empty for some matches, so eras are assigned
+    from dates rather than read from the match metadata.
+    """
+    tenures = barca_managers().sort("start")
+    frame = pl.DataFrame({"date": dates}).with_row_index("_i").sort("date")
+    joined = frame.join_asof(tenures.select("start", "manager"), left_on="date", right_on="start")
+    return joined.sort("_i")["manager"].rename("barca_era")
+
+
 def _lookup(source_column: str, target: str) -> dict[str, str]:
     ref = team_reference().drop_nulls(source_column)
     return dict(zip(ref[source_column], ref[target], strict=True))
@@ -118,7 +135,7 @@ def matches(raw: pl.DataFrame) -> pl.DataFrame:
         pl.when(is_home | is_away).then(barca_goals).alias("barca_goals"),
         pl.when(is_home | is_away).then(opp_goals).alias("opponent_goals"),
     )
-    return out.with_columns(
+    out = out.with_columns(
         pl.when(pl.col("barca_goals") > pl.col("opponent_goals"))
         .then(pl.lit("W"))
         .when(pl.col("barca_goals") == pl.col("opponent_goals"))
@@ -132,6 +149,9 @@ def matches(raw: pl.DataFrame) -> pl.DataFrame:
         .then(pl.col("away_manager"))
         .alias("barca_manager"),
     ).sort("kickoff", "match_id")
+    return out.with_columns(
+        pl.when(pl.col("is_barca")).then(barca_era(out["date"])).alias("barca_era")
+    )
 
 
 # football-data --------------------------------------------------------------------

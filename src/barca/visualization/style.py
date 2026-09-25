@@ -94,18 +94,8 @@ def savefig(fig: plt.Figure, name: str, directory: Path | None = None) -> Path:
 
 
 def caption(ax: plt.Axes, text: str) -> None:
-    """Small source/method note under a chart."""
-    ax.annotate(
-        text,
-        xy=(0, 0),
-        xycoords="figure fraction",
-        xytext=(8, 4),
-        textcoords="offset points",
-        fontsize=7.5,
-        color=MUTED,
-        ha="left",
-        va="bottom",
-    )
+    """Small source/method note below the whole figure (outside the axes)."""
+    ax.figure.text(0.01, -0.01, text, fontsize=7.5, color=MUTED, ha="left", va="top")
 
 
 STATSBOMB_CREDIT = "Data: StatsBomb Open Data"
