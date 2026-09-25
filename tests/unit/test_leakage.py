@@ -30,7 +30,10 @@ def test_rolling_mean_ignores_current_and_future_rows() -> None:
     base = rolling.add_rolling_means(frame, by="team", order=["t"], cols=["x"], windows=[3])
     perturbed = rolling.add_rolling_means(
         frame.with_columns(pl.when(pl.col("t") >= 3).then(999.0).otherwise(pl.col("x")).alias("x")),
-        by="team", order=["t"], cols=["x"], windows=[3],
+        by="team",
+        order=["t"],
+        cols=["x"],
+        windows=[3],
     )
     # rows 0..3 only see rows before them, which are unchanged
     assert base["x_3"][:4].to_list() == perturbed["x_3"][:4].to_list()
@@ -51,10 +54,14 @@ def test_team_form_is_future_invariant(results: pl.DataFrame, which: int) -> Non
     cutoff = _cutoffs(results)[which]
     base = team_form.team_form(results)
     other = team_form.team_form(scramble_from(results, cutoff))
-    cols = ["fixture_id", "team"] + [c for c in tables.FORM_FEATURES + tables.H2H_FEATURES if c in base.columns]
+    cols = ["fixture_id", "team"] + [
+        c for c in tables.FORM_FEATURES + tables.H2H_FEATURES if c in base.columns
+    ]
     past = pl.col("date") <= cutoff
-    assert_frame_equal(base.filter(past).select(cols).sort("fixture_id", "team"),
-                       other.filter(past).select(cols).sort("fixture_id", "team"))
+    assert_frame_equal(
+        base.filter(past).select(cols).sort("fixture_id", "team"),
+        other.filter(past).select(cols).sort("fixture_id", "team"),
+    )
 
 
 @pytest.mark.parametrize("which", [0, 1, 2])

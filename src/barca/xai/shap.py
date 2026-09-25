@@ -30,7 +30,7 @@ def tree_shap(lgbm_estimator, X: pd.DataFrame) -> np.ndarray:
 
 
 def probability_explainer(
-    predict_class: Callable[[pd.DataFrame], np.ndarray], background: pd.DataFrame, seed: int = 0
+    predict_class: Callable[[np.ndarray], np.ndarray], background: pd.DataFrame, seed: int = 0
 ) -> shap.Explainer:
     masker = shap.maskers.Independent(background, max_samples=len(background))
     return shap.explainers.Permutation(predict_class, masker, seed=seed)
@@ -57,7 +57,9 @@ def explain_probability(
             return predict_proba(pd.DataFrame(data, columns=X.columns))[:, k]
 
         explainer = probability_explainer(f, background)
-        exp = explainer(X.iloc[rows].to_numpy(), max_evals=max(max_evals, 2 * X.shape[1] + 1), silent=True)
+        exp = explainer(
+            X.to_numpy()[rows], max_evals=max(max_evals, 2 * X.shape[1] + 1), silent=True
+        )
         values[rows] = exp.values
         base[rows] = np.asarray(exp.base_values).reshape(-1)
     return values, base
@@ -78,5 +80,7 @@ def top_contributions(
     for i in order:
         raw = None if pd.isna(X.iloc[0, i]) else float(X.iloc[0, i])
         label, shown = view(X.columns[i], raw)
-        out.append({"feature": X.columns[i], "label": label, "value": shown, "shap": float(values[i])})
+        out.append(
+            {"feature": X.columns[i], "label": label, "value": shown, "shap": float(values[i])}
+        )
     return out

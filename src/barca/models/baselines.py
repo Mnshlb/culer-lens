@@ -13,7 +13,7 @@ from scipy.optimize import minimize_scalar
 from scipy.stats import poisson
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression, PoissonRegressor
-from sklearn.pipeline import make_pipeline
+from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.preprocessing import StandardScaler
 from statsmodels.miscmodels.ordinal_model import OrderedModel
 
@@ -72,7 +72,8 @@ class LogisticModel:
 
     def fit(self, ds: Dataset) -> LogisticModel:
         self.pipe_ = make_pipeline(
-            SimpleImputer(strategy="median"), StandardScaler(),
+            SimpleImputer(strategy="median"),
+            StandardScaler(),
             LogisticRegression(C=self.C, max_iter=2000),
         )
         self.pipe_.fit(ds.X, ds.y)
@@ -83,18 +84,42 @@ class LogisticModel:
 
 
 POISSON_FEATURES = [
-    "elo_diff", "h_elo", "a_elo", "h_goals_10", "h_goals_against_10", "a_goals_10", "a_goals_against_10",
-    "h_sot_10", "h_sot_against_10", "a_sot_10", "a_sot_against_10", "h_points_std", "a_points_std",
+    "elo_diff",
+    "h_elo",
+    "a_elo",
+    "h_goals_10",
+    "h_goals_against_10",
+    "a_goals_10",
+    "a_goals_against_10",
+    "h_sot_10",
+    "h_sot_against_10",
+    "a_sot_10",
+    "a_sot_against_10",
+    "h_points_std",
+    "a_points_std",
 ]
 POISSON_FEATURES_BARCA = [
-    "elo_diff", "barca_elo", "opp_elo", "is_home", "barca_goals_10", "barca_goals_against_10", "opp_goals_10",
-    "opp_goals_against_10", "barca_sot_10", "barca_sot_against_10", "opp_sot_10", "opp_sot_against_10",
-    "barca_points_std", "opp_points_std",
+    "elo_diff",
+    "barca_elo",
+    "opp_elo",
+    "is_home",
+    "barca_goals_10",
+    "barca_goals_against_10",
+    "opp_goals_10",
+    "opp_goals_against_10",
+    "barca_sot_10",
+    "barca_sot_against_10",
+    "opp_sot_10",
+    "opp_sot_against_10",
+    "barca_points_std",
+    "opp_points_std",
 ]
 MAX_GOALS = 10
 
 
-def dixon_coles_tau(x: np.ndarray, y: np.ndarray, lam: np.ndarray, mu: np.ndarray, rho: float) -> np.ndarray:
+def dixon_coles_tau(
+    x: np.ndarray, y: np.ndarray, lam: np.ndarray, mu: np.ndarray, rho: float
+) -> np.ndarray:
     """Dixon-Coles adjustment for the four low scores independent Poissons get wrong."""
     tau = np.ones_like(lam, dtype=float)
     tau = np.where((x == 0) & (y == 0), 1 - lam * mu * rho, tau)
@@ -114,13 +139,17 @@ class PoissonModel:
 
     name = "poisson"
 
-    def __init__(self, features: list[str] | None = None, alpha: float = 1e-3, dixon_coles: bool = True):
+    def __init__(
+        self, features: list[str] | None = None, alpha: float = 1e-3, dixon_coles: bool = True
+    ):
         self.features = features
         self.alpha = alpha
         self.dixon_coles = dixon_coles
 
     def _cols(self, X: pd.DataFrame) -> list[str]:
-        cand = self.features or (POISSON_FEATURES if "h_elo" in X.columns else POISSON_FEATURES_BARCA)
+        cand = self.features or (
+            POISSON_FEATURES if "h_elo" in X.columns else POISSON_FEATURES_BARCA
+        )
         return [c for c in cand if c in X.columns]
 
     def fit(self, ds: Dataset) -> PoissonModel:
@@ -128,9 +157,12 @@ class PoissonModel:
         self.cols_ = cols
         gf, ga = ds.goals()
 
-        def model() -> object:
-            return make_pipeline(SimpleImputer(strategy="median"), StandardScaler(),
-                                 PoissonRegressor(alpha=self.alpha, max_iter=1000))
+        def model() -> Pipeline:
+            return make_pipeline(
+                SimpleImputer(strategy="median"),
+                StandardScaler(),
+                PoissonRegressor(alpha=self.alpha, max_iter=1000),
+            )
 
         self.for_ = model().fit(ds.X[cols], gf)
         self.against_ = model().fit(ds.X[cols], ga)
@@ -166,4 +198,7 @@ class PoissonModel:
         win = np.tril(np.ones((MAX_GOALS + 1, MAX_GOALS + 1)), -1)
         draw = np.eye(MAX_GOALS + 1)
         loss = np.triu(np.ones((MAX_GOALS + 1, MAX_GOALS + 1)), 1)
-        return np.stack([(m * win).sum(axis=(1, 2)), (m * draw).sum(axis=(1, 2)), (m * loss).sum(axis=(1, 2))], axis=1)
+        return np.stack(
+            [(m * win).sum(axis=(1, 2)), (m * draw).sum(axis=(1, 2)), (m * loss).sum(axis=(1, 2))],
+            axis=1,
+        )

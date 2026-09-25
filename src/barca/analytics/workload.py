@@ -37,7 +37,10 @@ def index_expr() -> pl.Expr:
     streak = (pl.col("consecutive_starts") / 8).clip(0, 1)
     rest = ((7 - pl.col("days_since_last_app").fill_null(30)) / 5).clip(0, 1)
     w = WEIGHTS
-    return (100 * (w["m7"] * m7 + w["m14"] * m14 + w["m30"] * m30 + w["streak"] * streak + w["rest"] * rest)).round(0)
+    return (
+        100
+        * (w["m7"] * m7 + w["m14"] * m14 + w["m30"] * m30 + w["streak"] * streak + w["rest"] * rest)
+    ).round(0)
 
 
 def band_expr(col: str = "workload_index") -> pl.Expr:

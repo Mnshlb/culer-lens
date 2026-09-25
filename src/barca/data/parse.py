@@ -245,7 +245,7 @@ def _xy(loc: list[float] | None) -> tuple[float | None, float | None, float | No
 
 def event_row(match_id: int, ev: dict[str, Any]) -> dict[str, Any]:
     type_name = ev["type"]["name"]
-    sub = ev.get(SUBOBJECT_KEY.get(type_name, ""), None) or {}
+    sub = ev.get(SUBOBJECT_KEY.get(type_name, "")) or {}
     x, y, _ = _xy(ev.get("location"))
     end_x, end_y, end_z = _xy(sub.get("end_location"))
 
@@ -295,7 +295,9 @@ def event_row(match_id: int, ev: dict[str, Any]) -> dict[str, Any]:
             recipient=_name(sub.get("recipient")),
             pass_cross=sub.get("cross"),
             pass_switch=sub.get("switch"),
-            pass_through_ball=sub.get("through_ball") or (_name(sub.get("technique")) == "Through Ball") or None,
+            pass_through_ball=sub.get("through_ball")
+            or (_name(sub.get("technique")) == "Through Ball")
+            or None,
             pass_cut_back=sub.get("cut_back"),
             pass_shot_assist=sub.get("shot_assist"),
             pass_goal_assist=sub.get("goal_assist"),
@@ -406,7 +408,9 @@ def parse_lineups(match_id: int, lineups: list[dict[str, Any]]) -> dict[str, pl.
                     "country": _name(p.get("country")),
                     "n_positions": len(positions),
                     "n_yellow": sum(c.get("card_type") == "Yellow Card" for c in cards),
-                    "n_red": sum(c.get("card_type") in ("Red Card", "Second Yellow") for c in cards),
+                    "n_red": sum(
+                        c.get("card_type") in ("Red Card", "Second Yellow") for c in cards
+                    ),
                 }
             )
             for i, pos in enumerate(positions):

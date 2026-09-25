@@ -28,23 +28,35 @@ CHANNEL_EDGES = [0.0, 18.0, 30.0, 50.0, 62.0, 80.0]
 CHANNELS = ["left_wing", "left_half_space", "centre", "right_half_space", "right_wing"]
 
 
-def with_zones(events: pl.LazyFrame | pl.DataFrame) -> pl.LazyFrame | pl.DataFrame:
+def with_zones[F: (pl.LazyFrame, pl.DataFrame)](events: F) -> F:
     x = pl.col("x").clip(0, 119.999)
     y = pl.col("y").clip(0, 79.999)
-    third = pl.when(x < 40).then(pl.lit("defensive")).when(x < 80).then(pl.lit("middle")).otherwise(pl.lit("attacking"))
+    third = (
+        pl.when(x < 40)
+        .then(pl.lit("defensive"))
+        .when(x < 80)
+        .then(pl.lit("middle"))
+        .otherwise(pl.lit("attacking"))
+    )
     channel = (
-        pl.when(y < 18).then(pl.lit("left_wing"))
-        .when(y < 30).then(pl.lit("left_half_space"))
-        .when(y < 50).then(pl.lit("centre"))
-        .when(y < 62).then(pl.lit("right_half_space"))
+        pl.when(y < 18)
+        .then(pl.lit("left_wing"))
+        .when(y < 30)
+        .then(pl.lit("left_half_space"))
+        .when(y < 50)
+        .then(pl.lit("centre"))
+        .when(y < 62)
+        .then(pl.lit("right_half_space"))
         .otherwise(pl.lit("right_wing"))
     )
     return events.with_columns(third.alias("third"), channel.alias("channel"))
 
 
-def filter_actions(events: pl.LazyFrame | pl.DataFrame, family: str) -> pl.LazyFrame | pl.DataFrame:
+def filter_actions[F: (pl.LazyFrame, pl.DataFrame)](events: F, family: str) -> F:
     if family not in D.ACTION_FAMILIES:
-        raise ValueError(f"unknown action family {family!r}; choose from {sorted(D.ACTION_FAMILIES)}")
+        raise ValueError(
+            f"unknown action family {family!r}; choose from {sorted(D.ACTION_FAMILIES)}"
+        )
     return events.filter(D.ACTION_FAMILIES[family], pl.col("x").is_not_null())
 
 
@@ -62,7 +74,9 @@ def zone_counts(events: pl.DataFrame) -> pl.DataFrame:
         {"third": [t for t in THIRDS for _ in CHANNELS], "channel": CHANNELS * len(THIRDS)}
     )
     counts = with_zones(events).group_by("third", "channel").agg(pl.len().alias("n"))
-    return full.join(counts, on=["third", "channel"], how="left").with_columns(pl.col("n").fill_null(0))
+    return full.join(counts, on=["third", "channel"], how="left").with_columns(
+        pl.col("n").fill_null(0)
+    )
 
 
 def spatial_profile(events: pl.DataFrame) -> dict[str, float | None]:
@@ -86,7 +100,9 @@ def spatial_profile(events: pl.DataFrame) -> dict[str, float | None]:
     channels = ev["channel"].value_counts(normalize=True)
     share = lambda frame, col, key: float(frame.filter(pl.col(col) == key)["proportion"].sum())  # noqa: E731
     left = share(channels, "channel", "left_wing") + share(channels, "channel", "left_half_space")
-    right = share(channels, "channel", "right_wing") + share(channels, "channel", "right_half_space")
+    right = share(channels, "channel", "right_wing") + share(
+        channels, "channel", "right_half_space"
+    )
     return {
         "n": n,
         "avg_x": float(xs.mean()),
@@ -105,7 +121,11 @@ def spatial_profile(events: pl.DataFrame) -> dict[str, float | None]:
 
 
 def window_matches(
-    player_matches: pl.DataFrame, *, as_of: date | None = None, window: str = "season", season: str | None = None
+    player_matches: pl.DataFrame,
+    *,
+    as_of: date | None = None,
+    window: str = "season",
+    season: str | None = None,
 ) -> list[int]:
     """Match ids for a player's time window.
 

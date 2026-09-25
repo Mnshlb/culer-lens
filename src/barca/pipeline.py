@@ -75,10 +75,10 @@ def build_interim(workers: int | None = None) -> dict[str, int]:
         counts[name] = frame.height
 
     results = []
-    for season in sources.football_data_seasons():
-        path = load.football_data_path(season)
+    for code in sources.football_data_seasons():
+        path = load.football_data_path(code)
         if path.exists():
-            results.append(parse.football_data_frame(path.read_bytes(), season.label))
+            results.append(parse.football_data_frame(path.read_bytes(), code.label))
     if results:
         frame = pl.concat(results, how="diagonal_relaxed")
         _write(frame, config.INTERIM / "football_data.parquet")
@@ -109,14 +109,19 @@ def build_processed() -> dict[str, int]:
     if out_dir.exists():
         shutil.rmtree(out_dir)
     for (season,), frame in events.group_by(["season"]):
-        _write(frame.sort("match_id", "index"), out_dir / f"season_key={str(season).replace('/', '-')}" / "part-0.parquet")
+        _write(
+            frame.sort("match_id", "index"),
+            out_dir / f"season_key={str(season).replace('/', '-')}" / "part-0.parquet",
+        )
 
     positions = pl.read_parquet(config.INTERIM / "positions.parquet")
     lineups = pl.read_parquet(config.INTERIM / "lineups.parquet")
     tactics = pl.read_parquet(config.INTERIM / "tactics.parquet")
     minutes = normalize.player_minutes(positions, bounds)
     appearances = clean.appearances(lineups, minutes, tactics, matches)
-    results = normalize.football_data_results(pl.read_parquet(config.INTERIM / "football_data.parquet"))
+    results = normalize.football_data_results(
+        pl.read_parquet(config.INTERIM / "football_data.parquet")
+    )
 
     _write(matches, config.PROCESSED / "matches.parquet")
     _write(bounds, config.PROCESSED / "period_bounds.parquet")
@@ -124,7 +129,10 @@ def build_processed() -> dict[str, int]:
     _write(positions, config.PROCESSED / "positions.parquet")
     _write(tactics, config.PROCESSED / "tactics.parquet")
     _write(results, config.PROCESSED / "results.parquet")
-    _write(pl.read_parquet(config.INTERIM / "freeze_frames.parquet"), config.PROCESSED / "freeze_frames.parquet")
+    _write(
+        pl.read_parquet(config.INTERIM / "freeze_frames.parquet"),
+        config.PROCESSED / "freeze_frames.parquet",
+    )
     three_sixty = config.INTERIM / "three_sixty.parquet"
     if three_sixty.exists():
         shutil.copyfile(three_sixty, config.PROCESSED / "three_sixty.parquet")
@@ -156,6 +164,10 @@ def validate_processed() -> list[validate.Result]:
     validate.write_report(results, config.REPORTS / "data_quality.md")
     validate.write_stamp(results, store.VALIDATION_STAMP)
     failed = [r.code for r in results if not r.passed]
-    log.info("validation: %d rules, gate %s, not passed: %s", len(results),
-             "passed" if validate.gate_passed(results) else "FAILED", failed or "none")
+    log.info(
+        "validation: %d rules, gate %s, not passed: %s",
+        len(results),
+        "passed" if validate.gate_passed(results) else "FAILED",
+        failed or "none",
+    )
     return results

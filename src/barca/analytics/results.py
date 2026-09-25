@@ -49,5 +49,7 @@ def long_results(results: pl.DataFrame) -> pl.DataFrame:
         .alias("result"),
     )
     return out.with_columns(
-        pl.col("result").replace_strict({"W": 3, "D": 1, "L": 0}, return_dtype=pl.Int8).alias("points")
+        pl.col("result")
+        .replace_strict({"W": 3, "D": 1, "L": 0}, return_dtype=pl.Int8)
+        .alias("points")
     ).sort("date", "fixture_id", "is_home", descending=[False, False, True])

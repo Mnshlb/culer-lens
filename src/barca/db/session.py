@@ -28,7 +28,7 @@ def make_engine(url: str | None = None) -> Engine:
     if engine.dialect.name == "sqlite":
 
         @event.listens_for(engine, "connect")
-        def _pragma(conn, _record) -> None:  # noqa: ANN001
+        def _pragma(conn, _record) -> None:
             cur = conn.cursor()
             cur.execute("PRAGMA foreign_keys=ON")
             cur.execute("PRAGMA journal_mode=WAL")

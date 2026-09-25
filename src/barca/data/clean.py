@@ -21,9 +21,24 @@ import polars as pl
 from barca.data import normalize
 
 BOOLEAN_FLAGS = [
-    "under_pressure", "counterpress", "off_camera", "out", "pass_cross", "pass_switch", "pass_through_ball",
-    "pass_cut_back", "pass_shot_assist", "pass_goal_assist", "pass_deflected", "shot_first_time",
-    "shot_one_on_one", "shot_open_goal", "dribble_nutmeg", "recovery_failure", "foul_penalty", "aerial_won",
+    "under_pressure",
+    "counterpress",
+    "off_camera",
+    "out",
+    "pass_cross",
+    "pass_switch",
+    "pass_through_ball",
+    "pass_cut_back",
+    "pass_shot_assist",
+    "pass_goal_assist",
+    "pass_deflected",
+    "shot_first_time",
+    "shot_one_on_one",
+    "shot_open_goal",
+    "dribble_nutmeg",
+    "recovery_failure",
+    "foul_penalty",
+    "aerial_won",
 ]
 
 
@@ -40,11 +55,16 @@ def clean_events(events: pl.LazyFrame, matches: pl.DataFrame, bounds: pl.DataFra
             *[pl.col(c).clip(0.0, 80.0) for c in ("y", "end_y")],
             *[pl.col(c).fill_null(False) for c in BOOLEAN_FLAGS],  # C2
         )
-        .with_columns(((pl.col("type") == "Pass") & pl.col("outcome").is_null()).alias("pass_complete"))  # C3
+        .with_columns(
+            ((pl.col("type") == "Pass") & pl.col("outcome").is_null()).alias("pass_complete")
+        )  # C3
         .join(info, on="match_id", how="left")
         .join(b, on=["match_id", "period"], how="left")
         .with_columns(
-            (pl.col("elapsed_before_s") + (pl.col("minute").cast(pl.Float64) * 60 + pl.col("second") - pl.col("start_s")))
+            (
+                pl.col("elapsed_before_s")
+                + (pl.col("minute").cast(pl.Float64) * 60 + pl.col("second") - pl.col("start_s"))
+            )
             .clip(lower_bound=pl.col("elapsed_before_s"))
             .alias("elapsed_s")
         )
@@ -69,16 +89,27 @@ def appearances(
     lineup spells (``normalize.player_minutes``). Unused substitutes get 0
     minutes and ``played = False``.
     """
-    xi = (
-        tactics.filter(pl.col("event_type") == "Starting XI")
-        .select("match_id", "team_id", "player_id", pl.col("position").alias("xi_position"), pl.lit(True).alias("started"))
+    xi = tactics.filter(pl.col("event_type") == "Starting XI").select(
+        "match_id",
+        "team_id",
+        "player_id",
+        pl.col("position").alias("xi_position"),
+        pl.lit(True).alias("started"),
     )
     match_len = minutes.group_by("match_id").agg(pl.col("match_minutes").max())
     out = (
-        lineups.join(minutes.drop("started", "match_minutes"), on=["match_id", "team_id", "player_id"], how="left")
+        lineups.join(
+            minutes.drop("started", "match_minutes"),
+            on=["match_id", "team_id", "player_id"],
+            how="left",
+        )
         .join(xi, on=["match_id", "team_id", "player_id"], how="left")
         .join(match_len, on="match_id", how="left")
-        .join(matches.select("match_id", "date", "kickoff", "season", "competition"), on="match_id", how="left")
+        .join(
+            matches.select("match_id", "date", "kickoff", "season", "competition"),
+            on="match_id",
+            how="left",
+        )
         .with_columns(
             pl.col("started").fill_null(False),
             pl.col("minutes").fill_null(0.0),
@@ -88,14 +119,27 @@ def appearances(
         )
         .with_columns(
             # starters take the Starting XI position; substitutes their first spell
-            pl.coalesce(pl.when(pl.col("started")).then(pl.col("xi_position")), pl.col("start_position")).alias("start_position"),
+            pl.coalesce(
+                pl.when(pl.col("started")).then(pl.col("xi_position")), pl.col("start_position")
+            ).alias("start_position"),
         )
         .with_columns(
-            pl.col("start_position").replace_strict(normalize.POSITION_GROUP, default=None).alias("position_group"),
+            pl.col("start_position")
+            .replace_strict(normalize.POSITION_GROUP, default=None)
+            .alias("position_group"),
         )
         .with_columns(
-            pl.col("position_group").replace_strict(normalize.POSITION_FAMILY, default=None).alias("position_family"),
+            pl.col("position_group")
+            .replace_strict(normalize.POSITION_FAMILY, default=None)
+            .alias("position_family"),
         )
         .drop("xi_position")
     )
-    return out.sort("kickoff", "match_id", "team_id", "started", "minutes", descending=[False, False, False, True, True])
+    return out.sort(
+        "kickoff",
+        "match_id",
+        "team_id",
+        "started",
+        "minutes",
+        descending=[False, False, False, True, True],
+    )

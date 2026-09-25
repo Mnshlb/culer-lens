@@ -101,8 +101,14 @@ def clock_to_seconds(expr: pl.Expr) -> pl.Expr:
     """'MM:SS' (lineups) or 'HH:MM:SS.mmm' (event timestamps) -> seconds."""
     parts = expr.str.split(":")
     n = parts.list.len()
-    hours = pl.when(n == 3).then(parts.list.get(0, null_on_oob=True).cast(pl.Float64)).otherwise(0.0)
-    minutes = pl.when(n == 3).then(parts.list.get(1, null_on_oob=True)).otherwise(parts.list.get(0, null_on_oob=True))
+    hours = (
+        pl.when(n == 3).then(parts.list.get(0, null_on_oob=True).cast(pl.Float64)).otherwise(0.0)
+    )
+    minutes = (
+        pl.when(n == 3)
+        .then(parts.list.get(1, null_on_oob=True))
+        .otherwise(parts.list.get(0, null_on_oob=True))
+    )
     seconds = parts.list.get(-1, null_on_oob=True)
     return hours * 3600 + minutes.cast(pl.Float64) * 60 + seconds.cast(pl.Float64)
 
@@ -156,7 +162,24 @@ def matches(raw: pl.DataFrame) -> pl.DataFrame:
 
 # football-data --------------------------------------------------------------------
 
-_FD_INT = ["FTHG", "FTAG", "HTHG", "HTAG", "HS", "AS", "HST", "AST", "HC", "AC", "HF", "AF", "HY", "AY", "HR", "AR"]
+_FD_INT = [
+    "FTHG",
+    "FTAG",
+    "HTHG",
+    "HTAG",
+    "HS",
+    "AS",
+    "HST",
+    "AST",
+    "HC",
+    "AC",
+    "HF",
+    "AF",
+    "HY",
+    "AY",
+    "HR",
+    "AR",
+]
 _FD_ODDS = {
     "b365": ("B365H", "B365D", "B365A"),
     "ps_close": ("PSCH", "PSCD", "PSCA"),
@@ -229,7 +252,9 @@ def football_data_results(raw: pl.DataFrame) -> pl.DataFrame:
 def events(raw: pl.LazyFrame) -> pl.LazyFrame:
     return raw.with_columns(
         clock_to_seconds(pl.col("timestamp")).alias("period_seconds"),
-        (pl.col("minute").cast(pl.Float64) + pl.col("second").cast(pl.Float64) / 60).alias("clock_minute"),
+        (pl.col("minute").cast(pl.Float64) + pl.col("second").cast(pl.Float64) / 60).alias(
+            "clock_minute"
+        ),
         statsbomb_team_name(pl.col("team")).alias("team_name"),
         (pl.col("team") == sources.BARCELONA).alias("is_barca"),
         pl.col("position").replace_strict(POSITION_GROUP, default=None).alias("position_group"),
@@ -256,16 +281,18 @@ def period_bounds(events_lf: pl.LazyFrame) -> pl.DataFrame:
         .with_columns((pl.col("end_s") - pl.col("start_s")).clip(lower_bound=0).alias("duration_s"))
         .sort("match_id", "period")
         .with_columns(
-            (pl.col("duration_s").cum_sum().over("match_id") - pl.col("duration_s")).alias("elapsed_before_s")
+            (pl.col("duration_s").cum_sum().over("match_id") - pl.col("duration_s")).alias(
+                "elapsed_before_s"
+            )
         )
     )
     return bounds
 
 
 def _elapsed(clock_s: pl.Expr, period: pl.Expr, prefix: str) -> pl.Expr:
-    return (
-        pl.col(f"{prefix}elapsed_before_s") + (clock_s - pl.col(f"{prefix}start_s"))
-    ).clip(lower_bound=pl.col(f"{prefix}elapsed_before_s"))
+    return (pl.col(f"{prefix}elapsed_before_s") + (clock_s - pl.col(f"{prefix}start_s"))).clip(
+        lower_bound=pl.col(f"{prefix}elapsed_before_s")
+    )
 
 
 def player_minutes(positions: pl.DataFrame, bounds: pl.DataFrame) -> pl.DataFrame:
@@ -286,7 +313,13 @@ def player_minutes(positions: pl.DataFrame, bounds: pl.DataFrame) -> pl.DataFram
         .with_columns(_elapsed(pl.col("from_s"), pl.col("from_period"), "").alias("from_elapsed"))
         .drop("start_s", "elapsed_before_s")
         .join(
-            b.rename({"period": "to_period", "start_s": "to_start_s", "elapsed_before_s": "to_elapsed_before_s"}),
+            b.rename(
+                {
+                    "period": "to_period",
+                    "start_s": "to_start_s",
+                    "elapsed_before_s": "to_elapsed_before_s",
+                }
+            ),
             on=["match_id", "to_period"],
             how="left",
         )
@@ -297,7 +330,11 @@ def player_minutes(positions: pl.DataFrame, bounds: pl.DataFrame) -> pl.DataFram
             .otherwise(_elapsed(pl.col("to_s"), pl.col("to_period"), "to_"))
             .alias("to_elapsed")
         )
-        .with_columns(((pl.col("to_elapsed") - pl.col("from_elapsed")) / 60).clip(lower_bound=0).alias("minutes"))
+        .with_columns(
+            ((pl.col("to_elapsed") - pl.col("from_elapsed")) / 60)
+            .clip(lower_bound=0)
+            .alias("minutes")
+        )
     )
     return (
         spells.sort("spell")
@@ -313,9 +350,13 @@ def player_minutes(positions: pl.DataFrame, bounds: pl.DataFrame) -> pl.DataFram
             pl.col("match_s").first().truediv(60).alias("match_minutes"),
         )
         .with_columns(
-            pl.col("start_position").replace_strict(POSITION_GROUP, default=None).alias("position_group"),
+            pl.col("start_position")
+            .replace_strict(POSITION_GROUP, default=None)
+            .alias("position_group"),
         )
         .with_columns(
-            pl.col("position_group").replace_strict(POSITION_FAMILY, default=None).alias("position_family"),
+            pl.col("position_group")
+            .replace_strict(POSITION_FAMILY, default=None)
+            .alias("position_family"),
         )
     )

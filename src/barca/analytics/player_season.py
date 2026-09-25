@@ -10,14 +10,52 @@ MIN_MINUTES_SEASON = 900  # ten full matches
 MIN_MINUTES_CAREER = 1800
 
 PER90_METRICS = [
-    "goals", "np_goals", "assists", "xg", "npxg", "xa", "shots", "shots_on_target", "key_passes",
-    "touches", "touches_in_box", "passes", "passes_completed", "progressive_passes",
-    "progressive_carries", "carries", "final_third_entries", "box_entries", "crosses",
-    "through_balls", "dribbles", "dribbles_completed", "pressures", "counterpresses", "tackles",
-    "tackles_won", "interceptions", "recoveries", "high_recoveries", "clearances", "blocks",
-    "aerials_won", "aerials_lost", "fouls", "fouls_won", "turnovers",
+    "goals",
+    "np_goals",
+    "assists",
+    "xg",
+    "npxg",
+    "xa",
+    "shots",
+    "shots_on_target",
+    "key_passes",
+    "touches",
+    "touches_in_box",
+    "passes",
+    "passes_completed",
+    "progressive_passes",
+    "progressive_carries",
+    "carries",
+    "final_third_entries",
+    "box_entries",
+    "crosses",
+    "through_balls",
+    "dribbles",
+    "dribbles_completed",
+    "pressures",
+    "counterpresses",
+    "tackles",
+    "tackles_won",
+    "interceptions",
+    "recoveries",
+    "high_recoveries",
+    "clearances",
+    "blocks",
+    "aerials_won",
+    "aerials_lost",
+    "fouls",
+    "fouls_won",
+    "turnovers",
 ]
-DEFENSIVE_METRICS = ["pressures", "tackles", "tackles_won", "interceptions", "recoveries", "clearances", "blocks"]
+DEFENSIVE_METRICS = [
+    "pressures",
+    "tackles",
+    "tackles_won",
+    "interceptions",
+    "recoveries",
+    "clearances",
+    "blocks",
+]
 
 
 def possession_adjust(pm: pl.DataFrame, team_possession: pl.DataFrame) -> pl.DataFrame:
@@ -32,7 +70,12 @@ def possession_adjust(pm: pl.DataFrame, team_possession: pl.DataFrame) -> pl.Dat
     )
     return (
         pm.join(factor, on=["match_id", "team_id"], how="left")
-        .with_columns([(pl.col(m) * pl.col("_padj").fill_null(1.0)).alias(f"padj_{m}") for m in DEFENSIVE_METRICS])
+        .with_columns(
+            [
+                (pl.col(m) * pl.col("_padj").fill_null(1.0)).alias(f"padj_{m}")
+                for m in DEFENSIVE_METRICS
+            ]
+        )
         .drop("_padj")
     )
 
@@ -67,7 +110,9 @@ def aggregate(pm: pl.DataFrame, by: list[str]) -> pl.DataFrame:
         (pl.col("passes_completed") / pl.col("passes")).alias("pass_completion"),
         (pl.col("dribbles_completed") / pl.col("dribbles")).alias("dribble_success"),
         (pl.col("tackles_won") / pl.col("tackles")).alias("tackle_success"),
-        (pl.col("aerials_won") / (pl.col("aerials_won") + pl.col("aerials_lost"))).alias("aerial_win_rate"),
+        (pl.col("aerials_won") / (pl.col("aerials_won") + pl.col("aerials_lost"))).alias(
+            "aerial_win_rate"
+        ),
         ((pl.col("npxg") + pl.col("xa")) / pl.col("minutes") * 90).alias("npxg_xa_p90"),
         (pl.col("np_goals") - pl.col("npxg")).alias("np_goals_minus_npxg"),
     )

@@ -74,7 +74,10 @@ extend-exclude = ["notebooks", "apps/web", "apps/api/migrations/versions"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "N", "SIM", "RUF", "NPY", "PD"]
-ignore = ["PD901", "PD011", "N803", "N806", "RUF001", "RUF002", "RUF003", "E501"]
+ignore = ["PD011", "N803", "N806", "N812", "RUF001", "RUF002", "RUF003", "E501"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["barca", "app"]

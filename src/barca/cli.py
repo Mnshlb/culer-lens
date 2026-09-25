@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import logging
-import sys
 
 
 def _fetch(args: argparse.Namespace) -> None:
@@ -77,7 +76,9 @@ def main(argv: list[str] | None = None) -> None:
     sub = parser.add_subparsers(dest="command", required=True)
 
     fetch = sub.add_parser("fetch", help="download raw StatsBomb and football-data files")
-    fetch.add_argument("--sample", type=int, default=None, help="only the N latest Barcelona matches")
+    fetch.add_argument(
+        "--sample", type=int, default=None, help="only the N latest Barcelona matches"
+    )
     fetch.add_argument("--with-360", action="store_true", help="also download 360 freeze frames")
     fetch.set_defaults(func=_fetch)
 
@@ -95,13 +96,17 @@ def main(argv: list[str] | None = None) -> None:
     train.add_argument("--no-mlflow", action="store_true", help="skip experiment tracking")
     train.set_defaults(func=_train)
 
-    explain = sub.add_parser("explain", help="precompute SHAP explanations, importances and PDP/ICE")
+    explain = sub.add_parser(
+        "explain", help="precompute SHAP explanations, importances and PDP/ICE"
+    )
     explain.add_argument("--max-evals", type=int, default=400)
     explain.add_argument("--global-only", action="store_true")
     explain.set_defaults(func=_explain)
 
     db = sub.add_parser("db", help="create the app database schema and load it")
-    db.add_argument("--url", default=None, help="SQLAlchemy URL (default: $DATABASE_URL or ./barca.db)")
+    db.add_argument(
+        "--url", default=None, help="SQLAlchemy URL (default: $DATABASE_URL or ./barca.db)"
+    )
     db.set_defaults(func=_db)
 
     args = parser.parse_args(argv)
@@ -109,4 +114,4 @@ def main(argv: list[str] | None = None) -> None:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

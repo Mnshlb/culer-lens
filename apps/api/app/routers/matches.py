@@ -21,7 +21,9 @@ def _get(db: Session, match_id: int) -> m.Match:
     return match
 
 
-@router.get("", response_model=list[s.MatchSummary], summary="Barcelona fixtures, optionally for one season")
+@router.get(
+    "", response_model=list[s.MatchSummary], summary="Barcelona fixtures, optionally for one season"
+)
 def list_matches(
     season: str | None = Query(None, description="e.g. 2015/2016"),
     db: Session = Depends(get_db),
@@ -33,8 +35,14 @@ def list_matches(
     return [queries.summary(db, match) for match in db.scalars(q.order_by(m.Match.date)).all()]
 
 
-@router.get("/{match_id}", response_model=s.MatchDetail, summary="Match centre: prediction, lineup, comparison")
-def match_detail(match_id: int, db: Session = Depends(get_db), barca_id: int = Depends(barca_team_id)) -> s.MatchDetail:
+@router.get(
+    "/{match_id}",
+    response_model=s.MatchDetail,
+    summary="Match centre: prediction, lineup, comparison",
+)
+def match_detail(
+    match_id: int, db: Session = Depends(get_db), barca_id: int = Depends(barca_team_id)
+) -> s.MatchDetail:
     match = _get(db, match_id)
     barca = match.home_team if match.barca_home else match.away_team
     opponent = match.away_team if match.barca_home else match.home_team
@@ -43,21 +51,32 @@ def match_detail(match_id: int, db: Session = Depends(get_db), barca_id: int = D
         match=queries.summary(db, match),
         prediction=queries.prediction_out(db, match.id),
         lineup=lineup,
-        comparison={"barca": queries.side(db, barca, match.date), "opponent": queries.side(db, opponent, match.date)},
+        comparison={
+            "barca": queries.side(db, barca, match.date),
+            "opponent": queries.side(db, opponent, match.date),
+        },
         stats=queries.stats(db, match, barca_id),
         readiness=queries.readiness(lineup),
     )
 
 
-@router.get("/{match_id}/shots", response_model=list[s.Shot], summary="Shot map (opponent mirrored)")
-def match_shots(match_id: int, db: Session = Depends(get_db), barca_id: int = Depends(barca_team_id)) -> list[s.Shot]:
+@router.get(
+    "/{match_id}/shots", response_model=list[s.Shot], summary="Shot map (opponent mirrored)"
+)
+def match_shots(
+    match_id: int, db: Session = Depends(get_db), barca_id: int = Depends(barca_team_id)
+) -> list[s.Shot]:
     _get(db, match_id)
     return spatial.shots(db, match_id, barca_id)
 
 
 @router.get("/{match_id}/passes", response_model=s.PassNetwork, summary="Barcelona pass network")
-def match_passes(match_id: int, min_count: int = Query(3, ge=1), db: Session = Depends(get_db),
-                 barca_id: int = Depends(barca_team_id)) -> s.PassNetwork:
+def match_passes(
+    match_id: int,
+    min_count: int = Query(3, ge=1),
+    db: Session = Depends(get_db),
+    barca_id: int = Depends(barca_team_id),
+) -> s.PassNetwork:
     _get(db, match_id)
     return spatial.pass_network(db, match_id, barca_id, min_count)
 

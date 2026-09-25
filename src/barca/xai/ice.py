@@ -15,8 +15,13 @@ import pandas as pd
 from barca.xai.pdp import Setter, curves
 
 
-def ice(predict: Callable[[pd.DataFrame], np.ndarray], X: pd.DataFrame, grid: np.ndarray, setter: Setter,
-        centred: bool = False) -> np.ndarray:
+def ice(
+    predict: Callable[[pd.DataFrame], np.ndarray],
+    X: pd.DataFrame,
+    grid: np.ndarray,
+    setter: Setter,
+    centred: bool = False,
+) -> np.ndarray:
     c = curves(predict, X, grid, setter)
     return c - c[:, [0]] if centred else c
 

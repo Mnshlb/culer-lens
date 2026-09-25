@@ -53,7 +53,11 @@ def season_start_year(label: str) -> int:
 
 
 def in_scope_season(label: str) -> bool:
-    return season_start_year(FIRST_SEASON) <= season_start_year(label) <= season_start_year(LAST_SEASON)
+    return (
+        season_start_year(FIRST_SEASON)
+        <= season_start_year(label)
+        <= season_start_year(LAST_SEASON)
+    )
 
 
 def football_data_seasons() -> list[SeasonCode]:

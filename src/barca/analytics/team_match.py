@@ -100,7 +100,14 @@ def team_match_stats(events: pl.LazyFrame, matches: pl.DataFrame) -> pl.DataFram
         ]
     )
     info = matches.select(
-        "match_id", "date", "kickoff", "season", "season_start", "competition", "competition_id", "match_week"
+        "match_id",
+        "date",
+        "kickoff",
+        "season",
+        "season_start",
+        "competition",
+        "competition_id",
+        "match_week",
     )
 
     metric_cols = [c for c in stats.columns if c not in ("match_id", "team_id")]
@@ -122,12 +129,15 @@ def team_match_stats(events: pl.LazyFrame, matches: pl.DataFrame) -> pl.DataFram
         pl.col("opp_xg").alias("xga"),
         pl.col("opp_npxg").alias("npxga"),
         (pl.col("passes") / (pl.col("passes") + pl.col("opp_passes"))).alias("possession"),
-        (pl.col("final_third_passes") / (pl.col("final_third_passes") + pl.col("opp_final_third_passes"))).alias(
-            "field_tilt"
-        ),
+        (
+            pl.col("final_third_passes")
+            / (pl.col("final_third_passes") + pl.col("opp_final_third_passes"))
+        ).alias("field_tilt"),
         (pl.col("opp_passes_own_60") / pl.col("ppda_actions").clip(lower_bound=1)).alias("ppda"),
         (pl.col("passes_completed") / pl.col("passes")).alias("pass_completion"),
     ).with_columns(
-        pl.col("result").replace_strict({"W": 3, "D": 1, "L": 0}, return_dtype=pl.Int8).alias("points"),
+        pl.col("result")
+        .replace_strict({"W": 3, "D": 1, "L": 0}, return_dtype=pl.Int8)
+        .alias("points"),
     )
     return out.sort("kickoff", "match_id", "is_home", descending=[False, False, True])

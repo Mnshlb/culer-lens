@@ -13,10 +13,14 @@ router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 
 
 @router.get("/shots/{match_id}", response_model=list[s.Shot])
-def shots(match_id: int, db: Session = Depends(get_db), barca_id: int = Depends(barca_team_id)) -> list[s.Shot]:
+def shots(
+    match_id: int, db: Session = Depends(get_db), barca_id: int = Depends(barca_team_id)
+) -> list[s.Shot]:
     return spatial.shots(db, match_id, barca_id)
 
 
 @router.get("/passes/{match_id}", response_model=s.PassNetwork)
-def passes(match_id: int, db: Session = Depends(get_db), barca_id: int = Depends(barca_team_id)) -> s.PassNetwork:
+def passes(
+    match_id: int, db: Session = Depends(get_db), barca_id: int = Depends(barca_team_id)
+) -> s.PassNetwork:
     return spatial.pass_network(db, match_id, barca_id)

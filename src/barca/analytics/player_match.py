@@ -7,12 +7,41 @@ import polars as pl
 from barca.analytics import definitions as D
 
 COUNT_METRICS = [
-    "goals", "np_goals", "assists", "shots", "shots_on_target", "key_passes", "touches",
-    "touches_in_box", "passes", "passes_completed", "progressive_passes", "progressive_carries",
-    "carries", "final_third_entries", "box_entries", "crosses", "through_balls", "dribbles",
-    "dribbles_completed", "pressures", "counterpresses", "tackles", "tackles_won", "interceptions",
-    "recoveries", "high_recoveries", "clearances", "blocks", "aerials_won", "aerials_lost", "fouls",
-    "fouls_won", "turnovers", "yellow_cards", "red_cards",
+    "goals",
+    "np_goals",
+    "assists",
+    "shots",
+    "shots_on_target",
+    "key_passes",
+    "touches",
+    "touches_in_box",
+    "passes",
+    "passes_completed",
+    "progressive_passes",
+    "progressive_carries",
+    "carries",
+    "final_third_entries",
+    "box_entries",
+    "crosses",
+    "through_balls",
+    "dribbles",
+    "dribbles_completed",
+    "pressures",
+    "counterpresses",
+    "tackles",
+    "tackles_won",
+    "interceptions",
+    "recoveries",
+    "high_recoveries",
+    "clearances",
+    "blocks",
+    "aerials_won",
+    "aerials_lost",
+    "fouls",
+    "fouls_won",
+    "turnovers",
+    "yellow_cards",
+    "red_cards",
 ]
 VALUE_METRICS = ["xg", "npxg", "xa"]
 
@@ -56,7 +85,11 @@ def _aggregations() -> list[pl.Expr]:
         (pl.col("type") == "Foul Won").sum().alias("fouls_won"),
         D.TURNOVER.sum().alias("turnovers"),
         (pl.col("card") == "Yellow Card").fill_null(False).sum().alias("yellow_cards"),
-        pl.col("card").is_in(["Red Card", "Second Yellow"]).fill_null(False).sum().alias("red_cards"),
+        pl.col("card")
+        .is_in(["Red Card", "Second Yellow"])
+        .fill_null(False)
+        .sum()
+        .alias("red_cards"),
         pl.col("x").filter(D.TOUCH).mean().alias("avg_touch_x"),
         pl.col("y").filter(D.TOUCH).mean().alias("avg_touch_y"),
     ]
@@ -92,13 +125,25 @@ def player_match_stats(
     stats = ev.group_by("match_id", "team_id", "player_id").agg(_aggregations()).collect()
     xa = expected_assists(ev)
 
-    people = lineups.select("match_id", "team_id", "player_id", "player", "nickname", "jersey_number", "country")
+    people = lineups.select(
+        "match_id", "team_id", "player_id", "player", "nickname", "jersey_number", "country"
+    )
     teams = pl.concat(
         [
-            matches.select("match_id", pl.col("home_team_id").alias("team_id"), pl.col("home").alias("team"),
-                           pl.col("away").alias("opponent"), pl.lit(True).alias("is_home")),
-            matches.select("match_id", pl.col("away_team_id").alias("team_id"), pl.col("away").alias("team"),
-                           pl.col("home").alias("opponent"), pl.lit(False).alias("is_home")),
+            matches.select(
+                "match_id",
+                pl.col("home_team_id").alias("team_id"),
+                pl.col("home").alias("team"),
+                pl.col("away").alias("opponent"),
+                pl.lit(True).alias("is_home"),
+            ),
+            matches.select(
+                "match_id",
+                pl.col("away_team_id").alias("team_id"),
+                pl.col("away").alias("team"),
+                pl.col("home").alias("opponent"),
+                pl.lit(False).alias("is_home"),
+            ),
         ]
     )
     info = matches.select("match_id", "date", "kickoff", "season", "season_start", "competition")
@@ -110,11 +155,20 @@ def player_match_stats(
         .join(stats, on=["match_id", "team_id", "player_id"], how="left")
         .join(xa, on=["match_id", "team_id", "player_id"], how="left")
     )
-    fill = [pl.col(c).fill_null(0) for c in COUNT_METRICS] + [pl.col(c).fill_null(0.0) for c in VALUE_METRICS]
+    fill = [pl.col(c).fill_null(0) for c in COUNT_METRICS] + [
+        pl.col(c).fill_null(0.0) for c in VALUE_METRICS
+    ]
     out = out.with_columns(fill).with_columns(
         pl.coalesce(pl.col("nickname"), pl.col("player")).alias("display_name"),
     )
-    return out.sort("kickoff", "match_id", "team_id", "started", "minutes", descending=[False, False, False, True, True])
+    return out.sort(
+        "kickoff",
+        "match_id",
+        "team_id",
+        "started",
+        "minutes",
+        descending=[False, False, False, True, True],
+    )
 
 
 def per90(frame: pl.DataFrame, metrics: list[str], minutes_col: str = "minutes") -> pl.DataFrame:

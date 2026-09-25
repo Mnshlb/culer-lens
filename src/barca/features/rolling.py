@@ -59,7 +59,10 @@ def add_ewm(
     out = frame.sort([*keys, *order])
     return out.with_columns(
         [
-            pl.col(c).shift(1).ewm_mean(half_life=half_life, ignore_nulls=True).over(keys)
+            pl.col(c)
+            .shift(1)
+            .ewm_mean(half_life=half_life, ignore_nulls=True)
+            .over(keys)
             .alias(f"{prefix}{c}_ewm")
             for c in cols
         ]
@@ -90,7 +93,9 @@ def add_season_to_date(
     return out.with_columns(exprs)
 
 
-def add_days_since(frame: pl.DataFrame, *, by: str, date_col: str, name: str = "days_rest") -> pl.DataFrame:
+def add_days_since(
+    frame: pl.DataFrame, *, by: str, date_col: str, name: str = "days_rest"
+) -> pl.DataFrame:
     out = frame.sort([by, date_col])
     return out.with_columns(
         (pl.col(date_col) - pl.col(date_col).shift(1).over(by)).dt.total_days().alias(name)

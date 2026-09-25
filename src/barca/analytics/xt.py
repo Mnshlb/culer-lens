@@ -87,19 +87,22 @@ def fit(events: pl.LazyFrame | pl.DataFrame, max_iter: int = 100, tol: float = 1
     transitions = np.zeros((NX * NY, NX * NY))
     np.add.at(transitions, (ox * NY + oy, ex * NY + ey), 1)
     with np.errstate(invalid="ignore", divide="ignore"):
-        transitions = np.where(n_moves.reshape(-1, 1) > 0, transitions / n_moves.reshape(-1, 1), 0.0)
+        transitions = np.where(
+            n_moves.reshape(-1, 1) > 0, transitions / n_moves.reshape(-1, 1), 0.0
+        )
 
     xt = np.zeros(NX * NY)
     payoff = (shot_prob * goal_prob).reshape(-1)
     mp = move_prob.reshape(-1)
-    it = 0
-    for it in range(1, max_iter + 1):
+    iterations = max_iter
+    for i in range(1, max_iter + 1):
         new = payoff + mp * (transitions @ xt)
-        if np.max(np.abs(new - xt)) < tol:
-            xt = new
-            break
+        converged = np.max(np.abs(new - xt)) < tol
         xt = new
-    return XTGrid(xt.reshape(NX, NY), shot_prob, move_prob, goal_prob, it)
+        if converged:
+            iterations = i
+            break
+    return XTGrid(xt.reshape(NX, NY), shot_prob, move_prob, goal_prob, iterations)
 
 
 def action_values(events: pl.DataFrame, grid: XTGrid) -> pl.DataFrame:
@@ -127,8 +130,13 @@ def team_match_xt(values: pl.DataFrame) -> pl.DataFrame:
 def grid_frame(grid: XTGrid) -> pl.DataFrame:
     """Long format for storage and the API: one row per cell."""
     ix, iy = np.meshgrid(np.arange(NX), np.arange(NY), indexing="ij")
-    return pl.DataFrame({
-        "ix": ix.reshape(-1), "iy": iy.reshape(-1), "xt": grid.values.reshape(-1),
-        "shot_prob": grid.shot_prob.reshape(-1), "move_prob": grid.move_prob.reshape(-1),
-        "goal_prob": grid.goal_prob.reshape(-1),
-    })
+    return pl.DataFrame(
+        {
+            "ix": ix.reshape(-1),
+            "iy": iy.reshape(-1),
+            "xt": grid.values.reshape(-1),
+            "shot_prob": grid.shot_prob.reshape(-1),
+            "move_prob": grid.move_prob.reshape(-1),
+            "goal_prob": grid.goal_prob.reshape(-1),
+        }
+    )

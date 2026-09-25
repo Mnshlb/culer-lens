@@ -55,12 +55,14 @@ def run(results: pl.DataFrame, params: EloParams | None = None) -> pl.DataFrame:
     ``results`` is the normalised football-data table (one row per fixture).
     """
     p = params or EloParams()
-    fixtures = results.select("season", "season_start", "date", "home", "away", "home_goals", "away_goals").sort(
-        "season_start", "date", "home"
-    )
+    fixtures = results.select(
+        "season", "season_start", "date", "home", "away", "home_goals", "away_goals"
+    ).sort("season_start", "date", "home")
     ratings: dict[str, float] = {}
     prev_teams: set[str] = set()
-    out: dict[str, list] = {k: [] for k in ("home_elo", "away_elo", "home_expected", "home_elo_post", "away_elo_post")}
+    out: dict[str, list] = {
+        k: [] for k in ("home_elo", "away_elo", "home_expected", "home_elo_post", "away_elo_post")
+    }
 
     for (_,), season in fixtures.group_by(["season_start"], maintain_order=True):
         teams = set(season["home"]) | set(season["away"])
@@ -96,10 +98,14 @@ def run(results: pl.DataFrame, params: EloParams | None = None) -> pl.DataFrame:
 def expected_score_brier(rated: pl.DataFrame, seasons: tuple[int, int]) -> float:
     """Squared error between Elo's expected score and the actual score (1/0.5/0)."""
     frame = rated.filter(pl.col("season_start").is_between(*seasons)).with_columns(
-        pl.when(pl.col("home_goals") > pl.col("away_goals")).then(1.0)
-        .when(pl.col("home_goals") == pl.col("away_goals")).then(0.5).otherwise(0.0).alias("s")
+        pl.when(pl.col("home_goals") > pl.col("away_goals"))
+        .then(1.0)
+        .when(pl.col("home_goals") == pl.col("away_goals"))
+        .then(0.5)
+        .otherwise(0.0)
+        .alias("s")
     )
-    return float(((frame["s"] - frame["home_expected"]) ** 2).mean())
+    return float(((frame["s"] - frame["home_expected"]) ** 2).to_numpy().mean())
 
 
 def tune(
@@ -113,22 +119,38 @@ def tune(
     rows = []
     for k, h, r in itertools.product(ks, hfas, regress):
         params = EloParams(k=k, home_advantage=h, regress=r)
-        rows.append({**asdict(params), "brier": expected_score_brier(run(results, params), seasons)})
+        rows.append(
+            {**asdict(params), "brier": expected_score_brier(run(results, params), seasons)}
+        )
     grid = pl.DataFrame(rows).sort("brier")
     best = grid.row(0, named=True)
-    return EloParams(k=best["k"], home_advantage=best["home_advantage"], regress=best["regress"]), grid
+    return EloParams(
+        k=best["k"], home_advantage=best["home_advantage"], regress=best["regress"]
+    ), grid
 
 
 def long_ratings(rated: pl.DataFrame) -> pl.DataFrame:
     """One row per team per fixture with the team's pre-match rating and the opponent's."""
     home = rated.select(
-        "season", "season_start", "date", pl.col("home").alias("team"), pl.col("away").alias("opponent"),
-        pl.lit(True).alias("is_home"), pl.col("home_elo").alias("elo"), pl.col("away_elo").alias("opp_elo"),
+        "season",
+        "season_start",
+        "date",
+        pl.col("home").alias("team"),
+        pl.col("away").alias("opponent"),
+        pl.lit(True).alias("is_home"),
+        pl.col("home_elo").alias("elo"),
+        pl.col("away_elo").alias("opp_elo"),
         pl.col("home_elo_post").alias("elo_post"),
     )
     away = rated.select(
-        "season", "season_start", "date", pl.col("away").alias("team"), pl.col("home").alias("opponent"),
-        pl.lit(False).alias("is_home"), pl.col("away_elo").alias("elo"), pl.col("home_elo").alias("opp_elo"),
+        "season",
+        "season_start",
+        "date",
+        pl.col("away").alias("team"),
+        pl.col("home").alias("opponent"),
+        pl.lit(False).alias("is_home"),
+        pl.col("away_elo").alias("elo"),
+        pl.col("home_elo").alias("opp_elo"),
         pl.col("away_elo_post").alias("elo_post"),
     )
     return pl.concat([home, away]).sort("date", "team")

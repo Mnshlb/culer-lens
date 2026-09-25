@@ -25,8 +25,13 @@ class Dataset:
     features: list[str]
 
     def rows(self, mask: np.ndarray) -> Dataset:
-        return Dataset(self.X[mask].reset_index(drop=True), self.y[mask], self.meta.filter(pl.Series(mask)),
-                       self.classes, self.features)
+        return Dataset(
+            self.X[mask].reset_index(drop=True),
+            self.y[mask],
+            self.meta.filter(pl.Series(mask)),
+            self.classes,
+            self.features,
+        )
 
     @property
     def season(self) -> np.ndarray:
@@ -46,21 +51,48 @@ def _matrix(frame: pl.DataFrame, features: list[str]) -> pd.DataFrame:
 def league_dataset(fixtures: pl.DataFrame, start: int = TRAIN_START) -> Dataset:
     features = tables.league_feature_list()
     frame = fixtures.filter(pl.col("season_start") >= start).sort("date", "fixture_id")
-    y = frame["result"].replace_strict({c: i for i, c in enumerate(LEAGUE_CLASSES)}, return_dtype=pl.Int64).to_numpy()
+    y = (
+        frame["result"]
+        .replace_strict({c: i for i, c in enumerate(LEAGUE_CLASSES)}, return_dtype=pl.Int64)
+        .to_numpy()
+    )
     meta = frame.select(
-        "fixture_id", "date", "season", "season_start", "home", "away", "home_goals", "away_goals", "result",
+        "fixture_id",
+        "date",
+        "season",
+        "season_start",
+        "home",
+        "away",
+        "home_goals",
+        "away_goals",
+        "result",
         pl.col("^mkt_.*$"),
     )
     return Dataset(_matrix(frame, features), y, meta, LEAGUE_CLASSES, features)
 
 
-def barca_dataset(barca: pl.DataFrame, start: int = TRAIN_START, include_events: bool = True) -> Dataset:
+def barca_dataset(
+    barca: pl.DataFrame, start: int = TRAIN_START, include_events: bool = True
+) -> Dataset:
     features = tables.barca_feature_list(include_events=include_events)
     frame = barca.filter(pl.col("season_start") >= start).sort("date")
-    y = frame["result"].replace_strict({c: i for i, c in enumerate(BARCA_CLASSES)}, return_dtype=pl.Int64).to_numpy()
+    y = (
+        frame["result"]
+        .replace_strict({c: i for i, c in enumerate(BARCA_CLASSES)}, return_dtype=pl.Int64)
+        .to_numpy()
+    )
     meta = frame.select(
-        "fixture_id", "sb_match_id", "date", "season", "season_start", "opponent", "is_home", "barca_goals",
-        "opp_goals", "result", pl.col("^mkt_.*$"),
+        "fixture_id",
+        "sb_match_id",
+        "date",
+        "season",
+        "season_start",
+        "opponent",
+        "is_home",
+        "barca_goals",
+        "opp_goals",
+        "result",
+        pl.col("^mkt_.*$"),
     )
     return Dataset(_matrix(frame, features), y, meta, BARCA_CLASSES, features)
 

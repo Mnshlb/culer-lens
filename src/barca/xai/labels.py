@@ -5,21 +5,41 @@ from __future__ import annotations
 import re
 
 _STATS = {
-    "points": "points per game", "goals": "goals scored", "goals_against": "goals conceded",
-    "goal_diff": "goal difference", "shots": "shots", "shots_against": "shots conceded", "sot": "shots on target",
-    "sot_against": "shots on target conceded", "corners": "corners", "corners_against": "corners conceded",
+    "points": "points per game",
+    "goals": "goals scored",
+    "goals_against": "goals conceded",
+    "goal_diff": "goal difference",
+    "shots": "shots",
+    "shots_against": "shots conceded",
+    "sot": "shots on target",
+    "sot_against": "shots on target conceded",
+    "corners": "corners",
+    "corners_against": "corners conceded",
 }
 _FIXED = {
-    "elo_diff": "Elo gap", "elo_expected": "Elo expectation (incl. home advantage)",
-    "form_diff_5": "form gap, last 5", "form_diff_10": "form gap, last 10", "strength_diff_10": "goal-difference gap, last 10",
-    "sot_strength_diff_10": "shots-on-target gap, last 10", "attack_matchup_10": "attack vs opponent defence, last 10",
-    "defence_matchup_10": "defence vs opponent attack, last 10", "ppg_std_diff": "season points-per-game gap",
-    "rest_diff": "rest-days gap", "is_home": "home advantage",
+    "elo_diff": "Elo gap",
+    "elo_expected": "Elo expectation (incl. home advantage)",
+    "form_diff_5": "form gap, last 5",
+    "form_diff_10": "form gap, last 10",
+    "strength_diff_10": "goal-difference gap, last 10",
+    "sot_strength_diff_10": "shots-on-target gap, last 10",
+    "attack_matchup_10": "attack vs opponent defence, last 10",
+    "defence_matchup_10": "defence vs opponent attack, last 10",
+    "ppg_std_diff": "season points-per-game gap",
+    "rest_diff": "rest-days gap",
+    "is_home": "home advantage",
 }
 
 
-_SIGNED = {"elo_diff", "form_diff_5", "form_diff_10", "strength_diff_10", "sot_strength_diff_10", "ppg_std_diff",
-           "rest_diff"}
+_SIGNED = {
+    "elo_diff",
+    "form_diff_5",
+    "form_diff_10",
+    "strength_diff_10",
+    "sot_strength_diff_10",
+    "ppg_std_diff",
+    "rest_diff",
+}
 
 
 def side_of(feature: str) -> str | None:
@@ -37,7 +57,11 @@ def describe(feature: str) -> str:
     if core == "elo":
         text = "Elo rating"
     elif core.startswith("h2h_"):
-        text = "head-to-head " + ("points" if "points" in core else "goal difference") + ", last 4 meetings"
+        text = (
+            "head-to-head "
+            + ("points" if "points" in core else "goal difference")
+            + ", last 4 meetings"
+        )
     elif core.startswith("venue_"):
         text = ("points" if "points" in core else "goal difference") + " at this venue, last 5"
     elif core.endswith("_ewm"):
@@ -50,7 +74,11 @@ def describe(feature: str) -> str:
         text = "days of rest"
     else:
         m = re.match(r"(.+)_(\d+)$", core)
-        text = f"{_STATS.get(m.group(1), m.group(1).replace('_', ' '))}, last {m.group(2)}" if m else core.replace("_", " ")
+        text = (
+            f"{_STATS.get(m.group(1), m.group(1).replace('_', ' '))}, last {m.group(2)}"
+            if m
+            else core.replace("_", " ")
+        )
     return text
 
 
@@ -78,25 +106,39 @@ def barca_view(feature: str, value: float | None, barca_home: bool) -> tuple[str
     away; the Elo expectation becomes Barcelona's; matchup terms swap sides.
     """
     if feature in _SIGNED:
-        return describe(feature) + " (Barcelona − opponent)", (value if barca_home or value is None else -value)
+        return describe(feature) + " (Barcelona − opponent)", (
+            value if barca_home or value is None else -value
+        )
     if feature == "elo_expected":
         v = value if barca_home or value is None else 1 - value
         return "Barcelona's Elo expectation (incl. home advantage)", v
     if feature == "attack_matchup_10":
-        return ("Barcelona attack vs opponent defence, last 10" if barca_home
-                else "Opponent attack vs Barcelona defence, last 10"), value
+        return (
+            "Barcelona attack vs opponent defence, last 10"
+            if barca_home
+            else "Opponent attack vs Barcelona defence, last 10"
+        ), value
     if feature == "defence_matchup_10":
-        return ("Opponent attack vs Barcelona defence, last 10" if barca_home
-                else "Barcelona attack vs opponent defence, last 10"), value
+        return (
+            "Opponent attack vs Barcelona defence, last 10"
+            if barca_home
+            else "Barcelona attack vs opponent defence, last 10"
+        ), value
     return barca_label(feature, barca_home), value
 
 
 GROUPS = {
     "Team strength (Elo)": re.compile(r"^(h_elo|a_elo|elo_diff|elo_expected)$"),
-    "Recent form": re.compile(r"^(h_|a_)(points|goal_diff|goals|goals_against)_(3|5|10|ewm)$|^form_diff_|^strength_diff_"),
-    "Shots and chances": re.compile(r"^(h_|a_)(shots|shots_against|sot|sot_against|corners|corners_against)_|^sot_strength|_matchup_"),
+    "Recent form": re.compile(
+        r"^(h_|a_)(points|goal_diff|goals|goals_against)_(3|5|10|ewm)$|^form_diff_|^strength_diff_"
+    ),
+    "Shots and chances": re.compile(
+        r"^(h_|a_)(shots|shots_against|sot|sot_against|corners|corners_against)_|^sot_strength|_matchup_"
+    ),
     "Venue form": re.compile(r"^(h_|a_)venue_"),
-    "Season so far": re.compile(r"^(h_|a_)(points_std|goal_diff_std|matches_played)$|^ppg_std_diff$"),
+    "Season so far": re.compile(
+        r"^(h_|a_)(points_std|goal_diff_std|matches_played)$|^ppg_std_diff$"
+    ),
     "Head-to-head": re.compile(r"h2h_"),
     "Rest": re.compile(r"days_rest|rest_diff"),
 }

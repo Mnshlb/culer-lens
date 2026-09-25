@@ -105,9 +105,7 @@ def load_lineups(match_id: int) -> list[dict[str, Any]]:
 
 def catalogue_seasons() -> list[dict[str, Any]]:
     """Competition-seasons in the competitions we care about."""
-    return [
-        c for c in load_competitions() if c["competition_id"] in sources.CATALOGUE_COMPETITIONS
-    ]
+    return [c for c in load_competitions() if c["competition_id"] in sources.CATALOGUE_COMPETITIONS]
 
 
 def is_in_scope(match: dict[str, Any]) -> bool:
@@ -191,7 +189,9 @@ def _run_parallel(client: httpx.Client, jobs: Iterable[tuple[str, int]], workers
         return
     done = 0
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        futures = {pool.submit(_fetch_statsbomb_file, client, kind, key): (kind, key) for kind, key in jobs}
+        futures = {
+            pool.submit(_fetch_statsbomb_file, client, kind, key): (kind, key) for kind, key in jobs
+        }
         for future in as_completed(futures):
             future.result()
             done += 1
@@ -203,7 +203,10 @@ def _run_parallel(client: httpx.Client, jobs: Iterable[tuple[str, int]], workers
 
 
 def football_data_path(season: sources.SeasonCode) -> Path:
-    return config.RAW_FOOTBALL_DATA / f"{sources.FOOTBALL_DATA_DIVISION}_{season.football_data_code}.csv"
+    return (
+        config.RAW_FOOTBALL_DATA
+        / f"{sources.FOOTBALL_DATA_DIVISION}_{season.football_data_code}.csv"
+    )
 
 
 def fetch_football_data() -> int:

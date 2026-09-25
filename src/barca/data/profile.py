@@ -4,7 +4,18 @@ from __future__ import annotations
 
 import polars as pl
 
-NUMERIC = (pl.Int8, pl.Int16, pl.Int32, pl.Int64, pl.UInt8, pl.UInt16, pl.UInt32, pl.UInt64, pl.Float32, pl.Float64)
+NUMERIC = (
+    pl.Int8,
+    pl.Int16,
+    pl.Int32,
+    pl.Int64,
+    pl.UInt8,
+    pl.UInt16,
+    pl.UInt32,
+    pl.UInt64,
+    pl.Float32,
+    pl.Float64,
+)
 
 
 def _is_numeric(dtype: pl.DataType) -> bool:
@@ -28,8 +39,15 @@ def profile_column(s: pl.Series) -> dict[str, object]:
         iqr = (q3 or 0) - (q1 or 0)
         lo, hi = (q1 or 0) - 1.5 * iqr, (q3 or 0) + 1.5 * iqr
         row.update(
-            min=v.min(), p01=v.quantile(0.01), q1=q1, median=v.median(), mean=v.mean(), q3=q3,
-            p99=v.quantile(0.99), max=v.max(), std=v.std(),
+            min=v.min(),
+            p01=v.quantile(0.01),
+            q1=q1,
+            median=v.median(),
+            mean=v.mean(),
+            q3=q3,
+            p99=v.quantile(0.99),
+            max=v.max(),
+            std=v.std(),
             outliers_iqr=int(((v < lo) | (v > hi)).sum()) if iqr > 0 else 0,
         )
     elif s.dtype == pl.String and n - nulls > 0:

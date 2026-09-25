@@ -41,7 +41,9 @@ def accuracy(y: np.ndarray, p: np.ndarray) -> float:
 
 
 def macro_f1(y: np.ndarray, p: np.ndarray) -> float:
-    return float(f1_score(y, np.argmax(p, axis=1), average="macro", labels=[0, 1, 2], zero_division=0))
+    return float(
+        f1_score(y, np.argmax(p, axis=1), average="macro", labels=[0, 1, 2], zero_division=0)
+    )
 
 
 def ece(y: np.ndarray, p: np.ndarray, bins: int = 10) -> float:
@@ -60,7 +62,7 @@ def ece(y: np.ndarray, p: np.ndarray, bins: int = 10) -> float:
 
 def summary(y: np.ndarray, p: np.ndarray) -> dict[str, float]:
     return {
-        "n": int(len(y)),
+        "n": len(y),
         "log_loss": log_loss(y, p),
         "brier": brier(y, p),
         "rps": rps(y, p),
@@ -83,5 +85,12 @@ def reliability(y: np.ndarray, p: np.ndarray, cls: int, bins: int = 10) -> list[
     for b in range(bins):
         m = idx == b
         if m.sum() >= 5:
-            out.append({"bin": b, "predicted": float(pk[m].mean()), "observed": float(ok[m].mean()), "n": int(m.sum())})
+            out.append(
+                {
+                    "bin": b,
+                    "predicted": float(pk[m].mean()),
+                    "observed": float(ok[m].mean()),
+                    "n": int(m.sum()),
+                }
+            )
     return out

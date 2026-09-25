@@ -19,7 +19,9 @@ def test_overview_defaults_to_last_fixture(client: TestClient) -> None:
 
 
 def test_overview_as_of_picks_the_next_fixture(client: TestClient) -> None:
-    assert client.get("/api/overview", params={"as_of": "2015-10-25"}).json()["next_match"]["id"] == 1
+    assert (
+        client.get("/api/overview", params={"as_of": "2015-10-25"}).json()["next_match"]["id"] == 1
+    )
 
 
 @pytest.mark.parametrize("match_id", [1, 2])
@@ -49,7 +51,9 @@ def test_opponent_shots_are_mirrored(client: TestClient) -> None:
 
 
 def test_heatmap_grid_is_a_distribution(client: TestClient) -> None:
-    body = client.get("/api/players/10/heatmap", params={"window": "match", "match_id": 1, "family": "all"}).json()
+    body = client.get(
+        "/api/players/10/heatmap", params={"window": "match", "match_id": 1, "family": "all"}
+    ).json()
     total = sum(sum(row) for row in body["grid"])
     assert body["events"] > 0
     assert total == pytest.approx(1.0, abs=1e-3)
@@ -88,13 +92,21 @@ def test_models_endpoints(client: TestClient) -> None:
     assert "permutation" in client.get("/api/models/1/explanation").json()
 
 
-@pytest.mark.parametrize("url", ["/api/matches/999", "/api/players/999", "/api/models/9", "/api/predictions/match/999"])
+@pytest.mark.parametrize(
+    "url", ["/api/matches/999", "/api/players/999", "/api/models/9", "/api/predictions/match/999"]
+)
 def test_not_found(client: TestClient, url: str) -> None:
     assert client.get(url).status_code == 404
 
 
 def test_openapi_documents_every_route(client: TestClient) -> None:
     paths = client.get("/openapi.json").json()["paths"]
-    for route in ("/api/overview", "/api/matches/{match_id}", "/api/players/{player_id}/heatmap",
-                  "/api/predictions/lineup/{match_id}", "/api/models/{model_id}/explanation", "/api/teams/{team_id}/form"):
+    for route in (
+        "/api/overview",
+        "/api/matches/{match_id}",
+        "/api/players/{player_id}/heatmap",
+        "/api/predictions/lineup/{match_id}",
+        "/api/models/{model_id}/explanation",
+        "/api/teams/{team_id}/form",
+    ):
         assert route in paths

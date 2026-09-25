@@ -26,8 +26,14 @@ def _get(db: Session, model_id: int) -> m.ModelVersion:
 def list_models(db: Session = Depends(get_db)) -> list[s.ModelSummary]:
     out = []
     for v in db.scalars(select(m.ModelVersion).order_by(m.ModelVersion.id)).all():
-        headline = v.card.get("metrics", {}).get("league_holdout", {}) if v.kind == "outcome" else v.card
-        out.append(s.ModelSummary(id=v.id, name=v.name, kind=v.kind, description=v.description, headline=headline))
+        headline = (
+            v.card.get("metrics", {}).get("league_holdout", {}) if v.kind == "outcome" else v.card
+        )
+        out.append(
+            s.ModelSummary(
+                id=v.id, name=v.name, kind=v.kind, description=v.description, headline=headline
+            )
+        )
     return out
 
 
@@ -36,11 +42,20 @@ def model_detail(model_id: int, db: Session = Depends(get_db)) -> dict[str, Any]
     v = _get(db, model_id)
     evaluation = dict(v.evaluation or {})
     evaluation.pop("global", None)
-    return {"id": v.id, "name": v.name, "kind": v.kind, "description": v.description,
-            "trained_at": v.trained_at, "card": v.card, "evaluation": evaluation}
+    return {
+        "id": v.id,
+        "name": v.name,
+        "kind": v.kind,
+        "description": v.description,
+        "trained_at": v.trained_at,
+        "card": v.card,
+        "evaluation": evaluation,
+    }
 
 
-@router.get("/{model_id}/explanation", summary="Global explanations: permutation importance, SHAP, PDP/ICE")
+@router.get(
+    "/{model_id}/explanation", summary="Global explanations: permutation importance, SHAP, PDP/ICE"
+)
 def model_explanation(model_id: int, db: Session = Depends(get_db)) -> dict[str, Any]:
     v = _get(db, model_id)
     if not v.evaluation or "global" not in v.evaluation:

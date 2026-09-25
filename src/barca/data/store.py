@@ -21,7 +21,9 @@ def matches() -> pl.DataFrame:
 
 def events(root: Path | None = None) -> pl.LazyFrame:
     base = (root or config.PROCESSED) / "events"
-    return pl.scan_parquet(base / "**" / "*.parquet", hive_partitioning=True).drop("season_key", strict=False)
+    return pl.scan_parquet(base / "**" / "*.parquet", hive_partitioning=True).drop(
+        "season_key", strict=False
+    )
 
 
 def appearances() -> pl.DataFrame:

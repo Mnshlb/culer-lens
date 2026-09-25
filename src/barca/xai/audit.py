@@ -7,8 +7,12 @@ from collections.abc import Iterable
 
 # Columns that exist only after (or during) the match being predicted.
 POST_MATCH_PATTERNS = [
-    r"^(home|away)_(goals|goals_ht|shots|sot|corners|fouls|yellow|red)$", r"^result$", r"_post$",
-    r"^mkt_", r"^(barca|opp)_goals$", r"^xg$|^xga$|_xg_match$",
+    r"^(home|away)_(goals|goals_ht|shots|sot|corners|fouls|yellow|red)$",
+    r"^result$",
+    r"_post$",
+    r"^mkt_",
+    r"^(barca|opp)_goals$",
+    r"^xg$|^xga$|_xg_match$",
 ]
 
 

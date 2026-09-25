@@ -17,6 +17,7 @@ from pathlib import Path
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from cycler import cycler
 from matplotlib.colors import LinearSegmentedColormap
 
 from barca import config
@@ -35,7 +36,9 @@ NEUTRAL = "#b9b8b1"
 
 RESULT_COLOURS = {"W": "#0ca30c", "D": "#898781", "L": "#d03b3b"}
 
-HEAT = LinearSegmentedColormap.from_list("barca_heat", [SURFACE, "#f3c6d6", "#d9588a", BARCA, "#4f0021"])
+HEAT = LinearSegmentedColormap.from_list(
+    "barca_heat", [SURFACE, "#f3c6d6", "#d9588a", BARCA, "#4f0021"]
+)
 HEAT_BLUE = LinearSegmentedColormap.from_list(
     "blue_heat", [SURFACE, "#cde2fb", "#6da7ec", "#2a78d6", "#104281"]
 )
@@ -80,7 +83,7 @@ def apply() -> None:
             "legend.fontsize": 9,
             "lines.linewidth": 2,
             "lines.markersize": 6,
-            "axes.prop_cycle": mpl.cycler(color=[BARCA, OPPONENT, THIRD, "#1baf7a", "#4a3aa7"]),
+            "axes.prop_cycle": cycler(color=[BARCA, OPPONENT, THIRD, "#1baf7a", "#4a3aa7"]),
         }
     )
 

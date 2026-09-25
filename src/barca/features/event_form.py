@@ -17,10 +17,31 @@ import polars as pl
 from barca.features import rolling
 
 EVENT_COLS = [
-    "xg", "xga", "npxg", "npxga", "xg_diff", "shots", "opp_shots", "big_chances", "opp_big_chances",
-    "xg_open_play", "xg_set_piece", "possession", "field_tilt", "ppda", "progressive_passes",
-    "progressive_carries", "pressures", "pressures_final_third", "counterpresses", "high_recoveries",
-    "box_entries", "opp_box_entries", "defensive_action_height", "pass_completion", "touches_in_box",
+    "xg",
+    "xga",
+    "npxg",
+    "npxga",
+    "xg_diff",
+    "shots",
+    "opp_shots",
+    "big_chances",
+    "opp_big_chances",
+    "xg_open_play",
+    "xg_set_piece",
+    "possession",
+    "field_tilt",
+    "ppda",
+    "progressive_passes",
+    "progressive_carries",
+    "pressures",
+    "pressures_final_third",
+    "counterpresses",
+    "high_recoveries",
+    "box_entries",
+    "opp_box_entries",
+    "defensive_action_height",
+    "pass_completion",
+    "touches_in_box",
 ]
 WINDOWS = (3, 5, 10)
 
@@ -29,18 +50,29 @@ def event_form(team_match_stats: pl.DataFrame, team_form: pl.DataFrame) -> pl.Da
     league = team_match_stats.filter(pl.col("competition") == "La Liga").select(
         "date", "team", "match_id", *EVENT_COLS
     )
-    schedule = team_form.select("fixture_id", "date", "season", "team", "opponent", "is_home").filter(
-        (pl.col("team") == "Barcelona") | (pl.col("season") == "2015/2016")
-    )
+    schedule = team_form.select(
+        "fixture_id", "date", "season", "team", "opponent", "is_home"
+    ).filter((pl.col("team") == "Barcelona") | (pl.col("season") == "2015/2016"))
     joined = schedule.join(league, on=["date", "team"], how="left").with_columns(
         pl.col("match_id").is_not_null().cast(pl.Int8).alias("has_events")
     )
-    out = rolling.add_rolling_means(joined, by="team", order=["date", "fixture_id"], cols=EVENT_COLS, windows=WINDOWS,
-                                    prefix="ev_")
+    out = rolling.add_rolling_means(
+        joined,
+        by="team",
+        order=["date", "fixture_id"],
+        cols=EVENT_COLS,
+        windows=WINDOWS,
+        prefix="ev_",
+    )
     out = out.with_columns(
         [
-            pl.col("has_events").shift(1).rolling_sum(window_size=w, min_samples=1).over("team").fill_null(0)
-            .cast(pl.Int8).alias(f"ev_n_{w}")
+            pl.col("has_events")
+            .shift(1)
+            .rolling_sum(window_size=w, min_samples=1)
+            .over("team")
+            .fill_null(0)
+            .cast(pl.Int8)
+            .alias(f"ev_n_{w}")
             for w in WINDOWS
         ]
     )

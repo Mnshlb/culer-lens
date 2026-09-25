@@ -23,7 +23,11 @@ class EnsembleModel:
     name = "ensemble"
 
     def __init__(self) -> None:
-        self.members = [EloModel(), PoissonModel(dixon_coles=False), LightGBMModel()]
+        self.members: list[EloModel | PoissonModel | LightGBMModel] = [
+            EloModel(),
+            PoissonModel(dixon_coles=False),
+            LightGBMModel(),
+        ]
 
     def fit(self, ds: Dataset) -> EnsembleModel:
         for m in self.members:

@@ -31,14 +31,15 @@ class Model(Protocol):
     def predict_proba(self, X: Any) -> np.ndarray: ...
 
 
-def walk_forward(
+def walk_forward[M: Model](
     ds: Dataset,
-    make_model: Callable[[], Model],
+    make_model: Callable[[], M],
     *,
     test_seasons: tuple[int, ...] = TEST_SEASONS,
     keep_models: bool = False,
-) -> tuple[pl.DataFrame, dict[int, Model]]:
-    frames, fitted = [], {}
+) -> tuple[pl.DataFrame, dict[int, M]]:
+    frames: list[pl.DataFrame] = []
+    fitted: dict[int, M] = {}
     for season in test_seasons:
         train, test = ds.rows(ds.season < season), ds.rows(ds.season == season)
         if test.X.empty:
@@ -48,8 +49,11 @@ def walk_forward(
         p = model.predict_proba(test.X)
         frames.append(
             test.meta.with_columns(
-                pl.Series("y", test.y), pl.Series("p_w", p[:, 0]), pl.Series("p_d", p[:, 1]),
-                pl.Series("p_l", p[:, 2]), pl.lit(model.name).alias("model"),
+                pl.Series("y", test.y),
+                pl.Series("p_w", p[:, 0]),
+                pl.Series("p_d", p[:, 1]),
+                pl.Series("p_l", p[:, 2]),
+                pl.lit(model.name).alias("model"),
             )
         )
         if keep_models:
@@ -87,7 +91,9 @@ def track(
     with mlflow.start_run(run_name=run_name) as run:
         mlflow.set_tags({"model": pred["model"][0], **(tags or {})})
         if params:
-            mlflow.log_params({k: (json.dumps(v) if isinstance(v, dict | list) else v) for k, v in params.items()})
+            mlflow.log_params(
+                {k: (json.dumps(v) if isinstance(v, dict | list) else v) for k, v in params.items()}
+            )
         if features is not None:
             mlflow.log_param("n_features", len(features))
             mlflow.log_dict({"features": features}, "features.json")
