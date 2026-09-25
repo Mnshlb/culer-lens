@@ -1,4 +1,4 @@
-/** Colour roles for charts rendered in JS (SVG/D3/Recharts). Mirrors globals.css. */
+/** Colour roles for charts rendered in JS (SVG/Recharts). Mirrors globals.css. */
 export const colors = {
   barca: "#e0457b",
   opponent: "#3987e5",

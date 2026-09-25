@@ -697,7 +697,8 @@ def run(tables: Tables, rules: list[Rule] | None = None, sample_size: int = 5) -
                 k: (str(v) if not isinstance(v, int | float | bool | type(None)) else v)
                 for k, v in row.items()
             }
-            for row in violations.head(sample_size).to_dicts()
+            # sorted so the report is identical across rebuilds (group-bys do not keep order)
+            for row in violations.sort(violations.columns).head(sample_size).to_dicts()
         ]
         results.append(
             Result(

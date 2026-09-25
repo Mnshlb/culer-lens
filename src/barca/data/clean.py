@@ -2,7 +2,7 @@
 
 | Rule | Finding | Fix |
 |---|---|---|
-| C1 | 325 locations fractionally beyond the touchline/by-line (max 120.9 x 80.9) | clip to the 120 x 80 pitch |
+| C1 | 1,536 events with a start (325) or end (1,238) location up to 0.9 yards beyond the lines | clip to the 120 x 80 pitch |
 | C2 | StatsBomb flags (under_pressure, cross, ...) are null when false | fill with False |
 | C3 | a pass's empty outcome means "complete" | explicit ``pass_complete`` column |
 | C4 | lineup spells label 3 team-matches' starters as "Tactical Shift" | ``started`` comes from the Starting XI event |

@@ -98,10 +98,22 @@
 ```
 [
  {
-  "match_id": 3825707,
-  "team_id": 208,
-  "team_minutes": 1098.5333333333333,
-  "match_minutes": 95.13333333333333
+  "match_id": 68329,
+  "team_id": 217,
+  "team_minutes": 1154.0666666666666,
+  "match_minutes": 98.95
+ },
+ {
+  "match_id": 69144,
+  "team_id": 212,
+  "team_minutes": 1094.8666666666666,
+  "match_minutes": 95.38333333333333
+ },
+ {
+  "match_id": 69222,
+  "team_id": 1220,
+  "team_minutes": 1028.6,
+  "match_minutes": 93.41666666666667
  },
  {
   "match_id": 70220,
@@ -110,22 +122,10 @@
   "match_minutes": 91.1
  },
  {
-  "match_id": 3825667,
-  "team_id": 222,
-  "team_minutes": 1103.783333333333,
-  "match_minutes": 97.36666666666666
- },
- {
-  "match_id": 3825699,
-  "team_id": 218,
-  "team_minutes": 1053.333333333333,
-  "match_minutes": 95.05
- },
- {
-  "match_id": 69144,
-  "team_id": 212,
-  "team_minutes": 1094.8666666666666,
-  "match_minutes": 95.38333333333333
+  "match_id": 3825565,
+  "team_id": 214,
+  "team_minutes": 1051.0833333333333,
+  "match_minutes": 94.01666666666667
  }
 ]
 ```

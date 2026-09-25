@@ -1,6 +1,6 @@
 # Barça Intelligence: web app
 
-Next.js 16 (App Router) + TypeScript + Tailwind v4 + shadcn/ui, with D3/SVG pitch graphics, Recharts, Motion and
+Next.js 16 (App Router) + TypeScript + Tailwind v4 + shadcn/ui, with SVG pitch graphics, Recharts, Motion and
 TanStack Query. It reads everything from the FastAPI service in `apps/api`.
 
 ```bash
@@ -11,7 +11,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000 npm run dev   # http://localhost:3000
 | Script | What it does |
 |---|---|
 | `npm run dev` / `build` / `start` | Next.js development server, production build, production server |
-| `npm run lint` / `typecheck` | ESLint and `tsc --noEmit` |
+| `npm run lint` / `typecheck` | ESLint; route type generation (`next typegen`) and `tsc --noEmit` |
 | `npm run test:e2e` | Playwright end-to-end tests (desktop and mobile) against the production build |
 | `npm run api:types` | Regenerate `src/lib/api-schema.d.ts` from the running API's OpenAPI schema |
 
