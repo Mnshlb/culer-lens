@@ -124,6 +124,31 @@ def train(track: bool = True) -> dict[str, object]:
     return card
 
 
+LINEUP_DIR = config.MODELS / "lineup"
+
+
+def train_lineups() -> dict[str, object]:
+    from barca.models import lineup
+
+    seasons = [f"{y}/{y + 1}" for y in data.TEST_SEASONS]
+    out = lineup.build(store.features("player_fixture"), store.tactics(), store.matches(), store.appearances(), seasons)
+    LINEUP_DIR.mkdir(parents=True, exist_ok=True)
+    out.write_parquet(LINEUP_DIR / "predictions.parquet")
+    actual = store.appearances().filter(pl.col("team") == "Barcelona", pl.col("started")).select("match_id", "player_id")
+    acc = lineup.xi_accuracy(out.filter(pl.col("match_id").is_not_null()), actual)
+    summary = {
+        "fixtures": out["date"].n_unique(),
+        "evaluated": acc.height,
+        "mean_correct": float(acc["correct"].mean()),
+        "dev_mean_correct": float(acc.join(out.select("match_id", "season").unique(), on="match_id")
+                                  .filter(pl.col("season").str.slice(0, 4).cast(pl.Int32).is_in(DEV_SEASONS))["correct"].mean()),
+        "holdout_mean_correct": float(acc.join(out.select("match_id", "season").unique(), on="match_id")
+                                      .filter(pl.col("season").str.slice(0, 4).cast(pl.Int32).is_in(HOLDOUT_SEASONS))["correct"].mean()),
+    }
+    (LINEUP_DIR / "summary.json").write_text(json.dumps(summary, indent=1))
+    return summary
+
+
 def load(season: int) -> EnsembleModel:
     return joblib.load(MODEL_DIR / f"ensemble_{season}.joblib")
 

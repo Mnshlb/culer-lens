@@ -48,6 +48,7 @@ def _train(args: argparse.Namespace) -> None:
 
     card = production.train(track=not args.no_mlflow)
     print(json.dumps(card["metrics"], indent=1))
+    print(json.dumps(production.train_lineups(), indent=1))
 
 
 def _explain(args: argparse.Namespace) -> None:
