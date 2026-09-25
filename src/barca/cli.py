@@ -35,6 +35,12 @@ def _build(args: argparse.Namespace) -> None:
         raise SystemExit("data-quality gate failed: see reports/data_quality.md")
 
 
+def _features(args: argparse.Namespace) -> None:
+    from barca.features import build
+
+    print(build.build())
+
+
 def main(argv: list[str] | None = None) -> None:
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
@@ -54,6 +60,9 @@ def main(argv: list[str] | None = None) -> None:
     build = sub.add_parser("build", help="interim -> processed -> validated")
     build.add_argument("--skip-interim", action="store_true", help="reuse existing interim tables")
     build.set_defaults(func=_build)
+
+    features = sub.add_parser("features", help="build the feature store from validated data")
+    features.set_defaults(func=_features)
 
     args = parser.parse_args(argv)
     args.func(args)

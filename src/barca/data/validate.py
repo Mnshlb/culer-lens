@@ -342,6 +342,12 @@ def _results_complete(t: Tables) -> Frame:
     ).select("season", "home", "away")
 
 
+def _one_match_per_day(t: Tables) -> Frame:
+    r = _lazy(t["results"])
+    teams = pl.concat([r.select("date", pl.col("home").alias("team")), r.select("date", pl.col("away").alias("team"))])
+    return teams.group_by("date", "team").agg(pl.len()).filter(pl.col("len") > 1)
+
+
 RULES: list[Rule] = [
     Rule("E01", "events", "event ids are unique", "error", _unique_event_ids),
     Rule("E02", "events", "event index runs 1..n within every match", "error", _contiguous_index),
@@ -382,6 +388,8 @@ RULES: list[Rule] = [
     Rule("R04", "results", "shots are never fewer than shots on target", "error", _shots_ge_on_target),
     Rule("R05", "results", "bookmaker odds are above 1.0", "error", _odds_valid),
     Rule("R06", "results", "every fixture has a date and a full-time score", "error", _results_complete),
+    # Rolling features and Elo assume a club's matches are strictly ordered in time.
+    Rule("R07", "results", "a club plays at most one match per date", "error", _one_match_per_day),
 ]
 
 

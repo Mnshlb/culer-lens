@@ -39,6 +39,7 @@
 | R04 | results | shots are never fewer than shots on target | error | 0 | 0 | pass |
 | R05 | results | bookmaker odds are above 1.0 | error | 0 | 0 | pass |
 | R06 | results | every fixture has a date and a full-time score | error | 0 | 0 | pass |
+| R07 | results | a club plays at most one match per date | error | 0 | 0 | pass |
 
 ## Samples of violating rows
 
@@ -97,34 +98,34 @@
 ```
 [
  {
-  "match_id": 69144,
-  "team_id": 212,
-  "team_minutes": 1094.8666666666666,
-  "match_minutes": 95.38333333333333
- },
- {
-  "match_id": 3825565,
-  "team_id": 214,
-  "team_minutes": 1051.0833333333333,
-  "match_minutes": 94.01666666666667
- },
- {
-  "match_id": 3825729,
-  "team_id": 1041,
-  "team_minutes": 1088.3499999999997,
-  "match_minutes": 94.05
- },
- {
   "match_id": 3825707,
   "team_id": 208,
   "team_minutes": 1098.5333333333333,
   "match_minutes": 95.13333333333333
  },
  {
-  "match_id": 69222,
-  "team_id": 1220,
-  "team_minutes": 1028.6,
-  "match_minutes": 93.41666666666667
+  "match_id": 70220,
+  "team_id": 217,
+  "team_minutes": 1048.1833333333334,
+  "match_minutes": 91.1
+ },
+ {
+  "match_id": 3825667,
+  "team_id": 222,
+  "team_minutes": 1103.783333333333,
+  "match_minutes": 97.36666666666666
+ },
+ {
+  "match_id": 3825699,
+  "team_id": 218,
+  "team_minutes": 1053.333333333333,
+  "match_minutes": 95.05
+ },
+ {
+  "match_id": 69144,
+  "team_id": 212,
+  "team_minutes": 1094.8666666666666,
+  "match_minutes": 95.38333333333333
  }
 ]
 ```
