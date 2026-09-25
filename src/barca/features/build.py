@@ -9,7 +9,7 @@ import polars as pl
 from barca import config
 from barca.analytics import player_match, player_season, ratings, team_match, xt
 from barca.data import store, validate
-from barca.features import elo, event_form, tables, team_form
+from barca.features import elo, event_form, player_fixture, tables, team_form
 
 log = logging.getLogger(__name__)
 
@@ -73,8 +73,10 @@ def build() -> dict[str, int]:
     fixtures = tables.fixture_table(results, form, rated, ev_form)
     barca = tables.barca_table(fixtures)
 
+    candidates = player_fixture.build(barca, matches, appearances, pms, player_ratings)
+
     for name, frame in {
-        "team_match": tms, "player_match": pms, "team_form": form, "elo": rated,
+        "player_fixture": candidates, "team_match": tms, "player_match": pms, "team_form": form, "elo": rated,
         "event_form": ev_form, "fixtures": fixtures, "barca_matches": barca, "xt_grid": xt.grid_frame(grid),
         "player_ratings": player_ratings, "bipr_reference": season_ref, "match_rating_reference": match_ref,
     }.items():
