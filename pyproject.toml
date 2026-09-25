@@ -1,0 +1,99 @@
+[project]
+name = "barca-intelligence"
+version = "0.1.0"
+description = "Football analytics and match-prediction platform for FC Barcelona built on StatsBomb open event data."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { file = "LICENSE" }
+authors = [{ name = "Manshul Budholiya" }]
+dependencies = [
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "polars>=1.9",
+    "pyarrow>=17.0",
+    "sqlalchemy>=2.0",
+    "psycopg[binary]>=3.2",
+    "pydantic>=2.8",
+    "pydantic-settings>=2.4",
+]
+
+[project.optional-dependencies]
+analytics = [
+    "scipy>=1.14",
+    "statsmodels>=0.14",
+    "duckdb>=1.1",
+    "matplotlib>=3.9",
+    "mplsoccer>=1.4",
+    "plotly>=5.24",
+    "httpx>=0.27",
+    "tqdm>=4.66",
+]
+ml = [
+    "scikit-learn>=1.5",
+    "xgboost>=2.1",
+    "lightgbm>=4.5",
+    "optuna>=4.0",
+    "shap>=0.46",
+    "mlflow>=2.16",
+]
+api = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "alembic>=1.13",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "pandas-stubs>=2.2",
+    "types-tqdm",
+    "jupyterlab>=4.2",
+    "ipykernel>=6.29",
+    "nbconvert>=7.16",
+    "nbclient>=0.10",
+    "jupytext>=1.16",
+]
+
+[project.scripts]
+barca = "barca.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/barca"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["notebooks", "apps/web", "apps/api/migrations/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "SIM", "RUF", "NPY", "PD"]
+ignore = ["PD901", "PD011", "N803", "N806", "RUF001", "RUF002", "RUF003", "E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["barca", "app"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+check_untyped_defs = true
+files = ["src/barca", "apps/api/app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "apps/api"]
+markers = [
+    "data: tests that need the downloaded dataset (run with `make test-data`)",
+    "integration: tests that exercise several components together",
+]
+addopts = "-ra --strict-markers"
+filterwarnings = ["ignore::DeprecationWarning"]

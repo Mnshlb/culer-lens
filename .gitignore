@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.ipynb_checkpoints/
+
+# Data: third-party data is never committed (see docs/decision-log.md, D-003)
+data/**
+!data/**/
+!data/**/.gitkeep
+
+# Model artifacts and experiment tracking are rebuilt by `make train`
+models/**
+!models/.gitkeep
+mlruns/
+mlartifacts/
+optuna.db
+
+# Local environment
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+
+# Web
+apps/web/node_modules/
+apps/web/.next/
+apps/web/out/
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/next-env.d.ts
+apps/web/*.tsbuildinfo

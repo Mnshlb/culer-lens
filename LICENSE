@@ -1,0 +1,59 @@
+Culer Lens
+Copyright (c) 2026 Manshul Budholiya. All rights reserved.
+
+This repository is public so that its source code can be read and evaluated,
+for example as part of a job application or a portfolio review. It is not
+open source. No licence to use the code is granted except as stated below.
+
+1. What you may do
+
+   a. View the source code, documentation and figures, on GitHub or in a
+      copy downloaded only for that purpose.
+   b. Download, build and run the software on your own computer for the sole
+      purpose of evaluating this project, and delete your copy afterwards.
+   c. Anything that GitHub's Terms of Service allow other GitHub users to do
+      with public repositories, such as forking on GitHub. A fork does not
+      grant any of the rights listed in section 2.
+
+2. What you may not do without the author's prior written permission
+
+   a. Copy, reproduce, modify, adapt or translate any part of the source code,
+      documentation or figures, or create works based on them.
+   b. Distribute, publish, sublicense, sell, rent or otherwise make any part
+      of it available to anyone else, in source or compiled form.
+   c. Use any part of it, or the software, in another project, product or
+      service, whether commercial or not.
+   d. Use any part of it to train, fine-tune or evaluate machine-learning or
+      artificial-intelligence models, or include it in datasets for that
+      purpose.
+   e. Remove or change this licence or any copyright notice.
+
+3. Data
+
+   The data the software uses (StatsBomb Open Data, football-data.co.uk) is
+   not included in this repository. It is downloaded from its providers and
+   remains subject to their own terms, which you must accept separately.
+
+4. Third-party software
+
+   Libraries and tools this project depends on remain under their own
+   licences. This licence covers only the author's own work.
+
+5. Names and trademarks
+
+   FC Barcelona, StatsBomb and other names, logos and trademarks belong to
+   their owners. This project is not affiliated with, endorsed by or
+   connected to FC Barcelona or StatsBomb.
+
+6. No warranty
+
+   The software is provided "as is", without warranty of any kind, express or
+   implied, including the warranties of merchantability, fitness for a
+   particular purpose and non-infringement. In no event shall the author be
+   liable for any claim, damages or other liability arising from, out of or in
+   connection with the software or its use.
+
+7. Permissions
+
+   To ask for any use not allowed above, contact the author through
+   https://github.com/Mnshlb.
