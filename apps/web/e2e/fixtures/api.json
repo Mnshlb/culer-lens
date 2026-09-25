@@ -1,0 +1,1683 @@
+{
+ "/api/overview": {
+  "as_of": "2015-11-21",
+  "next_match": {
+   "id": 2,
+   "date": "2015-11-21",
+   "season": "2015/2016",
+   "competition": "La Liga",
+   "opponent": {
+    "id": 2,
+    "name": "Real Madrid",
+    "short_name": "Real Madrid",
+    "code": "RMA"
+   },
+   "barca_home": false,
+   "barca_goals": 4,
+   "opponent_goals": 0,
+   "result": "W",
+   "era": "Luis Enrique",
+   "has_events": true,
+   "prediction": {
+    "win": 0.35,
+    "draw": 0.22,
+    "loss": 0.43
+   }
+  },
+  "prediction": {
+   "model": "match-outcome-test",
+   "probabilities": {
+    "win": 0.35,
+    "draw": 0.22,
+    "loss": 0.43
+   },
+   "expected_goals": {
+    "barca": 1.9,
+    "opponent": 1.1
+   },
+   "top_scores": [
+    {
+     "barca": 2,
+     "opponent": 1,
+     "p": 0.11
+    }
+   ],
+   "market": {
+    "win": 0.6,
+    "draw": 0.22,
+    "loss": 0.18
+   },
+   "explanation": {
+    "base_value": 0.47,
+    "contributions": [
+     {
+      "feature": "elo_diff",
+      "label": "Elo gap",
+      "value": 10.0,
+      "shap": 0.1
+     }
+    ],
+    "groups": {
+     "Team strength (Elo)": 0.1
+    }
+   }
+  },
+  "form": [
+   {
+    "id": 1,
+    "date": "2015-11-01",
+    "season": "2015/2016",
+    "competition": "La Liga",
+    "opponent": {
+     "id": 2,
+     "name": "Real Madrid",
+     "short_name": "Real Madrid",
+     "code": "RMA"
+    },
+    "barca_home": true,
+    "barca_goals": 2,
+    "opponent_goals": 1,
+    "result": "W",
+    "era": "Luis Enrique",
+    "has_events": true,
+    "prediction": {
+     "win": 0.62,
+     "draw": 0.22,
+     "loss": 0.16
+    }
+   }
+  ],
+  "season_record": {
+   "played": 2,
+   "won": 2,
+   "drawn": 0,
+   "lost": 0,
+   "points": 6,
+   "goals_for": 4,
+   "goals_against": 2
+  },
+  "readiness": {
+   "score": 61,
+   "form_score": 72,
+   "freshness": 45,
+   "method": "UI summary, not a model: 0.6 \u00d7 form score (mean form rating of the predicted XI, 5.5 \u2192 0 and 8.0 \u2192 100) + 0.4 \u00d7 freshness (100 \u2212 mean workload index of the predicted XI)."
+  },
+  "high_workload": [
+   {
+    "player_id": 10,
+    "name": "Ten",
+    "position_family": "MF",
+    "p_start": 0.91,
+    "in_xi": true,
+    "slot": "Center Midfield",
+    "x": 56.0,
+    "y": 40.0,
+    "started": true,
+    "workload_index": 55.0,
+    "workload_band": "Moderate",
+    "form_rating": 7.3,
+    "minutes_last5": 92.0,
+    "starts_last5": 5.0,
+    "reasons": [
+     {
+      "feature": "starts_last5",
+      "text": "Started 5 of the last 5",
+      "shap": 1.2
+     }
+    ]
+   },
+   {
+    "player_id": 11,
+    "name": "Eleven",
+    "position_family": "FW",
+    "p_start": 0.2,
+    "in_xi": false,
+    "slot": null,
+    "x": null,
+    "y": null,
+    "started": false,
+    "workload_index": 12.0,
+    "workload_band": "Low",
+    "form_rating": null,
+    "minutes_last5": 25.0,
+    "starts_last5": 1.0,
+    "reasons": []
+   }
+  ],
+  "elo": 1748.0
+ },
+ "/api/seasons": [
+  {
+   "label": "2015/2016",
+   "start_year": 2015
+  }
+ ],
+ "/api/matches": [
+  {
+   "id": 1,
+   "date": "2015-11-01",
+   "season": "2015/2016",
+   "competition": "La Liga",
+   "opponent": {
+    "id": 2,
+    "name": "Real Madrid",
+    "short_name": "Real Madrid",
+    "code": "RMA"
+   },
+   "barca_home": true,
+   "barca_goals": 2,
+   "opponent_goals": 1,
+   "result": "W",
+   "era": "Luis Enrique",
+   "has_events": true,
+   "prediction": {
+    "win": 0.62,
+    "draw": 0.22,
+    "loss": 0.16
+   }
+  },
+  {
+   "id": 2,
+   "date": "2015-11-21",
+   "season": "2015/2016",
+   "competition": "La Liga",
+   "opponent": {
+    "id": 2,
+    "name": "Real Madrid",
+    "short_name": "Real Madrid",
+    "code": "RMA"
+   },
+   "barca_home": false,
+   "barca_goals": 4,
+   "opponent_goals": 0,
+   "result": "W",
+   "era": "Luis Enrique",
+   "has_events": true,
+   "prediction": {
+    "win": 0.35,
+    "draw": 0.22,
+    "loss": 0.43
+   }
+  }
+ ],
+ "/api/matches/1": {
+  "match": {
+   "id": 1,
+   "date": "2015-11-01",
+   "season": "2015/2016",
+   "competition": "La Liga",
+   "opponent": {
+    "id": 2,
+    "name": "Real Madrid",
+    "short_name": "Real Madrid",
+    "code": "RMA"
+   },
+   "barca_home": true,
+   "barca_goals": 2,
+   "opponent_goals": 1,
+   "result": "W",
+   "era": "Luis Enrique",
+   "has_events": true,
+   "prediction": {
+    "win": 0.62,
+    "draw": 0.22,
+    "loss": 0.16
+   }
+  },
+  "prediction": {
+   "model": "match-outcome-test",
+   "probabilities": {
+    "win": 0.62,
+    "draw": 0.22,
+    "loss": 0.16
+   },
+   "expected_goals": {
+    "barca": 1.9,
+    "opponent": 1.1
+   },
+   "top_scores": [
+    {
+     "barca": 2,
+     "opponent": 1,
+     "p": 0.11
+    }
+   ],
+   "market": {
+    "win": 0.6,
+    "draw": 0.22,
+    "loss": 0.18
+   },
+   "explanation": {
+    "base_value": 0.47,
+    "contributions": [
+     {
+      "feature": "elo_diff",
+      "label": "Elo gap",
+      "value": 10.0,
+      "shap": 0.1
+     }
+    ],
+    "groups": {
+     "Team strength (Elo)": 0.1
+    }
+   }
+  },
+  "lineup": {
+   "formation": "433",
+   "predicted_xi": [
+    {
+     "player_id": 10,
+     "name": "Ten",
+     "position_family": "MF",
+     "p_start": 0.91,
+     "in_xi": true,
+     "slot": "Center Midfield",
+     "x": 56.0,
+     "y": 40.0,
+     "started": true,
+     "workload_index": 55.0,
+     "workload_band": "Moderate",
+     "form_rating": 7.3,
+     "minutes_last5": 92.0,
+     "starts_last5": 5.0,
+     "reasons": [
+      {
+       "feature": "starts_last5",
+       "text": "Started 5 of the last 5",
+       "shap": 1.2
+      }
+     ]
+    }
+   ],
+   "others": [
+    {
+     "player_id": 11,
+     "name": "Eleven",
+     "position_family": "FW",
+     "p_start": 0.2,
+     "in_xi": false,
+     "slot": null,
+     "x": null,
+     "y": null,
+     "started": false,
+     "workload_index": 12.0,
+     "workload_band": "Low",
+     "form_rating": null,
+     "minutes_last5": 25.0,
+     "starts_last5": 1.0,
+     "reasons": []
+    }
+   ],
+   "actual_xi": [
+    10
+   ],
+   "correct": 1
+  },
+  "comparison": {
+   "barca": {
+    "team": {
+     "id": 1,
+     "name": "Barcelona",
+     "short_name": "Bar\u00e7a",
+     "code": "BAR"
+    },
+    "elo": 1745.0,
+    "form": [
+     "W"
+    ],
+    "points_5": 2.4,
+    "goals_10": 2.5,
+    "goals_against_10": 0.8,
+    "sot_10": 7.0,
+    "sot_against_10": 3.0,
+    "points_per_game_season": 2.5,
+    "days_rest": 6.0
+   },
+   "opponent": {
+    "team": {
+     "id": 2,
+     "name": "Real Madrid",
+     "short_name": "Real Madrid",
+     "code": "RMA"
+    },
+    "elo": 1735.0,
+    "form": [
+     "L"
+    ],
+    "points_5": 2.2,
+    "goals_10": 2.4,
+    "goals_against_10": 1.0,
+    "sot_10": 6.5,
+    "sot_against_10": 3.5,
+    "points_per_game_season": 2.3,
+    "days_rest": 6.0
+   }
+  },
+  "stats": {
+   "barca": {
+    "goals": 2,
+    "xg": 1.8,
+    "shots": 12,
+    "shots_on_target": 5,
+    "big_chances": 2,
+    "possession": 0.6,
+    "passes": 500,
+    "pass_completion": 0.88,
+    "progressive_passes": 80,
+    "box_entries": 20,
+    "pressures": 130,
+    "ppda": 9.5,
+    "field_tilt": 0.7,
+    "xt": 1.2
+   },
+   "opponent": {
+    "goals": 1,
+    "xg": 0.9,
+    "shots": 12,
+    "shots_on_target": 5,
+    "big_chances": 2,
+    "possession": 0.4,
+    "passes": 500,
+    "pass_completion": 0.88,
+    "progressive_passes": 80,
+    "box_entries": 20,
+    "pressures": 130,
+    "ppda": 9.5,
+    "field_tilt": 0.3,
+    "xt": 1.2
+   }
+  },
+  "readiness": {
+   "score": 61,
+   "form_score": 72,
+   "freshness": 45,
+   "method": "UI summary, not a model: 0.6 \u00d7 form score (mean form rating of the predicted XI, 5.5 \u2192 0 and 8.0 \u2192 100) + 0.4 \u00d7 freshness (100 \u2212 mean workload index of the predicted XI)."
+  }
+ },
+ "/api/matches/2": {
+  "match": {
+   "id": 2,
+   "date": "2015-11-21",
+   "season": "2015/2016",
+   "competition": "La Liga",
+   "opponent": {
+    "id": 2,
+    "name": "Real Madrid",
+    "short_name": "Real Madrid",
+    "code": "RMA"
+   },
+   "barca_home": false,
+   "barca_goals": 4,
+   "opponent_goals": 0,
+   "result": "W",
+   "era": "Luis Enrique",
+   "has_events": true,
+   "prediction": {
+    "win": 0.35,
+    "draw": 0.22,
+    "loss": 0.43
+   }
+  },
+  "prediction": {
+   "model": "match-outcome-test",
+   "probabilities": {
+    "win": 0.35,
+    "draw": 0.22,
+    "loss": 0.43
+   },
+   "expected_goals": {
+    "barca": 1.9,
+    "opponent": 1.1
+   },
+   "top_scores": [
+    {
+     "barca": 2,
+     "opponent": 1,
+     "p": 0.11
+    }
+   ],
+   "market": {
+    "win": 0.6,
+    "draw": 0.22,
+    "loss": 0.18
+   },
+   "explanation": {
+    "base_value": 0.47,
+    "contributions": [
+     {
+      "feature": "elo_diff",
+      "label": "Elo gap",
+      "value": 10.0,
+      "shap": 0.1
+     }
+    ],
+    "groups": {
+     "Team strength (Elo)": 0.1
+    }
+   }
+  },
+  "lineup": {
+   "formation": "433",
+   "predicted_xi": [
+    {
+     "player_id": 10,
+     "name": "Ten",
+     "position_family": "MF",
+     "p_start": 0.91,
+     "in_xi": true,
+     "slot": "Center Midfield",
+     "x": 56.0,
+     "y": 40.0,
+     "started": true,
+     "workload_index": 55.0,
+     "workload_band": "Moderate",
+     "form_rating": 7.3,
+     "minutes_last5": 92.0,
+     "starts_last5": 5.0,
+     "reasons": [
+      {
+       "feature": "starts_last5",
+       "text": "Started 5 of the last 5",
+       "shap": 1.2
+      }
+     ]
+    }
+   ],
+   "others": [
+    {
+     "player_id": 11,
+     "name": "Eleven",
+     "position_family": "FW",
+     "p_start": 0.2,
+     "in_xi": false,
+     "slot": null,
+     "x": null,
+     "y": null,
+     "started": false,
+     "workload_index": 12.0,
+     "workload_band": "Low",
+     "form_rating": null,
+     "minutes_last5": 25.0,
+     "starts_last5": 1.0,
+     "reasons": []
+    }
+   ],
+   "actual_xi": [
+    10
+   ],
+   "correct": 1
+  },
+  "comparison": {
+   "barca": {
+    "team": {
+     "id": 1,
+     "name": "Barcelona",
+     "short_name": "Bar\u00e7a",
+     "code": "BAR"
+    },
+    "elo": 1748.0,
+    "form": [
+     "W",
+     "W"
+    ],
+    "points_5": 2.4,
+    "goals_10": 2.5,
+    "goals_against_10": 0.8,
+    "sot_10": 7.0,
+    "sot_against_10": 3.0,
+    "points_per_game_season": 2.5,
+    "days_rest": 6.0
+   },
+   "opponent": {
+    "team": {
+     "id": 2,
+     "name": "Real Madrid",
+     "short_name": "Real Madrid",
+     "code": "RMA"
+    },
+    "elo": 1735.0,
+    "form": [
+     "L",
+     "L"
+    ],
+    "points_5": 2.2,
+    "goals_10": 2.4,
+    "goals_against_10": 1.0,
+    "sot_10": 6.5,
+    "sot_against_10": 3.5,
+    "points_per_game_season": 2.3,
+    "days_rest": 6.0
+   }
+  },
+  "stats": {
+   "barca": {
+    "goals": 2,
+    "xg": 1.8,
+    "shots": 12,
+    "shots_on_target": 5,
+    "big_chances": 2,
+    "possession": 0.6,
+    "passes": 500,
+    "pass_completion": 0.88,
+    "progressive_passes": 80,
+    "box_entries": 20,
+    "pressures": 130,
+    "ppda": 9.5,
+    "field_tilt": 0.7,
+    "xt": 1.2
+   },
+   "opponent": {
+    "goals": 1,
+    "xg": 0.9,
+    "shots": 12,
+    "shots_on_target": 5,
+    "big_chances": 2,
+    "possession": 0.4,
+    "passes": 500,
+    "pass_completion": 0.88,
+    "progressive_passes": 80,
+    "box_entries": 20,
+    "pressures": 130,
+    "ppda": 9.5,
+    "field_tilt": 0.3,
+    "xt": 1.2
+   }
+  },
+  "readiness": {
+   "score": 61,
+   "form_score": 72,
+   "freshness": 45,
+   "method": "UI summary, not a model: 0.6 \u00d7 form score (mean form rating of the predicted XI, 5.5 \u2192 0 and 8.0 \u2192 100) + 0.4 \u00d7 freshness (100 \u2212 mean workload index of the predicted XI)."
+  }
+ },
+ "/api/matches/1/shots": [
+  {
+   "team": "barca",
+   "player": "Ten",
+   "minute": 60,
+   "x": 108.0,
+   "y": 38.0,
+   "xg": 0.35,
+   "outcome": "Goal",
+   "body_part": null,
+   "goal": true
+  },
+  {
+   "team": "opponent",
+   "player": "Striker",
+   "minute": 70,
+   "x": 20.0,
+   "y": 50.0,
+   "xg": 0.1,
+   "outcome": "Saved",
+   "body_part": null,
+   "goal": false
+  }
+ ],
+ "/api/matches/1/passes": {
+  "until_minute": 64.0,
+  "nodes": [
+   {
+    "player_id": 10,
+    "name": "Ten",
+    "x": 60.0,
+    "y": 30.0,
+    "passes": 20
+   }
+  ],
+  "edges": [
+   {
+    "source": 10,
+    "target": 11,
+    "count": 20
+   }
+  ]
+ },
+ "/api/players": [
+  {
+   "id": 10,
+   "name": "Ten",
+   "position_family": "MF",
+   "appearances": 2,
+   "minutes": 188.0,
+   "goals": 2,
+   "assists": 0,
+   "overall": null
+  }
+ ],
+ "/api/players/10": {
+  "id": 10,
+  "name": "Player Ten",
+  "display_name": "Ten",
+  "country": "Spain",
+  "position_family": "MF",
+  "position_group": "CM",
+  "totals": {
+   "appearances": 2.0,
+   "starts": 2.0,
+   "minutes": 188.0,
+   "goals": 2.0,
+   "assists": 0.0,
+   "xg": 0.8,
+   "xa": 0.4
+  },
+  "seasons": [],
+  "form": [
+   7.4,
+   7.4
+  ],
+  "workload": {
+   "date": "2015-11-21",
+   "index": 55.0,
+   "band": "Moderate",
+   "minutes_7d": 94.0,
+   "minutes_14d": 188.0,
+   "minutes_30d": 376.0,
+   "consecutive_starts": 4,
+   "days_since_last_app": 6
+  },
+  "recent_matches": [
+   {
+    "match_id": 2,
+    "date": "2015-11-21",
+    "season": "2015/2016",
+    "opponent": "Real Madrid",
+    "barca_home": false,
+    "result": "W",
+    "started": true,
+    "minutes": 94.0,
+    "goals": 1,
+    "assists": 0,
+    "xg": 0.4,
+    "xa": 0.2,
+    "xt": 0.3,
+    "progressive_passes": 8,
+    "progressive_carries": 3,
+    "pressures": 15,
+    "match_rating": 7.4
+   },
+   {
+    "match_id": 1,
+    "date": "2015-11-01",
+    "season": "2015/2016",
+    "opponent": "Real Madrid",
+    "barca_home": true,
+    "result": "W",
+    "started": true,
+    "minutes": 94.0,
+    "goals": 1,
+    "assists": 0,
+    "xg": 0.4,
+    "xa": 0.2,
+    "xt": 0.3,
+    "progressive_passes": 8,
+    "progressive_carries": 3,
+    "pressures": 15,
+    "match_rating": 7.4
+   }
+  ]
+ },
+ "/api/players/10/stats": [
+  {
+   "match_id": 1,
+   "date": "2015-11-01",
+   "season": "2015/2016",
+   "opponent": "Real Madrid",
+   "barca_home": true,
+   "result": "W",
+   "started": true,
+   "minutes": 94.0,
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.4,
+   "xa": 0.2,
+   "xt": 0.3,
+   "progressive_passes": 8,
+   "progressive_carries": 3,
+   "pressures": 15,
+   "match_rating": 7.4
+  },
+  {
+   "match_id": 2,
+   "date": "2015-11-21",
+   "season": "2015/2016",
+   "opponent": "Real Madrid",
+   "barca_home": false,
+   "result": "W",
+   "started": true,
+   "minutes": 94.0,
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.4,
+   "xa": 0.2,
+   "xt": 0.3,
+   "progressive_passes": 8,
+   "progressive_carries": 3,
+   "pressures": 15,
+   "match_rating": 7.4
+  }
+ ],
+ "/api/players/10/workload": {
+  "player_id": 10,
+  "series": [
+   {
+    "match_id": 1,
+    "date": "2015-11-01",
+    "opponent": "Real Madrid",
+    "workload_index": 55.0,
+    "band": "Moderate",
+    "minutes_7d": 94.0,
+    "minutes_14d": 188.0,
+    "minutes_30d": 376.0,
+    "consecutive_starts": 4,
+    "days_since_last_app": 6,
+    "started": true
+   },
+   {
+    "match_id": 2,
+    "date": "2015-11-21",
+    "opponent": "Real Madrid",
+    "workload_index": 55.0,
+    "band": "Moderate",
+    "minutes_7d": 94.0,
+    "minutes_14d": 188.0,
+    "minutes_30d": 376.0,
+    "consecutive_starts": 4,
+    "days_since_last_app": 6,
+    "started": true
+   }
+  ],
+  "latest_components": {
+   "minutes_7d": 15.7,
+   "minutes_14d": 13.1,
+   "minutes_30d": 9.0,
+   "consecutive_starts": 7.5,
+   "rest": 3.0
+  }
+ },
+ "/api/models": [
+  {
+   "id": 1,
+   "name": "match-outcome-test",
+   "kind": "outcome",
+   "description": "test ensemble",
+   "headline": {
+    "n": 2660,
+    "log_loss": 0.968,
+    "brier": 0.575,
+    "rps": 0.194,
+    "accuracy": 0.53,
+    "macro_f1": 0.38,
+    "ece": 0.017
+   }
+  }
+ ],
+ "/api/models/1": {
+  "id": 1,
+  "name": "match-outcome-test",
+  "kind": "outcome",
+  "description": "test ensemble",
+  "trained_at": "2026-01-01T00:00:00",
+  "card": {
+   "version": "match-outcome-test",
+   "model": "test ensemble",
+   "metrics": {
+    "league_dev": {
+     "n": 2660,
+     "log_loss": 0.968,
+     "brier": 0.575,
+     "rps": 0.194,
+     "accuracy": 0.53,
+     "macro_f1": 0.38,
+     "ece": 0.017
+    },
+    "league_holdout": {
+     "n": 2660,
+     "log_loss": 0.968,
+     "brier": 0.575,
+     "rps": 0.194,
+     "accuracy": 0.53,
+     "macro_f1": 0.38,
+     "ece": 0.017
+    },
+    "barca_dev": {
+     "n": 2660,
+     "log_loss": 0.968,
+     "brier": 0.575,
+     "rps": 0.194,
+     "accuracy": 0.53,
+     "macro_f1": 0.38,
+     "ece": 0.017
+    },
+    "barca_holdout": {
+     "n": 2660,
+     "log_loss": 0.968,
+     "brier": 0.575,
+     "rps": 0.194,
+     "accuracy": 0.53,
+     "macro_f1": 0.38,
+     "ece": 0.017
+    }
+   }
+  },
+  "evaluation": {
+   "metrics": {
+    "league_dev": {
+     "n": 2660,
+     "log_loss": 0.968,
+     "brier": 0.575,
+     "rps": 0.194,
+     "accuracy": 0.53,
+     "macro_f1": 0.38,
+     "ece": 0.017
+    },
+    "league_holdout": {
+     "n": 2660,
+     "log_loss": 0.968,
+     "brier": 0.575,
+     "rps": 0.194,
+     "accuracy": 0.53,
+     "macro_f1": 0.38,
+     "ece": 0.017
+    },
+    "barca_dev": {
+     "n": 2660,
+     "log_loss": 0.968,
+     "brier": 0.575,
+     "rps": 0.194,
+     "accuracy": 0.53,
+     "macro_f1": 0.38,
+     "ece": 0.017
+    },
+    "barca_holdout": {
+     "n": 2660,
+     "log_loss": 0.968,
+     "brier": 0.575,
+     "rps": 0.194,
+     "accuracy": 0.53,
+     "macro_f1": 0.38,
+     "ece": 0.017
+    }
+   },
+   "holdout_models": [
+    {
+     "model": "Production ensemble",
+     "n": 2660,
+     "log_loss": 0.968,
+     "brier": 0.575,
+     "rps": 0.194,
+     "accuracy": 0.529,
+     "macro_f1": 0.38,
+     "ece": 0.017
+    },
+    {
+     "model": "Market (average odds)",
+     "n": 2660,
+     "log_loss": 0.953,
+     "brier": 0.565,
+     "rps": 0.19,
+     "accuracy": 0.541,
+     "macro_f1": 0.4,
+     "ece": 0.019
+    }
+   ],
+   "calibration": {
+    "home_win": {
+     "model": [
+      {
+       "bin": 1,
+       "predicted": 0.15,
+       "observed": 0.14,
+       "n": 50
+      },
+      {
+       "bin": 5,
+       "predicted": 0.55,
+       "observed": 0.56,
+       "n": 80
+      }
+     ],
+     "market": [
+      {
+       "bin": 1,
+       "predicted": 0.16,
+       "observed": 0.15,
+       "n": 50
+      },
+      {
+       "bin": 5,
+       "predicted": 0.54,
+       "observed": 0.55,
+       "n": 80
+      }
+     ]
+    },
+    "draw": {
+     "model": [
+      {
+       "bin": 1,
+       "predicted": 0.15,
+       "observed": 0.14,
+       "n": 50
+      },
+      {
+       "bin": 5,
+       "predicted": 0.55,
+       "observed": 0.56,
+       "n": 80
+      }
+     ],
+     "market": [
+      {
+       "bin": 1,
+       "predicted": 0.16,
+       "observed": 0.15,
+       "n": 50
+      },
+      {
+       "bin": 5,
+       "predicted": 0.54,
+       "observed": 0.55,
+       "n": 80
+      }
+     ]
+    },
+    "away_win": {
+     "model": [
+      {
+       "bin": 1,
+       "predicted": 0.15,
+       "observed": 0.14,
+       "n": 50
+      },
+      {
+       "bin": 5,
+       "predicted": 0.55,
+       "observed": 0.56,
+       "n": 80
+      }
+     ],
+     "market": [
+      {
+       "bin": 1,
+       "predicted": 0.16,
+       "observed": 0.15,
+       "n": 50
+      },
+      {
+       "bin": 5,
+       "predicted": 0.54,
+       "observed": 0.55,
+       "n": 80
+      }
+     ]
+    }
+   },
+   "confusion": [
+    [
+     10,
+     0,
+     2
+    ],
+    [
+     5,
+     0,
+     3
+    ],
+    [
+     4,
+     0,
+     6
+    ]
+   ],
+   "seasons": [
+    {
+     "season": "2014/2015",
+     "split": "holdout",
+     "ensemble": 0.93,
+     "elo": 0.94,
+     "market": 0.91
+    }
+   ],
+   "errors": [
+    {
+     "fixture_id": 5001,
+     "date": "2015-11-21",
+     "opponent": "Real Madrid",
+     "is_home": false,
+     "barca_goals": 0,
+     "opp_goals": 2,
+     "p_win": 0.72,
+     "p_draw": 0.18,
+     "p_loss": 0.1,
+     "barca_result": "L",
+     "predicted": "W",
+     "confidence": 0.72,
+     "barca_xg": 1.9,
+     "opp_xg": 0.7,
+     "barca_reds": 0,
+     "opp_reds": 0
+    }
+   ]
+  }
+ },
+ "/api/models/1/explanation": {
+  "permutation": [
+   {
+    "group": "Team strength (Elo)",
+    "increase": 0.15,
+    "std": 0.01
+   }
+  ],
+  "tree_shap": [
+   {
+    "feature": "elo_diff",
+    "label": "Elo gap (home \u2212 away)",
+    "group": "Team strength (Elo)",
+    "mean_abs_shap": 0.08
+   }
+  ],
+  "audit_flags": [],
+  "pdp": {
+   "feature": "opponent Elo",
+   "season": "2020/2021",
+   "grid": [
+    1400,
+    1500,
+    1600,
+    1700
+   ],
+   "average": [
+    0.85,
+    0.78,
+    0.66,
+    0.52
+   ],
+   "ice": [
+    [
+     0.86,
+     0.79,
+     0.67,
+     0.53
+    ],
+    [
+     0.84,
+     0.77,
+     0.65,
+     0.51
+    ]
+   ],
+   "opponents": [
+    "A",
+    "B"
+   ]
+  }
+ },
+ "/api/players/10/heatmap": {
+  "player_id": 10,
+  "family": "all",
+  "window": "match",
+  "matches": 1,
+  "events": 41,
+  "grid": [
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.07317,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.04878,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.07317,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.04878,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.07317,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04878,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.07317,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04878,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.07317,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04878,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.07317,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04878,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.07317,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04878,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.07317,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04878,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.02439,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  ],
+  "bins": [
+   24,
+   16
+  ],
+  "zones": [
+   {
+    "third": "defensive",
+    "channel": "left_wing",
+    "total": 8,
+    "breakdown": {
+     "carries": 4,
+     "passes": 4
+    }
+   },
+   {
+    "third": "defensive",
+    "channel": "left_half_space",
+    "total": 2,
+    "breakdown": {
+     "carries": 1,
+     "passes": 1
+    }
+   },
+   {
+    "third": "defensive",
+    "channel": "centre",
+    "total": 0,
+    "breakdown": {}
+   },
+   {
+    "third": "defensive",
+    "channel": "right_half_space",
+    "total": 0,
+    "breakdown": {}
+   },
+   {
+    "third": "defensive",
+    "channel": "right_wing",
+    "total": 0,
+    "breakdown": {}
+   },
+   {
+    "third": "middle",
+    "channel": "left_wing",
+    "total": 0,
+    "breakdown": {}
+   },
+   {
+    "third": "middle",
+    "channel": "left_half_space",
+    "total": 10,
+    "breakdown": {
+     "carries": 5,
+     "passes": 5
+    }
+   },
+   {
+    "third": "middle",
+    "channel": "centre",
+    "total": 10,
+    "breakdown": {
+     "carries": 5,
+     "passes": 5
+    }
+   },
+   {
+    "third": "middle",
+    "channel": "right_half_space",
+    "total": 0,
+    "breakdown": {}
+   },
+   {
+    "third": "middle",
+    "channel": "right_wing",
+    "total": 0,
+    "breakdown": {}
+   },
+   {
+    "third": "attacking",
+    "channel": "left_wing",
+    "total": 0,
+    "breakdown": {}
+   },
+   {
+    "third": "attacking",
+    "channel": "left_half_space",
+    "total": 0,
+    "breakdown": {}
+   },
+   {
+    "third": "attacking",
+    "channel": "centre",
+    "total": 11,
+    "breakdown": {
+     "carries": 5,
+     "passes": 5,
+     "shots": 1
+    }
+   },
+   {
+    "third": "attacking",
+    "channel": "right_half_space",
+    "total": 0,
+    "breakdown": {}
+   },
+   {
+    "third": "attacking",
+    "channel": "right_wing",
+    "total": 0,
+    "breakdown": {}
+   }
+  ],
+  "summary": {
+   "avg_x": 60.1951,
+   "avg_y": 29.7073,
+   "defensive_third": 0.2439,
+   "middle_third": 0.4878,
+   "attacking_third": 0.2683,
+   "left": 0.4878,
+   "centre": 0.5122,
+   "right": 0.0,
+   "box_share": 0.0244,
+   "spread_x": 24.0236,
+   "spread_y": 11.4769,
+   "ellipse_area": 181.2348
+  }
+ }
+}

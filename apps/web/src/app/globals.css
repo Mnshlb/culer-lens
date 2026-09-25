@@ -1,0 +1,97 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-inter);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-win: var(--win);
+  --color-draw: var(--draw);
+  --color-loss: var(--loss);
+  --color-surface-2: var(--surface-2);
+  --color-pitch: var(--pitch);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+/* One dark theme. Categorical data colours validated for colour-vision deficiency
+   and ≥ 3:1 contrast on these surfaces (garnet / blue / gold). */
+:root {
+  color-scheme: dark;
+  --background: #0e1016;
+  --foreground: #eef0f4;
+  --card: #151821;
+  --card-foreground: #eef0f4;
+  --popover: #1a1e28;
+  --popover-foreground: #eef0f4;
+  --surface-2: #1c202a;
+  --primary: #e0457b;
+  --primary-foreground: #ffffff;
+  --secondary: #1f2430;
+  --secondary-foreground: #eef0f4;
+  --muted: #1c202a;
+  --muted-foreground: #9aa1ae;
+  --accent: #232835;
+  --accent-foreground: #eef0f4;
+  --destructive: #d03b3b;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #e0457b;
+  --chart-1: #e0457b;
+  --chart-2: #3987e5;
+  --chart-3: #c98500;
+  --win: #0ca30c;
+  --draw: #898781;
+  --loss: #d03b3b;
+  --pitch: #12161e;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    background: var(--background);
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01";
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Subtle garnet-to-blue hairline used under section headers. */
+.rule-blaugrana {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(224, 69, 123, 0.7), rgba(57, 135, 229, 0.7) 60%, transparent);
+}
