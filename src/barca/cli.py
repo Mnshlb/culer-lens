@@ -50,6 +50,14 @@ def _train(args: argparse.Namespace) -> None:
     print(json.dumps(card["metrics"], indent=1))
 
 
+def _explain(args: argparse.Namespace) -> None:
+    from barca.xai import build
+
+    if not args.global_only:
+        print(build.build(max_evals=args.max_evals))
+    print(build.build_global())
+
+
 def main(argv: list[str] | None = None) -> None:
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
@@ -76,6 +84,11 @@ def main(argv: list[str] | None = None) -> None:
     train = sub.add_parser("train", help="walk-forward training of the production outcome model")
     train.add_argument("--no-mlflow", action="store_true", help="skip experiment tracking")
     train.set_defaults(func=_train)
+
+    explain = sub.add_parser("explain", help="precompute SHAP explanations, importances and PDP/ICE")
+    explain.add_argument("--max-evals", type=int, default=400)
+    explain.add_argument("--global-only", action="store_true")
+    explain.set_defaults(func=_explain)
 
     args = parser.parse_args(argv)
     args.func(args)
