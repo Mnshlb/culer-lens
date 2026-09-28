@@ -121,7 +121,7 @@ register their name and email at
 (clause 2.2 of its user agreement).
 
 ```bash
-git clone <repository-url> barca-intelligence && cd barca-intelligence
+git clone https://github.com/Mnshlb/barca-intelligence.git && cd barca-intelligence
 make start
 ```
 
