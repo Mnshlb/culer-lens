@@ -18,6 +18,7 @@ from pathlib import Path
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from cycler import cycler
+from matplotlib import font_manager
 from matplotlib.colors import LinearSegmentedColormap
 
 from barca import config
@@ -47,6 +48,15 @@ DIVERGING = LinearSegmentedColormap.from_list(
 )
 
 
+FONTS = ["Inter", "Helvetica Neue", "Arial", "DejaVu Sans"]
+
+
+def _installed_fonts() -> list[str]:
+    """The preferred fonts that exist on this machine (DejaVu Sans ships with matplotlib)."""
+    available = {f.name for f in font_manager.fontManager.ttflist}
+    return [f for f in FONTS if f in available] or ["DejaVu Sans"]
+
+
 def apply() -> None:
     mpl.rcParams.update(
         {
@@ -56,10 +66,10 @@ def apply() -> None:
             "figure.dpi": 110,
             "savefig.dpi": 160,
             "savefig.bbox": "tight",
-            "font.family": ["Inter", "Helvetica Neue", "Arial", "DejaVu Sans"],
+            "font.family": _installed_fonts(),
             "font.size": 10,
             "axes.titlesize": 12,
-            "axes.titleweight": "semibold",
+            "axes.titleweight": "bold",
             "axes.titlelocation": "left",
             "axes.titlepad": 10,
             "axes.labelsize": 10,

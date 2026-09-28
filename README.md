@@ -106,16 +106,37 @@ betting tool.
 
 ## Quickstart
 
-Requirements: Python 3.12, [uv](https://docs.astral.sh/uv/), Node.js 20.9+.
-Docker is optional.
+**You need:** [uv](https://docs.astral.sh/uv/) (it installs Python 3.12 by
+itself if your system has another version), Node.js 20.9+, `make`, git, an
+internet connection for the download, and about 1 GB of disk. Docker is
+optional.
+
+**Before downloading**, StatsBomb asks every user of its open data to
+register their name and email at
+[statsbomb.com/resource-centre](https://statsbomb.com/resource-centre)
+(clause 2.2 of its user agreement).
 
 ```bash
 git clone <repository-url> barca-intelligence && cd barca-intelligence
-make install      # Python and web dependencies
+make install      # Python and web dependencies (a few minutes the first time)
 make pipeline     # download, validate, build features, train, explain, load ./barca.db
-make api          # http://localhost:8000/docs
-make web          # http://localhost:3000
+make api          # terminal 1: http://localhost:8000/docs
+make web          # terminal 2: http://localhost:3000
 ```
+
+`make pipeline` takes about 4 minutes on a recent laptop:
+
+| Step | Time | What it does |
+|---|---|---|
+| `make data` | ~1 min | downloads 1,778 StatsBomb files at the pinned version and 26 football-data files |
+| `make build` | ~15 s | cleans the data and runs the 38 validation rules; stops if an error rule fails |
+| `make features` | ~15 s | builds the feature store |
+| `make train` | ~1 min | walk-forward training of the outcome and starting-XI models |
+| `make explain` | ~1 min | SHAP explanations for 494 fixtures, plus global explanations |
+| `make db` | ~30 s | creates the database and loads it |
+
+Every step is deterministic: a rebuild on another machine produces the same
+data and checksums, and the same model results to many decimal places.
 
 Or with PostgreSQL in Docker, after `make pipeline`:
 

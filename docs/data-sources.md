@@ -63,10 +63,13 @@ and score must agree for every league match.
 
 - StatsBomb is fetched from a fixed commit, so every rebuild sees
   byte-identical inputs.
-- football-data files are not versioned upstream; their SHA-256 checksums
-  are recorded in `data/raw/MANIFEST.json` after every download, so a
-  changed file is visible.
-- Raw JSON is stored gzip-compressed (297 MB instead of about 3 GB).
+- `data/raw/MANIFEST.json` records a SHA-256 checksum of every downloaded
+  file's content after each download. football-data files are not
+  versioned upstream, so this is how a changed file becomes visible.
+- Raw JSON is stored gzip-compressed (297 MB instead of about 3 GB), with no
+  timestamp in the gzip header, and checksums are taken on the decompressed
+  content. Two downloads of the same data therefore have identical
+  checksums.
 - `barca fetch --sample N` downloads only the N most recent Barcelona
   matches, which is what CI uses.
 

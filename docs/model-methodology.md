@@ -135,8 +135,10 @@ season.
 3. **Assignment.** Players are assigned to slots by the Hungarian algorithm,
    maximising Σ log P(start) + λ · log(eligibility), where eligibility is the
    player's share of recent starts in the slot's position family. λ = 0.25
-   was chosen on the development seasons. The lineup always contains exactly
-   one goalkeeper.
+   was chosen on the development seasons. A much smaller term (weight 0.01)
+   prefers each player's usual flank, so left-backs play on the left: 86% of
+   wide slots go to a player on his usual side, against 57% without it. The
+   lineup always contains exactly one goalkeeper.
 4. **Reasons.** TreeSHAP of the start model, turned into short sentences
    ("Started 4 of the last 5", "Workload index 72") for the app's
    "Why selected?" panel.
@@ -145,8 +147,8 @@ season.
 |---|---|
 | Same XI as the previous match | 7.78 |
 | Most regular starters | 8.84 |
-| Top 11 start probabilities (invalid lineup in about 5% of matches) | 8.94 |
-| **Model + positional assignment** | **8.99** (whole XI right in 10% of matches) |
+| Top 11 start probabilities (invalid lineup in about 4% of matches) | 8.97 |
+| **Model + positional assignment** | **8.99** (whole XI right in 12% of matches) |
 
 ![Predicted XI example](../reports/figures/16_predicted_xi.png)
 

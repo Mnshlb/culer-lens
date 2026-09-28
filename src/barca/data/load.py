@@ -50,14 +50,20 @@ def _get(client: httpx.Client, url: str) -> bytes:
 def _write_gz(path: Path, payload: bytes) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".part")
-    with gzip.open(tmp, "wb", compresslevel=6) as fh:
+    # No timestamp or file name in the gzip header, so identical payloads give identical files.
+    with (
+        tmp.open("wb") as raw,
+        gzip.GzipFile(filename="", mode="wb", fileobj=raw, compresslevel=6, mtime=0) as fh,
+    ):
         fh.write(payload)
     tmp.rename(path)
 
 
 def _sha256(path: Path) -> str:
+    """Checksum of the file's content (decompressed for .gz), independent of how it was stored."""
     digest = hashlib.sha256()
-    with path.open("rb") as fh:
+    opener = gzip.open if path.suffix == ".gz" else open
+    with opener(path, "rb") as fh:
         for chunk in iter(lambda: fh.read(1 << 20), b""):
             digest.update(chunk)
     return digest.hexdigest()

@@ -96,7 +96,8 @@ check: lint typecheck test  ## what CI runs before the data and browser jobs
 
 notebooks:  ## re-execute every notebook in place
 	$(PY) jupyter nbconvert --to notebook --execute --inplace \
-		--ExecutePreprocessor.timeout=1800 notebooks/*.ipynb
+		--ExecutePreprocessor.timeout=1800 --ExecutePreprocessor.record_timing=False \
+		notebooks/*.ipynb
 
 clean:  ## remove caches and build output (keeps data and models)
 	rm -rf .pytest_cache .mypy_cache .ruff_cache $(WEB)/.next $(WEB)/test-results $(WEB)/playwright-report

@@ -69,7 +69,7 @@ Single-model rankings shuffled between development and holdout seasons,
 which is why production averages three models.
 
 **Starting XI.** About 9 of 11 starters are predicted correctly on the
-holdout seasons, but the whole XI only in about 10% of matches. The model
+holdout seasons, but the whole XI only in about 12% of matches. The model
 sees selection history, not training, fitness or tactics.
 
 ## Ratings and indices

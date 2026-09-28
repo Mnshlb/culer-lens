@@ -98,6 +98,9 @@ POSITION_XY = {
 }
 LAMBDA = 0.25  # chosen on the development seasons (notebook 16): stronger weights cost accuracy
 ELIGIBILITY_FLOOR = 0.02
+# Left/right preference: a tie-breaker far below λ, so it decides which flank a player takes
+# within his position family but (almost) never who is picked.
+SIDE_WEIGHT = 0.01
 
 
 def prepare(pf: pl.DataFrame) -> pl.DataFrame:
@@ -222,10 +225,33 @@ def eligibility(
     return {f: c / total for f, c in counts.items()}
 
 
+def side_of(position: str | None) -> str:
+    """'Left Back' -> 'left', 'Right Wing' -> 'right', anything central -> 'centre'."""
+    if position and position.startswith("Left"):
+        return "left"
+    if position and position.startswith("Right"):
+        return "right"
+    return "centre"
+
+
+def side_preference(
+    history: pl.DataFrame, player_id: int, before: date, n: int = 20
+) -> dict[str, float]:
+    """Share of a player's recent starts on the left, in the centre and on the right."""
+    past = history.filter(pl.col("player_id") == player_id, pl.col("date") < before).tail(n)
+    counts = Counter(side_of(pos) for pos in past["position"].to_list())
+    total = sum(counts.values())
+    return {k: c / total for k, c in counts.items()} if total else {}
+
+
 def assign(
-    candidates: pl.DataFrame, slots: list[str], elig: dict[int, dict[str, float]]
+    candidates: pl.DataFrame,
+    slots: list[str],
+    elig: dict[int, dict[str, float]],
+    sides: dict[int, dict[str, float]] | None = None,
 ) -> list[tuple[int, str]]:
-    """Choose 11 players and their slots by maximising log P(start) + λ log(eligibility)."""
+    """Choose 11 players and their slots by maximising log P(start) + λ log(eligibility),
+    with a small left/right preference to put each player on his usual flank."""
     ids = candidates["player_id"].to_list()
     p = np.clip(candidates["p_start"].to_numpy(), 1e-4, 1.0)
     cost = np.zeros((len(ids), len(slots)))
@@ -233,7 +259,12 @@ def assign(
         for j, pos in enumerate(slots):
             fam = POSITION_FAMILY.get(POSITION_GROUP.get(pos, ""), "")
             e = elig.get(pid, {}).get(fam, 0.0)
-            cost[i, j] = -(np.log(p[i]) + LAMBDA * np.log(max(e, ELIGIBILITY_FLOOR)))
+            side = (sides or {}).get(pid, {}).get(side_of(pos), 0.0)
+            cost[i, j] = -(
+                np.log(p[i])
+                + LAMBDA * np.log(max(e, ELIGIBILITY_FLOOR))
+                + SIDE_WEIGHT * np.log(max(side, ELIGIBILITY_FLOOR))
+            )
     rows, cols = linear_sum_assignment(cost)
     return [(ids[r], slots[c]) for r, c in zip(rows, cols, strict=True)]
 
@@ -251,7 +282,8 @@ def predict_lineups(pred: pl.DataFrame, history: pl.DataFrame) -> pl.DataFrame:
                 pid: eligibility(history, pid, d, fam)
                 for pid, fam in cand.select("player_id", "position_family").iter_rows()
             }
-            chosen = dict(assign(cand, slots, elig))
+            sides = {pid: side_preference(history, pid, d) for pid in cand["player_id"].to_list()}
+            chosen = dict(assign(cand, slots, elig, sides))
         frames.append(
             cand.with_columns(
                 pl.col("player_id").is_in(list(chosen)).alias("in_xi"),

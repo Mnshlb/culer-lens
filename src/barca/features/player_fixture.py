@@ -21,6 +21,16 @@ import polars as pl
 
 from barca.analytics import workload
 
+
+def _most_common(values: list[str]) -> str | None:
+    """Most frequent value; ties go to the most recent one, so the result never depends on set order."""
+    if not values:
+        return None
+    counts = {v: values.count(v) for v in values}
+    last_seen = {v: i for i, v in enumerate(values)}
+    return max(counts, key=lambda v: (counts[v], last_seen[v]))
+
+
 POOL_DAYS = 60
 
 
@@ -207,8 +217,8 @@ def build(
                     "team_days_rest": fx["team_days_rest"],
                     "squad_known": known,
                     "player_id": pid,
-                    "position_family": max(set(fam_hist), key=fam_hist.count) if fam_hist else None,
-                    "position_group": max(set(grp_hist), key=grp_hist.count) if grp_hist else None,
+                    "position_family": _most_common(fam_hist),
+                    "position_group": _most_common(grp_hist),
                     "minutes_7d": minutes_within(7),
                     "minutes_14d": minutes_within(14),
                     "minutes_30d": minutes_within(30),
@@ -257,7 +267,8 @@ def build(
         workload.band_expr().alias("workload_band")
     )
     # rank within position family among this fixture's candidates: 1 = most regular starter
-    out = out.with_columns(
+    # (sorted first so ties are broken the same way on every run; joins do not keep row order)
+    out = out.sort("date", "player_id").with_columns(
         pl.col("starts_last10")
         .rank("ordinal", descending=True)
         .over("date", "position_family")
