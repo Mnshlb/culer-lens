@@ -14,6 +14,14 @@ test("overview shows the next match and a probability for each outcome", async (
   await expect(page.getByText("0-4")).toBeVisible();
 });
 
+test("every page says it is a personal project, not affiliated with the club or StatsBomb", async ({ page }) => {
+  for (const path of ["/", "/about"]) {
+    await page.goto(path);
+    await expect(page.getByText(/Not affiliated with, endorsed by or\s+connected to FC Barcelona or StatsBomb/)).toBeVisible();
+  }
+  await expect(page.getByRole("heading", { name: "About this project" })).toBeVisible();
+});
+
 test("match centre: predicted XI opens a player panel with reasons", async ({ page }) => {
   await page.goto("/matches/1");
   await expect(page.getByText("Team comparison")).toBeVisible();

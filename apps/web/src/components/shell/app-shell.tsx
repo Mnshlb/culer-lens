@@ -59,15 +59,22 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 py-6 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6">
           <div className="space-y-1">
+            <p className="text-foreground/80">
+              A personal, non-commercial project built with StatsBomb open data. Not affiliated with, endorsed by or
+              connected to FC Barcelona or StatsBomb.
+            </p>
             <p>
               Event data: StatsBomb Open Data (La Liga 2004/05-2020/21). Results and odds: football-data.co.uk.
             </p>
-            <p>An independent analytics project. Not affiliated with or endorsed by FC Barcelona.</p>
           </div>
-          <a href="https://github.com/statsbomb/open-data" target="_blank" rel="noreferrer"
-             className="inline-flex items-center gap-2 self-start rounded-md bg-white px-2.5 py-1.5 md:self-auto">
-            <Image src="/statsbomb-logo.png" alt="StatsBomb" width={110} height={28} className="h-5 w-auto" />
-          </a>
+          <div className="flex items-center gap-2 self-start md:self-auto">
+            <span>Data by</span>
+            <a href="https://github.com/statsbomb/open-data" target="_blank" rel="noreferrer"
+               aria-label="StatsBomb open data (data credit)"
+               className="inline-flex items-center rounded-md bg-white px-2.5 py-1.5">
+              <Image src="/statsbomb-logo.png" alt="StatsBomb" width={110} height={28} className="h-5 w-auto" />
+            </a>
+          </div>
         </div>
       </footer>
     </div>

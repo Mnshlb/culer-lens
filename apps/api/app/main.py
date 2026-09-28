@@ -14,6 +14,9 @@ Football analytics and predictions for FC Barcelona, 2004/05-2020/21.
 
 Every prediction is the one the model would have made **before** the match,
 trained only on earlier seasons. Event data: StatsBomb Open Data.
+
+A personal, non-commercial project. Not affiliated with, endorsed by or
+connected to FC Barcelona or StatsBomb.
 """
 
 

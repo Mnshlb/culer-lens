@@ -1,9 +1,13 @@
 # Barça Intelligence
 
-An end-to-end football analytics platform for FC Barcelona, built on
-StatsBomb's open event data: a validated data pipeline, team and player
+An end-to-end football analytics platform about FC Barcelona, built with
+StatsBomb's free open event data: a validated data pipeline, team and player
 analytics, a calibrated match-outcome model, starting-XI prediction,
 explainable AI, a FastAPI service and an interactive Next.js app.
+
+> **A personal, non-commercial project.** It uses StatsBomb's free open data
+> and is **not affiliated with, endorsed by or connected to FC Barcelona or
+> StatsBomb**.
 
 The data ends in 2021, so the app **replays history**: pick any Barcelona
 fixture from 2008/09 to 2020/21 and it shows exactly what the platform would
@@ -189,8 +193,10 @@ The data is **not included** in this repository. The StatsBomb user
 agreement does not allow redistribution, so `make data` downloads it from
 the original sources at a pinned version.
 
-<a href="https://statsbomb.com"><img src="apps/web/public/statsbomb-logo.png" alt="StatsBomb" width="180"></a>
+Data by <a href="https://statsbomb.com"><img src="apps/web/public/statsbomb-logo.png" alt="StatsBomb" width="140" align="middle"></a>
 
 The source code is not open source: it is © 2026 Manshul Budholiya, all
-rights reserved (see [LICENSE](LICENSE)). The licence does not cover the data. This is an independent project, not affiliated with or
-endorsed by FC Barcelona.
+rights reserved (see [LICENSE](LICENSE)). The licence does not cover the data. This is a personal, non-commercial project. It is not
+affiliated with, endorsed by or connected to FC Barcelona or StatsBomb; the
+StatsBomb logo is the data credit that StatsBomb's user agreement asks for.
+Club and competition names are used only to identify teams and matches.

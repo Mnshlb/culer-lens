@@ -10,7 +10,7 @@ const mono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 export const metadata: Metadata = {
   title: { default: "Barça Intelligence", template: "%s · Barça Intelligence" },
   description:
-    "Football analytics and match prediction for FC Barcelona, 2004/05-2020/21: predictions, starting XIs, player ratings, workload and heatmaps, with explanations.",
+    "A personal football analytics project on FC Barcelona, 2004/05-2020/21, built with StatsBomb open data: predictions, starting XIs, player ratings, workload and heatmaps, with explanations. Not affiliated with FC Barcelona or StatsBomb.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

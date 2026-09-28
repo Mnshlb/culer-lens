@@ -29,13 +29,30 @@ export default function Page() {
   return (
     <div className="space-y-4">
       <PageTitle eyebrow="Methodology" title="How it works, and what it cannot do" />
+      <Panel title="About this project">
+        <div className="space-y-2 text-sm leading-relaxed text-muted-foreground">
+          <p>
+            Barça Intelligence is a <b className="text-foreground">personal, non-commercial project</b>. It is built on
+            StatsBomb&apos;s free open data and football-data.co.uk&apos;s public results.
+          </p>
+          <p>
+            It is <b className="text-foreground">not affiliated with, endorsed by or connected to FC Barcelona or
+            StatsBomb</b>, or any other data source. Club and competition names are used only to identify teams and
+            matches, and belong to their owners. The StatsBomb logo appears because StatsBomb asks for it as a data
+            credit.
+          </p>
+        </div>
+      </Panel>
       <div className="grid gap-4 lg:grid-cols-2">
         <Panel title="Data">
           <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
             <p><b className="text-foreground">StatsBomb Open Data</b>: 3.1 million events from 869 matches (every Barcelona league match in the data, the complete 2015/16 La Liga season and three Champions League finals), with lineups, xG on every shot and 360 freeze frames for 2020/21.</p>
             <p><b className="text-foreground">football-data.co.uk</b>: every La Liga result since 1995/96 with shots, corners, cards and bookmaker odds. It powers the Elo ratings, every club&apos;s form, and the betting-market benchmark (odds are never model inputs).</p>
             <p>The raw data is not redistributed. The pipeline downloads it from the original sources at a pinned version and validates it with 38 football-aware data-quality rules before any feature is built.</p>
-            <div className="inline-flex rounded-md bg-white px-2.5 py-1.5"><Image src="/statsbomb-logo.png" alt="StatsBomb" width={120} height={30} className="h-5 w-auto" /></div>
+            <div className="flex items-center gap-2 text-xs">
+              <span>Data by</span>
+              <div className="inline-flex rounded-md bg-white px-2.5 py-1.5"><Image src="/statsbomb-logo.png" alt="StatsBomb" width={120} height={30} className="h-5 w-auto" /></div>
+            </div>
           </div>
         </Panel>
         <Panel title="The time machine">
