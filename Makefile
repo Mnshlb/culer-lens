@@ -2,7 +2,7 @@ PY := uv run
 WEB := apps/web
 .DEFAULT_GOAL := help
 
-.PHONY: help start install data data-360 interim build features train explain db pipeline \
+.PHONY: help start install-command uninstall-command install data data-360 interim build features train explain db pipeline \
 	api web fixtures api-types test test-data test-e2e test-all lint format typecheck \
 	check notebooks up down clean
 
@@ -11,6 +11,12 @@ help:  ## list targets
 
 start:  ## one command: install and build whatever is missing, run the app, open the browser
 	@bash scripts/start.sh
+
+install-command:  ## add a `barca-intelligence` command that starts the app from any folder
+	@bash scripts/install-command.sh
+
+uninstall-command:  ## remove the `barca-intelligence` command
+	@bash scripts/install-command.sh --uninstall
 
 install:  ## install Python deps (all extras + dev) and web deps
 	uv sync --all-extras

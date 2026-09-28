@@ -127,6 +127,9 @@ the app, and opens http://localhost:3000. Press Ctrl+C to stop. Later runs
 skip what is already built and start in a few seconds. Other ports:
 `API_PORT=8001 WEB_PORT=3001 make start`.
 
+To start it from any folder by typing `barca-intelligence`, run
+`make install-command` once (`make uninstall-command` removes it).
+
 Step by step, the same thing is:
 
 ```bash
