@@ -78,8 +78,8 @@ quirk rather than a defect:
 exits with a non-zero code, and `barca features` refuses to run until a
 build has passed
 ([D-016](decision-log.md#d-016---type-aware-validation-with-a-hard-gate-before-features)).
-CI runs the same build and gate on a downloaded sample every week, because
-upstream files can change without notice.
+CI can run the same build and gate on a downloaded sample. That job is
+started by hand only, never automatically (D-039).
 
 ## Tests
 

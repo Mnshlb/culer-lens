@@ -92,17 +92,19 @@ any question of redistributing the data.
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` runs on every push and pull request, and weekly:
+`.github/workflows/ci.yml` runs on every push and pull request:
 
 | Job | Steps |
 |---|---|
 | Python | ruff (lint + format check), mypy, unit and integration tests on SQLite, integration tests again on a Postgres 17 service, and a check that the browser-test fixtures still match the API |
-| Data | downloads the 40 latest Barcelona matches plus all football-data seasons, runs the full build with its validation gate, builds the feature store and runs the data-quality and leakage tests; uploads the data-quality report |
+| Data (manual only) | downloads the 40 latest Barcelona matches plus all football-data seasons, runs the full build with its validation gate, builds the feature store and runs the data-quality and leakage tests; uploads the data-quality report |
 | Web | ESLint, route type generation + `tsc`, and the Playwright suite (desktop and mobile) against the production build, with the API served from fixtures |
 | Docker | builds both images |
 
-The weekly run exists because the data job depends on files upstream that can
-change without notice.
+The data job never runs automatically: football-data.co.uk offers its files
+to private individuals, not to automated downloads (D-039). Start it by hand
+from the Actions tab ("Run workflow") when you want to check the upstream
+data.
 
 ## Tests locally
 
