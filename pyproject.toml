@@ -1,5 +1,5 @@
 [project]
-name = "barca-intelligence"
+name = "culer-lens"
 version = "0.1.0"
 description = "Football analytics and match-prediction platform for FC Barcelona built on StatsBomb open event data."
 readme = "README.md"

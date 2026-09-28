@@ -1,4 +1,4 @@
-"""Barcelona Intelligence Player Rating (BIPR) and per-match ratings.
+"""Barça Individual Player Rating (BIPR) and per-match ratings.
 
 BIPR is a transparent, position-specific composite, not an objective truth:
 

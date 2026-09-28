@@ -167,7 +167,7 @@ descriptive only and never enters the outcome model
 
 ![Expected threat grid](../reports/figures/10_xt_grid.png)
 
-### BIPR: Barça Intelligence Player Rating
+### BIPR: Barça Individual Player Rating
 
 A season rating for outfield players with at least 900 league minutes
 ([D-022](decision-log.md#d-022---bipr-transparent-pillars-fixed-reference-weighted-score-as-headline)).

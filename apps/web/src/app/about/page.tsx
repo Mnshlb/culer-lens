@@ -32,7 +32,7 @@ export default function Page() {
       <Panel title="About this project">
         <div className="space-y-2 text-sm leading-relaxed text-muted-foreground">
           <p>
-            Barça Intelligence is a <b className="text-foreground">personal, non-commercial project</b>. It is built on
+            Culer Lens is a <b className="text-foreground">personal, non-commercial project</b>. It is built on
             StatsBomb&apos;s free open data and football-data.co.uk&apos;s public results.
           </p>
           <p>

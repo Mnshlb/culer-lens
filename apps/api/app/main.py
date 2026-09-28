@@ -1,4 +1,4 @@
-"""Barcelona Intelligence API."""
+"""Culer Lens API."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ connected to FC Barcelona or StatsBomb.
 
 def create_app() -> FastAPI:
     settings = get_settings()
-    app = FastAPI(title="Barcelona Intelligence API", version="1.0.0", description=DESCRIPTION)
+    app = FastAPI(title="Culer Lens API", version="1.0.0", description=DESCRIPTION)
     app.add_middleware(GZipMiddleware, minimum_size=1000)
     app.add_middleware(
         CORSMiddleware, allow_origins=settings.origins, allow_methods=["GET"], allow_headers=["*"]

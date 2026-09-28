@@ -247,100 +247,6 @@ wheels = [
 ]
 
 [[package]]
-name = "barca-intelligence"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "numpy" },
-    { name = "pandas" },
-    { name = "polars" },
-    { name = "psycopg", extra = ["binary"] },
-    { name = "pyarrow" },
-    { name = "pydantic" },
-    { name = "pydantic-settings" },
-    { name = "sqlalchemy" },
-]
-
-[package.optional-dependencies]
-analytics = [
-    { name = "httpx" },
-    { name = "matplotlib" },
-    { name = "mplsoccer" },
-    { name = "plotly" },
-    { name = "scipy" },
-    { name = "statsmodels" },
-]
-api = [
-    { name = "alembic" },
-    { name = "fastapi" },
-    { name = "uvicorn", extra = ["standard"] },
-]
-ml = [
-    { name = "lightgbm" },
-    { name = "mlflow" },
-    { name = "optuna" },
-    { name = "scikit-learn" },
-    { name = "shap" },
-    { name = "xgboost" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "ipykernel" },
-    { name = "jupyterlab" },
-    { name = "jupytext" },
-    { name = "mypy" },
-    { name = "nbclient" },
-    { name = "nbconvert" },
-    { name = "pandas-stubs" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "alembic", marker = "extra == 'api'", specifier = ">=1.13" },
-    { name = "fastapi", marker = "extra == 'api'", specifier = ">=0.115" },
-    { name = "httpx", marker = "extra == 'analytics'", specifier = ">=0.27" },
-    { name = "lightgbm", marker = "extra == 'ml'", specifier = ">=4.5" },
-    { name = "matplotlib", marker = "extra == 'analytics'", specifier = ">=3.9" },
-    { name = "mlflow", marker = "extra == 'ml'", specifier = ">=2.16" },
-    { name = "mplsoccer", marker = "extra == 'analytics'", specifier = ">=1.4" },
-    { name = "numpy", specifier = ">=2.0" },
-    { name = "optuna", marker = "extra == 'ml'", specifier = ">=4.0" },
-    { name = "pandas", specifier = ">=2.2" },
-    { name = "plotly", marker = "extra == 'analytics'", specifier = ">=5.24" },
-    { name = "polars", specifier = ">=1.9" },
-    { name = "psycopg", extras = ["binary"], specifier = ">=3.2" },
-    { name = "pyarrow", specifier = ">=17.0" },
-    { name = "pydantic", specifier = ">=2.8" },
-    { name = "pydantic-settings", specifier = ">=2.4" },
-    { name = "scikit-learn", marker = "extra == 'ml'", specifier = ">=1.5" },
-    { name = "scipy", marker = "extra == 'analytics'", specifier = ">=1.14" },
-    { name = "shap", marker = "extra == 'ml'", specifier = ">=0.46" },
-    { name = "sqlalchemy", specifier = ">=2.0" },
-    { name = "statsmodels", marker = "extra == 'analytics'", specifier = ">=0.14" },
-    { name = "uvicorn", extras = ["standard"], marker = "extra == 'api'", specifier = ">=0.30" },
-    { name = "xgboost", marker = "extra == 'ml'", specifier = ">=2.1" },
-]
-provides-extras = ["analytics", "ml", "api"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "ipykernel", specifier = ">=6.29" },
-    { name = "jupyterlab", specifier = ">=4.2" },
-    { name = "jupytext", specifier = ">=1.16" },
-    { name = "mypy", specifier = ">=1.11" },
-    { name = "nbclient", specifier = ">=0.10" },
-    { name = "nbconvert", specifier = ">=7.16" },
-    { name = "pandas-stubs", specifier = ">=2.2" },
-    { name = "pytest", specifier = ">=8.3" },
-    { name = "pytest-cov", specifier = ">=5.0" },
-    { name = "ruff", specifier = ">=0.6" },
-]
-
-[[package]]
 name = "beautifulsoup4"
 version = "4.15.0"
 source = { registry = "https://pypi.org/simple" }
@@ -590,6 +496,100 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/63/8e/f1f955e0921dd2b6d22eae7e8d24a4c4b638d10735ffbf6a71f99eb0fcb8/cryptography-50.0.1-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:fd3718b960d0b5dd213cdf03f3bcb7000e69dda0de8b956061947ff6bcff5558", size = 4888413, upload-time = "2026-08-25T19:45:20.4Z" },
     { url = "https://files.pythonhosted.org/packages/1f/ab/89e2b798d2c3925f82e2bb72d5979f3d2f6da2dd22ef4a8cd8b70d920039/cryptography-50.0.1-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:2a93d05e34d5f67fba6f891fe85d929999baa7195e853923ea6d7576c9e68c5e", size = 5044355, upload-time = "2026-08-25T19:45:22.353Z" },
     { url = "https://files.pythonhosted.org/packages/99/89/87ef49ffe383ef4e147d27b7bf2088fb0b54ea409dd87b5a89442e5828a5/cryptography-50.0.1-cp39-abi3-win_amd64.whl", hash = "sha256:55d16b1ef3ee0958d893a977b19777887e546c9954ea81b200c3301a864013f2", size = 3875429, upload-time = "2026-08-25T19:45:24.418Z" },
+]
+
+[[package]]
+name = "culer-lens"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "polars" },
+    { name = "psycopg", extra = ["binary"] },
+    { name = "pyarrow" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "sqlalchemy" },
+]
+
+[package.optional-dependencies]
+analytics = [
+    { name = "httpx" },
+    { name = "matplotlib" },
+    { name = "mplsoccer" },
+    { name = "plotly" },
+    { name = "scipy" },
+    { name = "statsmodels" },
+]
+api = [
+    { name = "alembic" },
+    { name = "fastapi" },
+    { name = "uvicorn", extra = ["standard"] },
+]
+ml = [
+    { name = "lightgbm" },
+    { name = "mlflow" },
+    { name = "optuna" },
+    { name = "scikit-learn" },
+    { name = "shap" },
+    { name = "xgboost" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "ipykernel" },
+    { name = "jupyterlab" },
+    { name = "jupytext" },
+    { name = "mypy" },
+    { name = "nbclient" },
+    { name = "nbconvert" },
+    { name = "pandas-stubs" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "alembic", marker = "extra == 'api'", specifier = ">=1.13" },
+    { name = "fastapi", marker = "extra == 'api'", specifier = ">=0.115" },
+    { name = "httpx", marker = "extra == 'analytics'", specifier = ">=0.27" },
+    { name = "lightgbm", marker = "extra == 'ml'", specifier = ">=4.5" },
+    { name = "matplotlib", marker = "extra == 'analytics'", specifier = ">=3.9" },
+    { name = "mlflow", marker = "extra == 'ml'", specifier = ">=2.16" },
+    { name = "mplsoccer", marker = "extra == 'analytics'", specifier = ">=1.4" },
+    { name = "numpy", specifier = ">=2.0" },
+    { name = "optuna", marker = "extra == 'ml'", specifier = ">=4.0" },
+    { name = "pandas", specifier = ">=2.2" },
+    { name = "plotly", marker = "extra == 'analytics'", specifier = ">=5.24" },
+    { name = "polars", specifier = ">=1.9" },
+    { name = "psycopg", extras = ["binary"], specifier = ">=3.2" },
+    { name = "pyarrow", specifier = ">=17.0" },
+    { name = "pydantic", specifier = ">=2.8" },
+    { name = "pydantic-settings", specifier = ">=2.4" },
+    { name = "scikit-learn", marker = "extra == 'ml'", specifier = ">=1.5" },
+    { name = "scipy", marker = "extra == 'analytics'", specifier = ">=1.14" },
+    { name = "shap", marker = "extra == 'ml'", specifier = ">=0.46" },
+    { name = "sqlalchemy", specifier = ">=2.0" },
+    { name = "statsmodels", marker = "extra == 'analytics'", specifier = ">=0.14" },
+    { name = "uvicorn", extras = ["standard"], marker = "extra == 'api'", specifier = ">=0.30" },
+    { name = "xgboost", marker = "extra == 'ml'", specifier = ">=2.1" },
+]
+provides-extras = ["analytics", "ml", "api"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "ipykernel", specifier = ">=6.29" },
+    { name = "jupyterlab", specifier = ">=4.2" },
+    { name = "jupytext", specifier = ">=1.16" },
+    { name = "mypy", specifier = ">=1.11" },
+    { name = "nbclient", specifier = ">=0.10" },
+    { name = "nbconvert", specifier = ">=7.16" },
+    { name = "pandas-stubs", specifier = ">=2.2" },
+    { name = "pytest", specifier = ">=8.3" },
+    { name = "pytest-cov", specifier = ">=5.0" },
+    { name = "ruff", specifier = ">=0.6" },
 ]
 
 [[package]]

@@ -97,7 +97,7 @@ done
 [ "${ready:-0}" = 1 ] || fail "the servers did not start; see the messages above"
 
 echo
-say "Barça Intelligence is running"
+say "Culer Lens is running"
 echo "  App:       $WEB_URL"
 echo "  API docs:  $API_URL/docs"
 echo "  Press Ctrl+C to stop."

@@ -3,7 +3,7 @@
 #
 #   make up        # starts Postgres, loads it, then builds and starts api + web
 #
-name: barca-intelligence
+name: culer-lens
 
 services:
   db:

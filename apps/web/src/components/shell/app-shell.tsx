@@ -23,7 +23,7 @@ function Wordmark() {
         </span>
       </span>
       <span className="text-[15px] font-semibold tracking-tight">
-        Barça <span className="text-muted-foreground font-medium">Intelligence</span>
+        Culer <span className="text-muted-foreground font-medium">Lens</span>
       </span>
     </Link>
   );

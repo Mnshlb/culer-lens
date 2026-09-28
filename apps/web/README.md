@@ -1,4 +1,4 @@
-# Barça Intelligence: web app
+# Culer Lens: web app
 
 Next.js 16 (App Router) + TypeScript + Tailwind v4 + shadcn/ui, with SVG pitch graphics, Recharts, Motion and
 TanStack Query. It reads everything from the FastAPI service in `apps/api`.

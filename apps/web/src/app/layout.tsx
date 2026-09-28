@@ -8,7 +8,7 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin", "latin-ext"] 
 const mono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: { default: "Barça Intelligence", template: "%s · Barça Intelligence" },
+  title: { default: "Culer Lens", template: "%s · Culer Lens" },
   description:
     "A personal football analytics project on FC Barcelona, 2004/05-2020/21, built with StatsBomb open data: predictions, starting XIs, player ratings, workload and heatmaps, with explanations. Not affiliated with FC Barcelona or StatsBomb.",
 };

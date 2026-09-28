@@ -1,4 +1,4 @@
-# Barça Intelligence
+# Culer Lens
 
 An end-to-end football analytics platform about FC Barcelona, built with
 StatsBomb's free open event data: a validated data pipeline, team and player
@@ -121,7 +121,7 @@ register their name and email at
 (clause 2.2 of its user agreement).
 
 ```bash
-git clone https://github.com/Mnshlb/barca-intelligence.git && cd barca-intelligence
+git clone https://github.com/Mnshlb/culer-lens.git && cd culer-lens
 make start
 ```
 
@@ -131,7 +131,7 @@ the app, and opens http://localhost:3000. Press Ctrl+C to stop. Later runs
 skip what is already built and start in a few seconds. Other ports:
 `API_PORT=8001 WEB_PORT=3001 make start`.
 
-To start it from any folder by typing `barca-intelligence`, run
+To start it from any folder by typing `culer-lens`, run
 `make install-command` once (`make uninstall-command` removes it).
 
 Step by step, the same thing is:

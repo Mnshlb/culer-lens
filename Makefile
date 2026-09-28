@@ -12,10 +12,10 @@ help:  ## list targets
 start:  ## one command: install and build whatever is missing, run the app, open the browser
 	@bash scripts/start.sh
 
-install-command:  ## add a `barca-intelligence` command that starts the app from any folder
+install-command:  ## add a `culer-lens` command that starts the app from any folder
 	@bash scripts/install-command.sh
 
-uninstall-command:  ## remove the `barca-intelligence` command
+uninstall-command:  ## remove the `culer-lens` command
 	@bash scripts/install-command.sh --uninstall
 
 install:  ## install Python deps (all extras + dev) and web deps
