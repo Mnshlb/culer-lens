@@ -9,6 +9,10 @@
 
 ## Local development
 
+`make start` is the one-command version: it installs and builds whatever is
+missing, serves the API and a production build of the web app, opens the
+browser, and stops both on Ctrl+C. For development with live reload:
+
 ```bash
 make install     # uv sync --all-extras; npm ci in apps/web
 make pipeline    # download → build + validate → features → train → explain → load ./barca.db

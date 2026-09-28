@@ -2,12 +2,15 @@ PY := uv run
 WEB := apps/web
 .DEFAULT_GOAL := help
 
-.PHONY: help install data data-360 interim build features train explain db pipeline \
+.PHONY: help start install data data-360 interim build features train explain db pipeline \
 	api web fixtures api-types test test-data test-e2e test-all lint format typecheck \
 	check notebooks up down clean
 
 help:  ## list targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-12s %s\n", $$1, $$2}'
+
+start:  ## one command: install and build whatever is missing, run the app, open the browser
+	@bash scripts/start.sh
 
 install:  ## install Python deps (all extras + dev) and web deps
 	uv sync --all-extras

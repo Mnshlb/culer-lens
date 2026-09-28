@@ -118,13 +118,25 @@ register their name and email at
 
 ```bash
 git clone <repository-url> barca-intelligence && cd barca-intelligence
-make install      # Python and web dependencies (a few minutes the first time)
-make pipeline     # download, validate, build features, train, explain, load ./barca.db
-make api          # terminal 1: http://localhost:8000/docs
-make web          # terminal 2: http://localhost:3000
+make start
 ```
 
-`make pipeline` takes about 4 minutes on a recent laptop:
+`make start` does everything: it installs the dependencies, builds the data,
+models and database on the first run, builds the web app, starts the API and
+the app, and opens http://localhost:3000. Press Ctrl+C to stop. Later runs
+skip what is already built and start in a few seconds. Other ports:
+`API_PORT=8001 WEB_PORT=3001 make start`.
+
+Step by step, the same thing is:
+
+```bash
+make install      # Python and web dependencies (a few minutes the first time)
+make pipeline     # download, validate, build features, train, explain, load ./barca.db
+make api          # terminal 1: http://localhost:8000/docs (development mode)
+make web          # terminal 2: http://localhost:3000 (development mode)
+```
+
+The first build (`make pipeline`) takes about 4 minutes on a recent laptop:
 
 | Step | Time | What it does |
 |---|---|---|
