@@ -12,7 +12,7 @@ from barca.features import tables
 
 LEAGUE_CLASSES = ("H", "D", "A")
 BARCA_CLASSES = ("W", "D", "L")
-TRAIN_START = 2005  # first season with every results-based feature (D-018)
+TRAIN_START = 2005  # first season with every results-based feature
 TEST_SEASONS = tuple(range(2008, 2021))  # 2008/09 .. 2020/21
 
 

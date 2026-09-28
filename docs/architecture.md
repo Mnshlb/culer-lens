@@ -45,24 +45,21 @@ flowchart LR
 prediction for a fixture is computed only from matches played before it.
 The app uses this to replay history: pick any Barcelona match from 2008/09
 onwards and it shows what the platform would have said on the morning of
-that match, with the result hidden until you reveal it
-([D-004](decision-log.md#d-004---as-of-design-the-platform-replays-history)).
+that match, with the result hidden until you reveal it.
 
 **Leakage is tested, not assumed.** Rolling features are built with one
 shift-then-window mechanism. A future-scrambling test rebuilds the features
 after randomising every result from a cutoff date and requires everything up
-to the cutoff to be unchanged. Models are evaluated walk-forward only
-([D-020](decision-log.md#d-020---rolling-windows-cross-season-schedule-anchored-coverage-aware)).
+to the cutoff to be unchanged. Models are evaluated walk-forward only.
 
 **A data-quality gate, not only a report.** `barca build` writes a stamp
 only when every error-level rule passes, and the feature stage refuses to run
-without it ([D-016](decision-log.md#d-016---type-aware-validation-with-a-hard-gate-before-features)).
+without it.
 
 **One definition per metric.** Progressive passes, PPDA, box entries and the
 heatmap action families are Polars expressions in
 `barca.analytics.definitions`. Team stats, player stats, the database loader
-and the API all import them
-([D-012](decision-log.md#d-012---one-definitions-module-for-every-football-metric)).
+and the API all import them.
 
 **The serving side never trains.** The API reads a database that the batch
 pipeline loaded. Its Docker image installs the core package plus FastAPI

@@ -24,8 +24,7 @@ player's spells on the pitch and positions.
 consecutive Barcelona seasons to study trends, build rolling form and
 backtest predictions honestly, and it has professional xG. The Wyscout
 public dataset (Pappalardo et al., 2019) could be redistributed, but it
-covers a single season and has no xG
-([D-001](decision-log.md#d-001---primary-dataset-statsbomb-open-data)).
+covers a single season and has no xG.
 
 **Coverage caveats.** Outside 2015/16, StatsBomb only has matches that
 Barcelona played, and the early seasons are partial and skewed towards
@@ -46,8 +45,7 @@ Barcelona. The complete league schedule gives Elo ratings and results-based
 form for every club, nine seasons of Elo history before the first StatsBomb
 match, and a training set of every league fixture rather than Barcelona's
 alone. Bookmaker odds are an external benchmark for the models and are never
-used as features
-([D-002](decision-log.md#d-002---secondary-dataset-football-datacouk-la-liga-results)).
+used as features.
 
 ## How the two are joined
 

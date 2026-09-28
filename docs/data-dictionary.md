@@ -10,7 +10,7 @@ ranges, outliers) for every table are in `reports/data_profile.md`, and the
 | Topic | Convention |
 |---|---|
 | Coordinates | StatsBomb yards: x 0-120 along the pitch, y 0-80 across it. Every event is recorded in the acting team's frame, attacking towards x = 120; y = 0 is that team's left touchline. The API mirrors opponent events when both teams share one pitch. |
-| Minutes | Elapsed playing time including stoppage time, derived from the event clock per period. A full match averages 94.3 minutes, so per-90 figures are slightly lower than on sites that cap matches at 90 ([D-010](decision-log.md#d-010---minutes-played-include-stoppage-time)). |
+| Minutes | Elapsed playing time including stoppage time, derived from the event clock per period. A full match averages 94.3 minutes, so per-90 figures are slightly lower than on sites that cap matches at 90. |
 | Seasons | `season` is the label (`2015/2016`), `season_start` the first year (2015). |
 | Perspective | Barcelona tables use `barca_` / `opp_` prefixes. League tables use `h_` / `a_` (home / away). Differences are always first side minus second side. |
 | Identifiers | StatsBomb ids for matches, players and events in the pipeline; the application database uses its own integer keys and keeps `statsbomb_id` columns. `fixture_id` identifies a row of the football-data schedule, which covers every league match whether or not StatsBomb has it. |
@@ -22,7 +22,7 @@ The cleaned, validated inputs to everything else.
 
 | Table | Grain | Rows | Key columns |
 |---|---|---|---|
-| `matches` | match | 869 | `match_id`, `date`, `season`, `home`, `away`, scores, `is_barca`, `barca_venue`, `barca_result`, `barca_era` (head coach, from a tenure table, D-011) |
+| `matches` | match | 869 | `match_id`, `date`, `season`, `home`, `away`, scores, `is_barca`, `barca_venue`, `barca_result`, `barca_era` (head coach, from a tenure table) |
 | `events` | event | 3,140,830 | `match_id`, `event_id`, `index`, `period`, `minute`, `second`, `type`, `subtype`, `outcome`, `team`, `player_id`, `x`, `y`, `end_x`, `end_y`, `shot_xg`, pass and shot flags, `possession`, `play_pattern`. Partitioned by season. |
 | `appearances` | player × match | 29,711 | `minutes`, `started`, `start_position`, `position_group`, `position_family`, `on_minute`, `off_minute`, `end_reason`, cards |
 | `positions` | position spell | 30,673 | every change of position within a match, with start and end clock |
@@ -53,8 +53,7 @@ and lineup eligibility use them.
 
 ## Metric definitions
 
-All defined once in `barca.analytics.definitions`
-([D-012](decision-log.md#d-012---one-definitions-module-for-every-football-metric)).
+All defined once in `barca.analytics.definitions`.
 
 | Metric | Definition |
 |---|---|
@@ -74,8 +73,8 @@ All defined once in `barca.analytics.definitions`
 | Possession | share of the match's passes (the usual public proxy) |
 | Field tilt | share of the match's final-third passes |
 | Defensive action height | mean x of pressures, tackles, interceptions, recoveries, clearances, blocks and fouls |
-| Possession-adjusted defending | count × 0.5 ÷ opponent possession, clipped, so players of a possession-heavy team are not penalised for having less defending to do ([D-013](decision-log.md#d-013---minimum-minutes-and-possession-adjusted-defending)) |
-| xT added | expected threat at the end location minus at the start, for completed passes and carries ([D-021](decision-log.md#d-021---expected-threat-fitted-on-the-complete-201516-season)) |
+| Possession-adjusted defending | count × 0.5 ÷ opponent possession, clipped, so players of a possession-heavy team are not penalised for having less defending to do |
+| xT added | expected threat at the end location minus at the start, for completed passes and carries |
 
 ### Heatmap action families
 
@@ -89,5 +88,4 @@ All defined once in `barca.analytics.definitions`
 | Defending | pressures, tackles, interceptions, recoveries, clearances, blocks, fouls, duels |
 
 Heatmaps show where a player did recorded things with or around the ball,
-not where the player was
-([D-015](decision-log.md#d-015---heatmaps-are-action-heatmaps-and-the-app-says-so)).
+not where the player was.

@@ -3,7 +3,7 @@
 Hyperparameters are tuned *inside* each training window: the last season of
 the window is held out as validation, Optuna searches on it, and the model is
 then refitted on the whole window. No test season ever influences a
-hyperparameter (walk-forward, D-018).
+hyperparameter (walk-forward).
 """
 
 from __future__ import annotations

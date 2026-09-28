@@ -13,7 +13,7 @@ the betting market.
 A three-class outcome (home win, draw, away win) for every La Liga fixture,
 with Barcelona's view derived from it (W / D / L). Training uses every club's
 matches from 2005/06, the first season in which every results-based feature
-exists ([D-018](decision-log.md#d-018---modelling-and-evaluation-windows)).
+exists.
 The inputs are the 90 pre-match features described in
 [feature-engineering.md](feature-engineering.md). Odds are never features.
 
@@ -28,8 +28,7 @@ that predicts it.
 models, regularisation, ensemble composition, Poisson variant, calibration)
 was made on the **development seasons 2008/09-2013/14** (2,280 fixtures).
 The **holdout seasons 2014/15-2020/21** (2,660 fixtures) were scored once,
-after the choices were frozen (notebook 14)
-([D-026](decision-log.md#d-026---model-selection-on-development-seasons-production--equal-weight-ensemble)).
+after the choices were frozen (notebook 14).
 
 **Metrics.** Log loss is the headline, because the product shows
 probabilities. Also reported: Brier score, ranked probability score (RPS,
@@ -122,8 +121,6 @@ season.
 
 ## Starting XI
 
-([D-029](decision-log.md#d-029---starting-xi-calibrated-start-probabilities--light-positional-assignment))
-
 1. **Start probability.** A LightGBM classifier gives P(start) for every
    candidate in the matchday pool, from the player-fixture features (recent
    starts and minutes, consecutive starts, workload, form rating, last
@@ -162,15 +159,13 @@ in a goal within the next actions, through shots (valued at the cell's mean
 StatsBomb xG) or moves. Completed passes and carries are credited with the
 xT difference between end and start. Fitting on a whole league season gives
 a neutral value surface rather than one shaped by Barcelona's style. xT is
-descriptive only and never enters the outcome model
-([D-021](decision-log.md#d-021---expected-threat-fitted-on-the-complete-201516-season)).
+descriptive only and never enters the outcome model.
 
 ![Expected threat grid](../reports/figures/10_xt_grid.png)
 
 ### BIPR: Barça Individual Player Rating
 
-A season rating for outfield players with at least 900 league minutes
-([D-022](decision-log.md#d-022---bipr-transparent-pillars-fixed-reference-weighted-score-as-headline)).
+A season rating for outfield players with at least 900 league minutes.
 
 1. **Seven pillars**, each the mean percentile of 2-5 per-90 metrics within the
    player's position family, against a **fixed reference population** (every
@@ -218,7 +213,7 @@ match composite against 2015/16 player-matches of at least 45 minutes and
 p′ = 0.5 + (p − 0.5) · √(min(minutes, 90) / 90) shrinks short appearances
 towards the median. Appearances under 20 minutes are not rated. The scale
 runs 3.2-9.8 with a mean of 6.55; 8.5+ marks roughly the top 4% of
-performances ([D-023](decision-log.md#d-023---match-ratings-shrunk-percentile-on-a-65-centred-scale)).
+performances.
 
 ## Experiment tracking
 
@@ -232,7 +227,7 @@ scheme, features and development and holdout metrics, and is served by
 
 ## What did not work
 
-Recorded in [D-027](decision-log.md#d-027---negative-results-kept-on-the-record):
+Four plausible ideas were tested and rejected by the data:
 hyperparameter tuning with Optuna (nested inside every training window)
 made LightGBM worse; the Dixon-Coles low-score correction did not help;
 Barcelona-only training was much worse than league-wide training; and

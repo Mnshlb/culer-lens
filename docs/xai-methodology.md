@@ -2,9 +2,7 @@
 
 Explanations serve three purposes here: tell a user why a prediction is what
 it is, show which inputs the model relies on overall, and act as a check
-that nothing leaked into the model. Methods and choices are recorded in
-[D-028](decision-log.md#d-028---explanations-permutation-shap-of-the-shipped-model-plus-treeshap-and-grouped-importance);
-the analysis is notebook 15.
+that nothing leaked into the model. The analysis is notebook 15.
 
 ## Local: "why 64%?"
 

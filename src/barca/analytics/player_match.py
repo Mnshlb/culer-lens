@@ -172,7 +172,7 @@ def player_match_stats(
 
 
 def per90(frame: pl.DataFrame, metrics: list[str], minutes_col: str = "minutes") -> pl.DataFrame:
-    """Metric_90 = Metric / Minutes * 90 (minutes include stoppage time, see D-010)."""
+    """Metric_90 = Metric / Minutes * 90 (minutes include stoppage time)."""
     return frame.with_columns(
         [(pl.col(m) / pl.col(minutes_col) * 90).alias(f"{m}_p90") for m in metrics]
     )

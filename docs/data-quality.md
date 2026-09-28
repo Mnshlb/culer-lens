@@ -40,8 +40,7 @@ Eight rules, each traced to a finding. Nothing is imputed.
 | C8 | penalty shoot-outs are not playing time | period 5 events dropped |
 
 Before cleaning, two error rules fail (E07 locations, L02 starters). After
-cleaning, every error rule passes
-([D-017](decision-log.md#d-017---cleaning-is-minimal-and-traceable)).
+cleaning, every error rule passes.
 
 ## Validation (`barca.data.validate`)
 
@@ -76,10 +75,9 @@ quirk rather than a defect:
 `barca build` runs every rule and records the outcome in
 `data/processed/_validation.json`. If any error-level rule fails, the build
 exits with a non-zero code, and `barca features` refuses to run until a
-build has passed
-([D-016](decision-log.md#d-016---type-aware-validation-with-a-hard-gate-before-features)).
+build has passed.
 CI can run the same build and gate on a downloaded sample. That job is
-started by hand only, never automatically (D-039).
+started by hand only, never automatically.
 
 ## Tests
 

@@ -16,8 +16,7 @@ descriptions, is generated into `reports/feature_catalog.md`
 
 The outcome model is trained on **every league fixture from 2005/06**
 (up to 5,700 matches for the last test season), not only Barcelona's. A
-Barcelona-only model was tried and was much worse
-([D-027](decision-log.md#d-027---negative-results-kept-on-the-record)).
+Barcelona-only model was tried and was much worse.
 
 ## Rolling form (`barca.features.rolling`, `team_form`)
 
@@ -33,8 +32,7 @@ corners (both for and against), plus:
 
 Windows run **across season boundaries**: resetting form every August
 throws away real information, and `matches_played` tells the model how much
-of the current season it is looking at
-([D-020](decision-log.md#d-020---rolling-windows-cross-season-schedule-anchored-coverage-aware)).
+of the current season it is looking at.
 
 **The leak-free mechanism.** Every rolling feature is computed the same way:
 sort by date within the club, shift by one match, then take the window.
@@ -54,8 +52,7 @@ A World-Football-style Elo over every league fixture since 1995/96:
 K = 8, home advantage = 80 and regression = 0.1 were chosen by grid search on
 1996/97-2007/08 only, before any evaluation season, and the optimum is
 interior. On 2008-2021 fixtures the expected home score matches the actual
-one within 0.01-0.03 in every bin
-([D-019](decision-log.md#d-019---elo-with-tuned-k-home-advantage-and-seasonal-regression)).
+one within 0.01-0.03 in every bin.
 Nine seasons of burn-in mean every club has a settled rating by the first
 StatsBomb match.
 
@@ -67,7 +64,7 @@ The plan proposed `AttackDiff = attack − opponent defence`. Taken literally,
 with goals conceded as "defence", it subtracts a higher-is-worse quantity
 from a higher-is-better one, and it does not separate results. The relative
 features are therefore all expressed so that higher means better for the
-first side ([D-014](decision-log.md#d-014---relative-features-must-use-consistent-signs)):
+first side:
 
 | Feature | Definition (first side minus second side) |
 |---|---|
@@ -96,7 +93,7 @@ silently span months in the patchy early seasons.
 
 Event form exists for Barcelona in every season and for every club in
 2015/16. It is used by the Barcelona-specific experiments; it did not improve
-outcome prediction and is not in the production model (D-027).
+outcome prediction and is not in the production model.
 
 ## Player features (`barca.features.player_fixture`)
 
@@ -116,8 +113,7 @@ earlier matches:
 - the opponent's Elo, the Elo gap and team rest days.
 
 Candidates are the published matchday squad when it exists (every match
-from 2015/16), otherwise every player who appeared in the previous 60 days
-([D-025](decision-log.md#d-025---candidate-pools-for-each-fixture-published-squad-else-recent-players)).
+from 2015/16), otherwise every player who appeared in the previous 60 days.
 
 ## Proving there is no leakage
 

@@ -4,7 +4,7 @@ Feature groups (see docs/feature-engineering.md for the catalogue):
 
 * ``form``    rolling results-based form per side (football-data, every club)
 * ``elo``     pre-match Elo ratings
-* ``relative`` sign-consistent differences between the two sides (D-014)
+* ``relative`` sign-consistent differences between the two sides
 * ``event``   StatsBomb rolling form (Barcelona every season; all clubs 2015/16)
 
 Market probabilities from bookmaker odds are attached as ``mkt_*`` columns for

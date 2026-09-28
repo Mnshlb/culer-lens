@@ -102,7 +102,7 @@ any question of redistributing the data.
 | Docker | builds both images |
 
 The data job never runs automatically: football-data.co.uk offers its files
-to private individuals, not to automated downloads (D-039). Start it by hand
+to private individuals, not to automated downloads. Start it by hand
 from the Actions tab ("Run workflow") when you want to check the upstream
 data.
 

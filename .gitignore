@@ -11,7 +11,7 @@ coverage.xml
 htmlcov/
 .ipynb_checkpoints/
 
-# Data: third-party data is never committed (see docs/decision-log.md, D-003)
+# Data: third-party data is never committed (the StatsBomb licence forbids redistribution)
 data/**
 !data/**/
 !data/**/.gitkeep

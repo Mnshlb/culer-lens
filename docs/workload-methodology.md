@@ -2,8 +2,7 @@
 
 The Workload Index summarises how much a player has been asked to play
 recently. It is **not** a fatigue, injury-risk or readiness-to-perform
-measure, and the app never calls it one
-([D-024](decision-log.md#d-024---workload-index-with-fixed-reference-points-never-called-fatigue)).
+measure, and the app never calls it one.
 Code: `barca.analytics.workload`; analysis: notebook 11.
 
 ## Definition
@@ -46,8 +45,7 @@ The data holds La Liga matches (most but not all of Barcelona's in each
 season) and three Champions League finals. **Cup and European matches are
 missing**, so the index measures **observed league workload** and
 understates real load, most of all in congested winter and spring periods.
-Minutes include stoppage time
-([D-010](decision-log.md#d-010---minutes-played-include-stoppage-time)).
+Minutes include stoppage time.
 
 ## What the analysis found
 

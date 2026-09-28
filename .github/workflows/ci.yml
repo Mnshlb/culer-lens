@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-  workflow_dispatch:  # the data job runs only when started by hand (see docs/decision-log.md, D-039)
+  workflow_dispatch:  # the data job runs only when started by hand (football-data.co.uk's terms)
 
 concurrency:
   group: ci-${{ github.ref }}

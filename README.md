@@ -87,8 +87,6 @@ flowchart LR
 | API, app, deployment | | [Architecture](docs/architecture.md), [deployment](docs/deployment.md) |
 
 What the platform cannot do is set out in [limitations](docs/limitations.md).
-Every significant choice, including the ideas the data rejected, is in the
-[decision log](docs/decision-log.md).
 
 ## Results
 
@@ -174,7 +172,7 @@ apps/api/        FastAPI service and Alembic migrations
 apps/web/        Next.js app and Playwright tests
 notebooks/       16 executed analysis notebooks, in milestone order
 reports/         generated reports (coverage, profile, data quality, feature catalogue) and figures
-docs/            methodology, architecture, limitations, decision log
+docs/            methodology, architecture, limitations, screenshots
 tests/           unit, integration and data-quality suites
 ```
 

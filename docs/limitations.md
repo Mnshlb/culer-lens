@@ -12,8 +12,7 @@ sprints, off-ball movement) is out of reach.
 
 **Heatmaps show recorded actions, not coverage.** A player holding position
 or making a decoy run leaves no trace. Every heatmap is labelled as an
-action heatmap
-([D-015](decision-log.md#d-015---heatmaps-are-action-heatmaps-and-the-app-says-so)).
+action heatmap.
 
 **Coverage is partial and uneven.** Barcelona's league matches from 2004/05
 to 2020/21, incomplete before 2008/09 and centred on matches Lionel Messi
@@ -27,8 +26,7 @@ workload and form therefore describe league football only.
 
 **The data ends in May 2021.** There is no real "next match" to predict. The
 app replays history instead: every prediction is shown as it would have been
-made before kick-off
-([D-004](decision-log.md#d-004---as-of-design-the-platform-replays-history)).
+made before kick-off.
 
 **Partial squad information.** The matchday squad (who was available) is
 recorded from 2015/16. Before that, the candidate pool for the lineup model
@@ -63,8 +61,7 @@ accuracy is not the headline metric.
 
 **Small sample for model selection.** 2,280 development fixtures are enough
 to rank model families but not to tune dozens of hyperparameters; tuning
-overfitted and was dropped
-([D-027](decision-log.md#d-027---negative-results-kept-on-the-record)).
+overfitted and was dropped.
 Single-model rankings shuffled between development and holdout seasons,
 which is why production averages three models.
 

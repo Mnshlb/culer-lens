@@ -1,6 +1,6 @@
 """The production outcome model: an equal-weight ensemble.
 
-Chosen on the development seasons (2008/09-2013/14, D-026): Elo's ordered
+Chosen on the development seasons (2008/09-2013/14): Elo's ordered
 logit, the Poisson goals model and a regularised LightGBM each capture a
 different view of the same signal (strength, scoring rates, non-linear form
 interactions), and their average beat every single model. The Poisson member
