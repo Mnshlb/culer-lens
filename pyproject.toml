@@ -1,7 +1,7 @@
 [project]
 name = "culer-lens"
 version = "0.1.0"
-description = "Football analytics and match-prediction platform for FC Barcelona built on StatsBomb open event data."
+description = "Personal football analytics and match-prediction project on FC Barcelona, built with StatsBomb open event data."
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 license = { file = "LICENSE" }

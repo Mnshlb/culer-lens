@@ -193,8 +193,11 @@ the original sources at a pinned version.
 
 Data by <a href="https://statsbomb.com"><img src="apps/web/public/statsbomb-logo.png" alt="StatsBomb" width="140" align="middle"></a>
 
-The source code is not open source: it is © 2026 Manshul Budholiya, all
-rights reserved (see [LICENSE](LICENSE)). The licence does not cover the data. This is a personal, non-commercial project. It is not
+**The source code is not open source.** It is © 2026 Manshul Budholiya, all
+rights reserved: it is public so it can be read and evaluated, and you may
+run it on your own computer to try it out, but you may not copy, reuse or
+redistribute it. See [LICENSE](LICENSE). This is a personal, non-commercial
+project. It is not
 affiliated with, endorsed by or connected to FC Barcelona or StatsBomb; the
 StatsBomb logo is the data credit that StatsBomb's user agreement asks for.
 Club and competition names are used only to identify teams and matches.

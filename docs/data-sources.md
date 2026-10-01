@@ -81,7 +81,8 @@ web app show. football-data.co.uk files are free to download from the
 site; they are not redistributed here either.
 
 The source code is not open source: it is © Manshul Budholiya, all rights
-reserved (see `LICENSE`). That licence does not cover the data.
+reserved, and public only so it can be read and evaluated (see `LICENSE`).
+Neither that licence nor this repository covers the data.
 
 This is a personal, non-commercial project. It is not affiliated with,
 endorsed by or connected to FC Barcelona, StatsBomb or football-data.co.uk.
